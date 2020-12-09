@@ -53,7 +53,7 @@ class day9 {
     fun part2Example() {
         val cypher = parseInput(example)
         val key = cypher.findFirstInvalid(5)
-        val weakness = cypher.findWeakness(key!!)
+        val weakness = cypher.findWeaknessV2(key!!)
         assert(
             weakness == 62L
         )
@@ -63,8 +63,18 @@ class day9 {
     fun part2() {
         val cypher = parseInput(input)
         val key = cypher.findFirstInvalid(25)
-        val weakness = cypher.findWeakness(key!!)
+        val weakness = cypher.findWeaknessV2(key!!)
         println(weakness)
+    }
+
+    fun Cypher.findWeaknessV2(key: Long): Long? {
+        val items = mutableListOf<Long>()
+        forEach { cypherPoint ->
+            items += cypherPoint
+            while(items.sum() > key ) items.removeAt(0)
+            if(items.sum() == key) return items.max()!! + items.min()!!
+        }
+        return null
     }
 
     fun Cypher.findWeakness(key: Long) : Long? {
