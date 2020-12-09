@@ -69,8 +69,8 @@ class day9 {
 
     fun Cypher.findWeaknessV2(key: Long): Long? {
         val items = mutableListOf<Long>()
-        forEach { cypherPoint ->
-            items += cypherPoint
+        forEach {
+            items += it
             while(items.sum() > key ) items.removeAt(0)
             if(items.sum() == key) return items.max()!! + items.min()!!
         }
