@@ -60,9 +60,10 @@ class day3 {
     private fun Treemap.countCollision(slopeX: Int, slopeY: Int): Int {
         val maxX = keys.maxBy { it.x }!!.x
         val maxY = keys.maxBy { it.y }!!.y
-        val positions= (0..maxX step slopeX).mapIndexed { step, x ->
-            get(Point2D(x,(slopeY*step) % (maxY+1)))!!
-        }
+        val positions= (0..maxX step slopeX)
+            .mapIndexed { step, x ->
+                get(Point2D(x,(slopeY*step) % (maxY+1)))!!
+            }
         return positions.count { it }
     }
 

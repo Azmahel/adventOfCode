@@ -15,21 +15,9 @@ class day5 {
 
     @Test
     fun examples() {
-        val seats = examples
-            .map { getRowDefinition(it) }
-            .map { (x,y) ->
-                getBinaryNumber(x) to getBinaryNumber(y)
-            }
+        val seats = examples.getSeats()
         assert(
             seats == listOf(
-                70 to 7,
-                14 to 7,
-                102 to 4
-            )
-        )
-        val seatnumbers = seats.map { getSeatNumber(it) }
-        assert(
-            seatnumbers == listOf(
                 567,
                 119,
                 820
@@ -39,29 +27,25 @@ class day5 {
 
     @Test
     fun part1() {
-        val seats = input
-            .map { getRowDefinition(it) }
-            .map { (x,y) ->
-                getBinaryNumber(x) to getBinaryNumber(y)
-            }.map {
-                getSeatNumber(it)
-            }
+        val seats = input.getSeats()
         println(seats.max())
     }
 
     @Test
     fun part2() {
-        val seats = input
-            .map { getRowDefinition(it) }
-            .map { (x,y) ->
-                getBinaryNumber(x) to getBinaryNumber(y)
-            }.map {
-                getSeatNumber(it)
-            }
+        val seats = input.getSeats()
         val allSeats = (0..128*8)
 
-        println(allSeats.filterNot{it in seats }.filter { it+1 in seats && it-1 in seats } )
+        println(
+            allSeats
+                .filterNot { it in seats }
+                .first { it + 1 in seats && it - 1 in seats }
+        )
     }
+
+    private fun List<String>.getSeats() = map { getRowDefinition(it) }
+            .map { (x, y) -> getBinaryNumber(x) to getBinaryNumber(y) }
+            .map { getSeatNumber(it) }
 
     fun getSeatNumber(seat: Pair<Int, Int>, seatsPerRow : Int = 8) =
         seat.first* seatsPerRow + seat.second
@@ -69,11 +53,14 @@ class day5 {
     fun getRowDefinition(s: String) = s.partition { it == 'F' || it == 'B' }
 
 
-    fun getBinaryNumber(input: String, map: Map<Char, Int> = charToBinary): Int
+    fun getBinaryNumber(input: String, map: Map<Char, Char> = charToBinary): Int
     {
-        return input.map { map[it] }.joinToString("").toInt(2)
+        return input
+            .map { map[it] }
+            .joinToString("")
+            .toInt(2)
     }
 
-    private val charToBinary = mapOf('B' to 1, 'F' to 0, 'L' to 0, 'R' to 1)
+    private val charToBinary = mapOf('B' to '1', 'F' to '0', 'L' to '0', 'R' to '1')
 
 }
