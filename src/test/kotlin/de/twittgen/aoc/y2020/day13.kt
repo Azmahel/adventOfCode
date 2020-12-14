@@ -50,11 +50,7 @@ class day13 {
     fun part2() {
         val (_,busses) = parseInput(input)
         val modulos = busses.mapIndexedNotNull { i ,it ->
-            if (it == "x") {
-                null
-            } else {
-                 it.toInt() to i
-            }
+            if (it == "x") null else it.toInt() to it.toInt()-i
         }
         val result = chineseRemainder(modulos)
         val x = (result.first mod result.second)
