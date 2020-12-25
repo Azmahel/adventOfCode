@@ -39,7 +39,7 @@ class day22 {
         val (you2, crab2) = playCombat(you,crab)
         val winner = listOf(you2,crab2).first { it.isNotEmpty() }
         assert(
-            winner.score() == 306L
+            winner.score() == 306
         )
     }
 
@@ -59,27 +59,27 @@ class day22 {
         println(winner.score())
     }
 
-    fun List<Long>.score() = reversed().mapIndexed { i, v -> (i+1) * v  }.sum()
+    fun List<Int>.score() = reversed().mapIndexed { i, v -> (i+1) * v  }.sum()
 
     private tailrec fun playRecursiveCombat(
-        p1: List<Long>,
-        p2: List<Long>,
-        previous: Set<Pair<List<Long>,List<Long>>> = emptySet()
-    ): Pair<List<Long>, List<Long>> {
+        p1: List<Int>,
+        p2: List<Int>,
+        previous: Set<Pair<List<Int>, List<Int>>> = emptySet()
+    ): Pair<List<Int>, List<Int>> {
         if(p1.isEmpty() || p2.isEmpty()) return p1 to p2
         if(p1 to p2 in previous) return p1 to emptyList()
 
         val (c1, c2) = p1.first() to p2.first()
         val (p1Next, p2Next) = p1.drop(1).toMutableList() to p2.drop(1).toMutableList()
         val p1Wins = if(p1Next.size >= c1  && p2Next.size >= c2) {
-            playRecursiveCombat(p1Next.toList().take(c1.toInt()), p2Next.toList().take(c2.toInt()))
+            playRecursiveCombat(p1Next.take(c1), p2Next.take(c2))
                 .first.isNotEmpty()
         }else  { c1 > c2 }
         if(p1Wins) p1Next.addAll(listOf(c1,c2)) else p2Next.addAll(listOf(c2,c1))
         return playRecursiveCombat(p1Next, p2Next, previous + (p1 to p2))
     }
 
-    private tailrec fun playCombat(p1: List<Long>, p2: List<Long>): Pair<List<Long>,List<Long>> {
+    private tailrec fun playCombat(p1: List<Int>, p2: List<Int>): Pair<List<Int>,List<Int>> {
         if(p1.isEmpty() || p2.isEmpty()) return p1 to p2
         val (c1, c2) = p1.first() to p2.first()
         val (p1Next, p2Next) = p1.drop(1).toMutableList() to p2.drop(1).toMutableList()
@@ -87,12 +87,12 @@ class day22 {
         return playCombat(p1Next, p2Next)
     }
 
-    fun parseInput(s: String) : Pair<List<Long>,List<Long>> {
+    fun parseInput(s: String) : Pair<List<Int>,List<Int>> {
        return s
            .replace("\r","")
            .split("\n\n")
            .map {
-               it.lines().drop(1).map { it.toLong() }
+               it.lines().drop(1).map { it.toInt() }
            }.let {
                it.first() to it.second()
            }
