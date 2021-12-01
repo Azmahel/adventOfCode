@@ -117,6 +117,7 @@ class day11 {
             }
             getOrNull(ix)?.getOrNull(iy)
         }
+        println()
         result
     }
 

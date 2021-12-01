@@ -257,9 +257,9 @@ class day20 {
     }
 
     private fun countMonster(image: List<Pair<Int, Int>>): Int {
-        val rot : List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { rotate(maxBy { it.first }!!.first) }
-        val flipH: List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { flip(E,maxBy { it.first }!!.first) }
-        val flipV: List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { flip(N,maxBy { it.first }!!.first) }
+        val rot : List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { rotate(maxByOrNull { it.first }!!.first) }
+        val flipH: List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { flip(E,maxByOrNull { it.first }!!.first) }
+        val flipV: List<Pair<Int, Int>>.() -> List<Pair<Int, Int>> = { flip(N,maxByOrNull { it.first }!!.first) }
         val possibleImages = listOf(
             image,
             image.rot(),
@@ -278,7 +278,7 @@ class day20 {
         val counts = possibleImages.map {
             it.countMonsters()
         }
-        return counts.max()!!
+        return counts.maxOrNull()!!
     }
 
     val seamonster= """
@@ -291,7 +291,7 @@ class day20 {
 
     fun List<Pair<Int,Int>>.countMonsters(): Int {
 
-        val max = maxBy { it.first }!!.first
+        val max = maxByOrNull { it.first }!!.first
         return (0..max).flatMap { x->
             (0..max).map { y ->
                val isSeaMonster = seamonster.all { (sx,sy) -> firstOrNull { it == (x+sx) to (y+sy) } != null }
@@ -303,7 +303,7 @@ class day20 {
     }
 
     fun List<Pair<Int,Int>>.print() {
-        val max = maxBy { it.first }!!.first
+        val max = maxByOrNull { it.first }!!.first
         (0..max).forEach { x ->
             (0..max).forEach { y ->
                 print(if(x to y in this) "#" else ".")
@@ -313,7 +313,7 @@ class day20 {
     }
 
     fun Map<Pair<Int,Int>,Tile>.join(): List<Pair<Int, Int>> {
-        val max = keys.maxBy { it.first }!!.first
+        val max = keys.maxByOrNull { it.first }!!.first
         return (0..max).flatMap { x->
             (0..max).flatMap { y->
                 with(get(x to y)!!) {

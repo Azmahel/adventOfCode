@@ -45,7 +45,7 @@ class Day7 {
                     }
                 }
             }
-        }.max()
+        }.maxOrNull()
         println(x)
     }
     private suspend fun operateProgram(opcode: List<Int>, input: Channel<Int>, output: Channel<Int>): List<Int> {

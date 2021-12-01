@@ -98,10 +98,10 @@ class Day15 {
     private fun printMap(map: Map<Pair<Int, Int>, Tile>, position: Pair<Int,Int>) {
         val mapWithRobot = map.filter{ it.key != position}.plus(position to Tile.ROBOT)
         if (mapWithRobot.isEmpty()) return
-        val maxX = mapWithRobot.keys.map{it.first}.max()!!
-        val minX = mapWithRobot.keys.map{it.first}.min()!!
-        val maxY = mapWithRobot.keys.map{it.second}.max()!!
-        val minY = mapWithRobot.keys.map{it.second}.min()!!
+        val maxX = mapWithRobot.keys.map{it.first}.maxOrNull()!!
+        val minX = mapWithRobot.keys.map{it.first}.minOrNull()!!
+        val maxY = mapWithRobot.keys.map{it.second}.maxOrNull()!!
+        val minY = mapWithRobot.keys.map{it.second}.minOrNull()!!
         println(
             (minY..maxY).joinToString("\n") { y ->
                 (minX..maxX).joinToString("") { x ->

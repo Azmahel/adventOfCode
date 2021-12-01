@@ -139,7 +139,7 @@ class day10 {
         }
     }
 
-    fun getAllAdapters(base: List<Int>) = listOf(0) + base.sorted() + (base.max()!! + 3)
+    fun getAllAdapters(base: List<Int>) = listOf(0) + base.sorted() + (base.maxOrNull()!! + 3)
 }
 
 

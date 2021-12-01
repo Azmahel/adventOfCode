@@ -71,7 +71,7 @@ class day9 {
         forEach {
             items += it
             while(items.sum() > key ) items.removeAt(0)
-            if(items.sum() == key) return items.max()!! + items.min()!!
+            if(items.sum() == key) return items.maxOrNull()!! + items.minOrNull()!!
         }
         return null
     }
@@ -87,7 +87,7 @@ class day9 {
                     items += it
                 }
             }
-            if(sum == key) return items.min()!! + items.max()!!
+            if(sum == key) return items.minOrNull()!! + items.maxOrNull()!!
         }
         return null
     }

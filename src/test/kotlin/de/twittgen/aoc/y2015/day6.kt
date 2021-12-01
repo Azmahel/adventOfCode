@@ -54,7 +54,7 @@ class day6 {
                 "turn off" -> {
                     affected.forEach {
                         turnedOn[it]?.apply {
-                            turnedOn[it] = listOf(this -1,0).max()!!
+                            turnedOn[it] = listOf(this -1,0).maxOrNull()!!
                         }
                     }
                 }

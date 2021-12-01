@@ -13,8 +13,8 @@ class Wire(instructions: List<Instruction>) {
     private val path: List<Point2D> = generatePath(instructions)
 
     fun getDistanceTo(point: Point2D): Int = this.path.indexOf(point)
-    fun getClosestIntersectionByWireLengthWith(other: Wire) = getIntersectionsWith(other).minBy{ this.getDistanceTo(it) + other.getDistanceTo(it)}!!
-    fun getClosestIntersectionWith(other:Wire, to: Point2D): Point2D = getIntersectionsWith(other).minBy{ it.manhattanDistanceTo(to) }!!
+    fun getClosestIntersectionByWireLengthWith(other: Wire) = getIntersectionsWith(other).minByOrNull { this.getDistanceTo(it) + other.getDistanceTo(it)}!!
+    fun getClosestIntersectionWith(other:Wire, to: Point2D): Point2D = getIntersectionsWith(other).minByOrNull { it.manhattanDistanceTo(to) }!!
 
     private fun getIntersectionsWith(other: Wire): List<Point2D> = this.path.intersect(other.path).filterNot{ it == Point2D.ORIGIN }
     private fun generatePath(instructions: List<Instruction>): List<Point2D> {

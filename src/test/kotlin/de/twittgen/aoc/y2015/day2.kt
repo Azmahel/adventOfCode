@@ -17,14 +17,14 @@ class day2 {
     @Test
     fun example() {
         val boxes  = parseInput(example).map{ getSides(it) }
-        val total = boxes.map { sides -> sides.map { it }.sum() + sides.min()!!}
+        val total = boxes.map { sides -> sides.map { it }.sum() + sides.minOrNull()!!}
         assert(total == listOf(58,43))
     }
 
     @Test
     fun part1() {
         val boxes  = parseInput(input).map{ getSides(it) }
-        val total = boxes.map { sides -> sides.map { it }.sum() + sides.min()!!}
+        val total = boxes.map { sides -> sides.map { it }.sum() + sides.minOrNull()!!}
         println(total.sum())
     }
 

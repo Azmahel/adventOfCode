@@ -17,7 +17,7 @@ class Day10 {
                     .distinct()
             }
             //get the largest number of visible Asteroids
-            .map { it.size }.max()
+            .map { it.size }.maxOrNull()
         println(result)
     }
     @Test
@@ -25,7 +25,7 @@ class Day10 {
         //transform to list of targeting vectors to closest Asteroids
         val targetingMaps = input.map { input.toVectorsFrom(it) }.map { it.filterNot{ it == 0 to 0 }.sortedBy { it.length() }.distinctBy {it.normalize()} }
         //get longest List of targeting vectors
-        val targetingVectors =  targetingMaps.maxBy{ it.size}!!
+        val targetingVectors =  targetingMaps.maxByOrNull{ it.size}!!
         //get our base position
         val base = input[targetingMaps.indexOf(targetingVectors)]
         val targets =(targetingVectors.sortByAngleFromVertical()).map { it.first + base.first to it.second + base.second}

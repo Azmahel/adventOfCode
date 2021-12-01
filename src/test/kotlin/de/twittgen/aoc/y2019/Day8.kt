@@ -6,7 +6,7 @@ class Day8 {
     val input = this::class.java.getResource("day8").readText().chunked(25 * 6)
     @Test
     fun getA() {
-        val x = input.minBy {
+        val x = input.minByOrNull {
             it.count { it=='0' }
         }!!.let {
             it.count{ it == '1' } * it.count{ it == '2' }

@@ -32,7 +32,7 @@ class day23 {
     @Test
     fun part2() {
         val start = parseInput(input).let {
-            it+ ((it.max()!!+1)..1_000_000)
+            it+ ((it.maxOrNull()!!+1)..1_000_000)
         }
         val result = playCupGameV2(start, 10_000_000)
         println(result)
@@ -43,7 +43,7 @@ class day23 {
         fun Int.next() = current[this]!!
         infix fun Int.setNext(i: Int) { current[this] = i }
 
-        val max = cups.max()!!
+        val max = cups.maxOrNull()!!
         fun Int.nextSmaller() = (this-1).let { if (it == 0) max else it }
 
         var pivot = cups.first()
@@ -77,7 +77,7 @@ class day23 {
         val pivot = cups.first()
         val pickUp = cups.take(4).drop(1)
         val inBetween =   cups.drop(4)
-        val insertAt = inBetween.indexOf(min(inBetween.filter { it < pivot}.max() ?: Int.MAX_VALUE, inBetween.max()!!))
+        val insertAt = inBetween.indexOf(min(inBetween.filter { it < pivot}.maxOrNull() ?: Int.MAX_VALUE, inBetween.maxOrNull()!!))
         val next = inBetween.take(insertAt+1) + pickUp + inBetween.drop(insertAt+1) + pivot
         if(moves % 100_000 == 0) println(moves)
         return playCupGame(next, moves -1)

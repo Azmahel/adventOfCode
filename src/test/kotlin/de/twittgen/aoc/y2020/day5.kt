@@ -28,7 +28,7 @@ class day5 {
     @Test
     fun part1() {
         val seats = input.getSeats()
-        println(seats.max())
+        println(seats.maxOrNull())
     }
 
     @Test

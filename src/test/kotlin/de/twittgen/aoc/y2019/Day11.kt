@@ -34,10 +34,10 @@ class Day11 {
             val computer = async { operateProgram(input,rToC,cToR)}
             val resultC = computer.await()
             val (white, painted) = robot.await()
-            val minX = white.map{it.first}.min()!!
-            val maxX = white.map{it.first}.max()!!
-            val minY = white.map{it.second}.min()!!
-            val maxY = white.map{it.second}.max()!!
+            val minX = white.map{it.first}.minOrNull()!!
+            val maxX = white.map{it.first}.maxOrNull()!!
+            val minY = white.map{it.second}.minOrNull()!!
+            val maxY = white.map{it.second}.maxOrNull()!!
             (minY..maxY).forEach {y ->
                 (minX..maxX).forEach {x ->
                     if(white.contains(x to y)) print("#") else print(" ")

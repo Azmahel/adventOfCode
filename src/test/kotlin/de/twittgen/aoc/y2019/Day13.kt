@@ -77,8 +77,8 @@ class Day13 {
 
     private fun printMap(map: Map<Pair<Long, Long>, Long>) {
         if ( map.isEmpty()) return
-        val maxX = map.keys.map{it.first}.max()!!
-        val maxY = map.keys.map{it.second}.max()!!
+        val maxX = map.keys.map{it.first}.maxOrNull()!!
+        val maxY = map.keys.map{it.second}.maxOrNull()!!
         println("Score: ${map[-1L to 0L]}")
         println(
             (0..maxY).joinToString("\n") { y ->

@@ -26,7 +26,7 @@ class day13 {
             .map {
                 it to (it.toInt() -(now % it.toInt()))
             }
-        val nextBus = nextArrivals.minBy { it.second }
+        val nextBus = nextArrivals.minByOrNull { it.second }
         assert(
             nextBus!!.first == "59" && nextBus.second == 5
         )
@@ -40,7 +40,7 @@ class day13 {
             .map {
                 it to (it.toInt() -(now % it.toInt()))
             }
-        val nextBus = nextArrivals.minBy { it.second }
+        val nextBus = nextArrivals.minByOrNull { it.second }
         println(
             nextBus!!.first.toInt() * nextBus.second
         )
