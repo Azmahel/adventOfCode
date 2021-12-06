@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class Day3 {
-    val input = FileUtil.readInput("2021/day3").parse()
+    val input by lazy { FileUtil.readInput("2021/day3").parse() }
     val example = """00100
 11110
 10110

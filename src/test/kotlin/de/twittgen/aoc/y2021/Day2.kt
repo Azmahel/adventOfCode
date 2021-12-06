@@ -6,14 +6,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class Day2 {
-    val input = FileUtil.readInput("2021/day2").lines().map { with(it.split(" ")) { first() to second().toInt()}}
+    val input by lazy { FileUtil.readInput("2021/day2").parse() }
     val example = """forward 5
 down 5
 forward 8
 up 3
 down 8
-forward 2""".lines().map { with(it.split(" ")) { first() to second().toInt()}}
+forward 2""".parse()
 
+    private fun String.parse() = lines().map { with(it.split(" ")) { first() to second().toInt()}}
     val start = 0 to 0
 
     private fun Pair<Int,Int>.move(instructions : List<Pair<String,Int>>) : Pair<Int,Int> {

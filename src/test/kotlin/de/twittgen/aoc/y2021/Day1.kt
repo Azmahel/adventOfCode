@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class Day1 {
-    val input = FileUtil.readInput("2021/day1").lines().map { it.toInt() }
+    val input  by lazy { FileUtil.readInput("2021/day1").lines().map { it.toInt() } }
     val example = """199
 200
 208
