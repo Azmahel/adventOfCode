@@ -13,8 +13,9 @@ class Day7 {
 
     private fun List<Int>.getMean() = (sum().toDouble() / size)
     private fun List<Int>.getMedian() = sorted()[(size+1)/2]
-    private fun List<Int>.getFuelForAlignment(i: Int) = sumOf { abs(it - i) }
-    private fun List<Int>.getEscalatingFuelForAlignment(i: Int) = sumOf { (0..(abs(it - i ).toLong())).sum() }
+    private fun List<Int>.getFuelForAlignment(i: Int, fuelFunc: (Int) -> Int = {it})  = sumOf {
+        fuelFunc(abs(it - i))
+    }
 
     @Test
     fun example() {
@@ -26,8 +27,8 @@ class Day7 {
     fun example2() {
         val mean = example.getMean()
         val result = listOf(
-            example.getEscalatingFuelForAlignment(mean.toInt()),
-            example.getEscalatingFuelForAlignment(mean.toInt()+1)
+            example.getFuelForAlignment(mean.toInt()) { it*(it+1)/2 },
+            example.getFuelForAlignment(mean.toInt()+1) { it*(it+1)/2 }
         ).minOrNull()!!
 
         assertEquals(168, result)
@@ -43,8 +44,8 @@ class Day7 {
     fun part2() {
         val mean = input.getMean()
         val result = listOf(
-            input.getEscalatingFuelForAlignment(mean.toInt()),
-            input.getEscalatingFuelForAlignment(mean.toInt()+1)
+            input.getFuelForAlignment(mean.toInt()) { it*(it+1)/2 },
+            input.getFuelForAlignment(mean.toInt()+1) { it*(it+1)/2 }
         ).minOrNull()!!
         println(result)
     }
