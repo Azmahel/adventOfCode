@@ -39,7 +39,6 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
     private fun Set<Char>.is6(five: Set<Char>, three: Set<Char>) =
         containsAll(five) && minus(five).size == 1 && !is9(three)
 
-
     private fun List<Set<Char>>.getDecoding(): Map<Set<Char>, Char> {
         val result = mutableMapOf<Int, Set<Char>>()
         result[1] = first { it.is1() }
