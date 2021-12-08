@@ -32,7 +32,8 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
     private fun Set<Char>.is4() = size==4
     private fun Set<Char>.is7() = size==3
     private fun Set<Char>.is8() = size==7
-    private fun Set<Char>.is3( seven: Set<Char>) = containsAll(seven) && minus(seven).size == 2
+
+    private fun Set<Char>.is3(seven: Set<Char>) = containsAll(seven) && minus(seven).size == 2
     private fun Set<Char>.is9(three: Set<Char>) = containsAll(three) && minus(three).size == 1
     private fun Set<Char>.is5(b: Char) = contains(b) && minus(b).size == 4
     private fun Set<Char>.is6(five: Set<Char>, three: Set<Char>) =
@@ -98,6 +99,6 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
         val result = input.map { (sequence, cypher) ->
             cypher.decode(sequence.getDecoding()).toInt()
         }
-       println(result.sum())
+        println(result.sum())
     }
 }
