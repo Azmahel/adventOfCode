@@ -13,9 +13,10 @@ class Day7 {
 
     private fun List<Int>.getMean() = (sum().toDouble() / size)
     private fun List<Int>.getMedian() = sorted()[(size+1)/2]
-    private fun List<Int>.getFuelForAlignment(i: Int, fuelFunc: (Int) -> Int = {it})  = sumOf {
-        fuelFunc(abs(it - i))
-    }
+    private fun List<Int>.getFuelForAlignment(i: Int, fuelFunc: (Int) -> Int = {it})  =
+        sumOf { fuelFunc(abs(it - i)) }
+
+    private val gaussSum : (Int) -> Int = { it*(it+1)/2 }
 
     @Test
     fun example() {
@@ -27,9 +28,9 @@ class Day7 {
     fun example2() {
         val mean = example.getMean()
         val result = listOf(
-            example.getFuelForAlignment(mean.toInt()) { it*(it+1)/2 },
-            example.getFuelForAlignment(mean.toInt()+1) { it*(it+1)/2 }
-        ).minOrNull()!!
+            example.getFuelForAlignment(mean.toInt(), gaussSum) ,
+            example.getFuelForAlignment(mean.toInt()+1, gaussSum)
+        ).minOrNull()
 
         assertEquals(168, result)
     }
@@ -44,9 +45,9 @@ class Day7 {
     fun part2() {
         val mean = input.getMean()
         val result = listOf(
-            input.getFuelForAlignment(mean.toInt()) { it*(it+1)/2 },
-            input.getFuelForAlignment(mean.toInt()+1) { it*(it+1)/2 }
-        ).minOrNull()!!
+            input.getFuelForAlignment(mean.toInt(), gaussSum),
+            input.getFuelForAlignment(mean.toInt()+1, gaussSum)
+        ).minOrNull()
         println(result)
     }
 }
