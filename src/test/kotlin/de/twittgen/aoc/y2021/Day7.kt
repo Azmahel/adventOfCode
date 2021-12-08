@@ -4,7 +4,6 @@ import de.twittgen.aoc.y2019.shared.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 class Day7 {
     val input by lazy { FileUtil.readInput("2021/day7").parse() }
