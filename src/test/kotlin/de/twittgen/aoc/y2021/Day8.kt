@@ -21,21 +21,25 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
     private fun String.parse() =
         lines()
             .map{ line ->
-                line.split(" | ").map { part ->
-                    part.split(" ").map { it.toSet() } }
-            }.map { it.first() to it.second() }
+                line
+                    .split(" | ")
+                    .map { part -> part.split(" ").map { it.toSet() } }
+            }.map {
+                it.first() to it.second()
+            }
 
-    fun Set<Char>.is1() = size==2
-    fun Set<Char>.is4() = size==4
-    fun Set<Char>.is7() = size==3
-    fun Set<Char>.is8() = size==7
-    fun Set<Char>.is3( seven: Set<Char>) = containsAll(seven) && minus(seven).size == 2
-    fun Set<Char>.is9(three: Set<Char>) = containsAll(three) && minus(three).size == 1
-    fun Set<Char>.is5(b: Char) = contains(b) && minus(b).size == 4
-    fun Set<Char>.is6(five: Set<Char>, three: Set<Char>) = containsAll(five) && minus(five).size == 1 && !is9(three)
+    private fun Set<Char>.is1() = size==2
+    private fun Set<Char>.is4() = size==4
+    private fun Set<Char>.is7() = size==3
+    private fun Set<Char>.is8() = size==7
+    private fun Set<Char>.is3( seven: Set<Char>) = containsAll(seven) && minus(seven).size == 2
+    private fun Set<Char>.is9(three: Set<Char>) = containsAll(three) && minus(three).size == 1
+    private fun Set<Char>.is5(b: Char) = contains(b) && minus(b).size == 4
+    private fun Set<Char>.is6(five: Set<Char>, three: Set<Char>) =
+        containsAll(five) && minus(five).size == 1 && !is9(three)
 
 
-    fun List<Set<Char>>.getDecoding(): Map<Set<Char>, Char> {
+    private fun List<Set<Char>>.getDecoding(): Map<Set<Char>, Char> {
         val result = mutableMapOf<Int, Set<Char>>()
         result[1] = first { it.is1() }
         result[4] = first { it.is4() }
@@ -57,11 +61,16 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
         return result.map { (k,v) -> v to "$k".first() }.toMap()
     }
 
-    fun List<Set<Char>>.decode(key: Map<Set<Char>, Char>) =map { key[it]!! }.joinToString("")
+    private fun List<Set<Char>>.decode(key: Map<Set<Char>, Char>) = map { key[it]!! }.joinToString("")
 
     @Test
     fun example() {
-        val result = example.sumOf { it.second.count {i -> with(i){ is1() || is4() || is7() || is8() } } }
+        val result = example.sumOf {
+            it.second.count { i ->
+                with(i){ is1() || is4() || is7() || is8()
+                }
+            }
+        }
         assertEquals(26, result)
     }
 
@@ -75,7 +84,12 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
     @Test
     fun part1() {
-        val result = input.sumOf { it.second.count {i -> with(i){ is1() || is4() || is7() || is8() } } }
+        val result = input.sumOf {
+            it.second.count { i ->
+                with(i){ is1() || is4() || is7() || is8()
+                }
+            }
+        }
         println(result)
     }
 
