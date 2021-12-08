@@ -75,7 +75,7 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
     @Test
     fun part1() {
-        val result = input.sumOf { it.second.count { it.is1() || it.is4() || it.is7() || it.is8() } }
+        val result = input.sumOf { it.second.count {i -> with(i){ is1() || is4() || is7() || is8() } } }
         println(result)
     }
 
