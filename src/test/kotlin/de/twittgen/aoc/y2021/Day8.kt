@@ -61,14 +61,14 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
     @Test
     fun example() {
-        val result = example.sumOf { it.second.count { it.is1() || it.is4() || it.is7() || it.is8() } }
+        val result = example.sumOf { it.second.count {i -> with(i){ is1() || is4() || is7() || is8() } } }
         assertEquals(26, result)
     }
 
     @Test
     fun example2() {
-        val result = example.map { (sequence, chiffre) ->
-            chiffre.decode(sequence.getDecoding()).toInt()
+        val result = example.map { (sequence, cypher) ->
+            cypher.decode(sequence.getDecoding()).toInt()
         }
         assertEquals(61229, result.sum())
     }
@@ -81,8 +81,8 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
     @Test
     fun part2() {
-        val result = input.map { (sequence, chiffre) ->
-            chiffre.decode(sequence.getDecoding()).toInt()
+        val result = input.map { (sequence, cypher) ->
+            cypher.decode(sequence.getDecoding()).toInt()
         }
        println(result.sum())
     }
