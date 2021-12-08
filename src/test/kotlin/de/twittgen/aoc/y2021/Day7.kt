@@ -26,10 +26,10 @@ class Day7 {
 
     @Test
     fun example2() {
-        val mean = example.getMean()
+        val mean = example.getMean().toInt()
         val result = listOf(
-            example.getFuelForAlignment(mean.toInt(), gaussSum) ,
-            example.getFuelForAlignment(mean.toInt()+1, gaussSum)
+            example.getFuelForAlignment(mean, gaussSum) ,
+            example.getFuelForAlignment(mean+1, gaussSum)
         ).minOrNull()
 
         assertEquals(168, result)
@@ -43,10 +43,10 @@ class Day7 {
 
     @Test
     fun part2() {
-        val mean = input.getMean()
+        val mean = input.getMean().toInt()
         val result = listOf(
-            input.getFuelForAlignment(mean.toInt(), gaussSum),
-            input.getFuelForAlignment(mean.toInt()+1, gaussSum)
+            input.getFuelForAlignment(mean, gaussSum),
+            input.getFuelForAlignment(mean+1, gaussSum)
         ).minOrNull()
         println(result)
     }
