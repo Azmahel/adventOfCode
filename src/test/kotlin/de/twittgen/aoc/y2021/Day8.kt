@@ -4,6 +4,7 @@ import de.twittgen.aoc.y2019.shared.util.FileUtil
 import de.twittgen.aoc.y2019.shared.util.second
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.lang.IllegalArgumentException
 
 class Day8 {
     val input by lazy { FileUtil.readInput("2021/day8").parse() }
@@ -35,6 +36,7 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
     private fun Set<Char>.is3(seven: Set<Char>) = containsAll(seven) && minus(seven).size == 2
     private fun Set<Char>.is9(three: Set<Char>) = containsAll(three) && minus(three).size == 1
+
     private fun Set<Char>.is5(b: Char) = contains(b) && minus(b).size == 4
     private fun Set<Char>.is6(five: Set<Char>, three: Set<Char>) =
         containsAll(five) && minus(five).size == 1 && !is9(three)
