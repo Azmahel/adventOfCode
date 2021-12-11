@@ -16,7 +16,7 @@ class Day9 {
 
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> (x to y) to v } }.toMap()
 
-    fun Pair<Int,Int>.getAdjacents() = listOf(
+    private fun Pair<Int,Int>.getAdjacents() = listOf(
         (first-1) to second,
         (first+1) to second,
         first to (second-1),
