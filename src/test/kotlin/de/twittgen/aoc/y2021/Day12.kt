@@ -6,47 +6,11 @@ import org.junit.jupiter.api.Test
 
 class Day12 {
     val input by lazy { FileUtil.readInput("2021/day12").parse() }
-    val example = """start-A
-start-b
-A-c
-A-b
-b-d
-A-end
-b-end""".parse()
+    val example = "start-A\nstart-b\nA-c\nA-b\nb-d\nA-end\nb-end".parse()
+    val example2 = "dc-end\nHN-start\nstart-kj\ndc-start\ndc-HN\nLN-dc\nHN-end\nkj-sa\nkj-HN\nkj-dc".parse()
+    val example3 = "fs-end\nhe-DX\nfs-he\nstart-DX\npj-DX\nend-zg\nzg-sl\nzg-pj\npj-he\nRW-he\nfs-DX\npj-RW\nzg-RW\nstart-pj\nhe-WI\nzg-he\npj-fs\nstart-RW".parse()
 
-    val example2 = """dc-end
-HN-start
-start-kj
-dc-start
-dc-HN
-LN-dc
-HN-end
-kj-sa
-kj-HN
-kj-dc""".parse()
-
-    val example3 = """fs-end
-he-DX
-fs-he
-start-DX
-pj-DX
-end-zg
-zg-sl
-zg-pj
-pj-he
-RW-he
-fs-DX
-pj-RW
-zg-RW
-start-pj
-he-WI
-zg-he
-pj-fs
-start-RW""".parse()
-
-    private fun String.parse() = lines().map { line ->
-        line.split("-")
-    }.map { (first, second) ->
+    private fun String.parse() = lines().map { line -> line.split("-") }.map { (first, second) ->
         first.toCave() to second.toCave()
     }
 
@@ -57,28 +21,18 @@ start-RW""".parse()
             else -> null
         } }
 
-    private fun List<Pair<Cave,Cave>>.findPaths(
+    private  fun List<Pair<Cave,Cave>>.findPaths(
         allowSmallDoubles: Boolean = false,
         previous: List<Cave> = listOf(Start),
     ): List<List<Cave>> {
         if (previous.last() == End) return listOf(previous)
-        val adjacent = previous
-            .last()
-            .getAdjacent(this)
-            .filterNot { it in getBlockedCaves(previous, allowSmallDoubles) }
-        if (adjacent.isEmpty()) return listOf()
-        return adjacent.flatMap { next ->
-            findPaths(allowSmallDoubles, previous + next)
-        }.filterNot { it.isEmpty() }
+        val adjacent = previous.last().getAdjacent(this).filterNot { it in getBlocked(previous, allowSmallDoubles) }
+        return adjacent.flatMap { findPaths(allowSmallDoubles, previous + it) }.filterNot { it.isEmpty() }
     }
 
-    private fun getBlockedCaves(path: List<Cave>, allowSmallDoubles: Boolean): List<Cave> {
+    private fun getBlocked(path: List<Cave>, allowSmallDoubles: Boolean): List<Cave> {
         val spentSmall = path.filterIsInstance<Small>()
-        return if(!allowSmallDoubles || (spentSmall.hasDouble())) {
-            (spentSmall + Start)
-        }else {
-            listOf(Start)
-        }
+        return if(!allowSmallDoubles || (spentSmall.hasDouble())) (spentSmall + Start) else listOf(Start)
     }
 
     private fun  List<Cave>.hasDouble(): Boolean = toSet().size != size
@@ -127,7 +81,6 @@ start-RW""".parse()
         val result = input.findPaths(true)
         println(result.size)
     }
-
 }
 
 
