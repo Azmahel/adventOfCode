@@ -17,7 +17,7 @@ class Day10 {
 <{([([[(<>()){}]>(<<{{
 <{([{{}}[<[[[<>{}]]]>[]]""".parse()
 
-    sealed class ParseResult()
+    sealed class ParseResult
     class Error(val c: Char) : ParseResult()
     class Success(val missing: List<Char>) : ParseResult()
     private fun String.parse() = lines().map { it.toList() }
