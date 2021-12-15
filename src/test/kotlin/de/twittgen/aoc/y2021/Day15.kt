@@ -33,6 +33,7 @@ class Day15 {
         val distQ = mutableMapOf(start to 0)
         while(distQ.isNotEmpty()) {
             val current = distQ.minByOrNull { it.value }!!.key
+            if (current == end) return distQ[end]!!
             distQ.remove(current)
             current.getAdjacentOn(this).forEach { neighbor ->
                 val alt = dist[current]!! + get(neighbor)!!
