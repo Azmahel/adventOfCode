@@ -4,7 +4,6 @@ import de.twittgen.aoc.y2019.shared.Point2D
 import de.twittgen.aoc.y2019.shared.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import kotlin.math.absoluteValue
 
 class Day15 {
 
@@ -26,7 +25,7 @@ class Day15 {
             .flatMapIndexed { y, line -> line.mapIndexed { x, i -> Point2D(x , y ) to i }  }
             .toMap()
 
-    private fun Map<Point2D,Int>.djkstra(): Int {
+    private fun Map<Point2D,Int>.dijkstra(): Int {
         val start = Point2D(0, 0)
         val end =Point2D(keys.maxByOrNull { it.x }!!.x, keys.maxByOrNull { it.y }!!.y)
         val dist = mutableMapOf(start to 0 )
@@ -68,25 +67,25 @@ class Day15 {
 
     @Test
     fun example() {
-        val result = example.djkstra()
+        val result = example.dijkstra()
         assertEquals(40, result)
     }
 
     @Test
     fun example2() {
-        val result = example.expand(5).djkstra()
+        val result = example.expand(5).dijkstra()
         assertEquals(315, result)
     }
 
     @Test
     fun part1() {
-        val result = input.djkstra()
+        val result = input.dijkstra()
         println(result)
     }
 
     @Test
     fun part2() {
-        val result = input.expand(5).djkstra()
+        val result = input.expand(5).dijkstra()
         println(result)
     }
 }
