@@ -13,22 +13,24 @@ class Day0 {
 
     @Test
     fun example() {
-
+        val result = example
     }
 
     @Test
     fun example2() {
-
+        val result = example
     }
 
     @Test
     fun part1() {
-
+        val result = input
+        println(result)
     }
 
     @Test
     fun part2() {
-
+        val result = input
+        println(result)
     }
 }
 
