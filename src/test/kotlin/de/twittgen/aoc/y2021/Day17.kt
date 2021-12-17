@@ -3,10 +3,11 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.y2019.shared.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import kotlin.math.abs
 import kotlin.math.max
 
 class Day17 {
+    //Assuming shots in positive x direction
+
     val input by lazy { FileUtil.readInput("2021/day17").parse() }
     val example = """target area: x=20..30, y=-10..-5""".parse()
     val start = 0 to 0
@@ -24,7 +25,7 @@ class Day17 {
     private fun Int.xTrace() = (this downTo 1).runningFold(0) { s, it -> s+it}
 
     private fun TargetArea.getHittingShots(): List<List<Pair<Int, Int>>> {
-        val possibleX = (1..1000).filter { it.xTrace().any { it in targetX }  }
+        val possibleX = (1..targetX.last).filter { it.xTrace().any { it in targetX }  }
         return possibleX.flatMap { x ->
             //if velY < targety.first it will be lower than area even after first shot.
             // positive velY shots will have -velY velocity when they reach y=0
