@@ -4,6 +4,8 @@ import de.twittgen.aoc.y2019.shared.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
+typealias Rucksack = Pair<Set<Char>,Set<Char>>
+
 class Day3 {
     val input by lazy { parseInput(FileUtil.readInput("2022/day3")) }
     val example = """
@@ -15,22 +17,16 @@ class Day3 {
         CrZsJsPPZsGzwwsLwLmpwMDw
     """.trimIndent()
 
-    val alphabet = ('a'..'z')+('A'..'Z')
-    val scores: Map<Char, Int> = (alphabet).mapIndexed { i, c ->
-        c to i+1
-    }.toMap()
-    private fun parseInput(input: String) =
-        input.lines().map {
-           it.chunked(it.length/2).let {
-               it[0].toSet() to it[1].toSet()
-           }
-        }
+    private val alphabet = ('a'..'z')+('A'..'Z')
+    private val priorities: Map<Char, Int> = (alphabet).mapIndexed { i, c -> c to i+1 }.toMap()
+
+    private fun parseInput(input: String) = input.lines().map { it.toRucksack() }
 
     @Test
     fun part1Example() {
         val result = parseInput(example)
             .map { (a, b) -> a.intersect(b).single() }
-            .sumOf { scores[it]!! }
+            .sumOf { priorities[it]!! }
         println(result)
         assertEquals(157, result)
     }
@@ -39,7 +35,7 @@ class Day3 {
     fun part1() {
         val result = input
             .map { (a, b) -> a.intersect(b).single() }
-            .sumOf { scores[it]!! }
+            .sumOf { priorities[it]!! }
         println(result)
         assertEquals(8085, result)
     }
@@ -48,8 +44,7 @@ class Day3 {
     fun part2Example() {
         val result = parseInput(example)
             .findBadges()
-            .sumOf { scores[it]!! }
-
+            .sumOf { priorities[it]!! }
         println(result)
         assertEquals(70, result)
     }
@@ -58,14 +53,16 @@ class Day3 {
     fun part2() {
         val result = input
             .findBadges()
-            .sumOf { scores[it]!! }
-
+            .sumOf { priorities[it]!! }
         println(result)
         assertEquals(2515, result)
     }
 
-    private fun List<Pair<Set<Char>, Set<Char>>>.findBadges() = this
-        .chunked(3)
+
+    private fun String.toRucksack() = chunked(length/2)
+        .let { it[0].toSet() to it[1].toSet() }
+
+    private fun List<Rucksack>.findBadges() = chunked(3)
         .map { group ->
             group
                 .map { it.first + it.second }
@@ -73,3 +70,5 @@ class Day3 {
                 .single()
         }
 }
+
+
