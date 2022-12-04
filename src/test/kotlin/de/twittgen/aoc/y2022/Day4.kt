@@ -1,12 +1,14 @@
 package de.twittgen.aoc.y2022
 
+import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2019.shared.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Day4 {
-    val input by lazy { parseInput(FileUtil.readInput("2022/day4")) }
-    val example = """
+typealias Assignment = Pair<IntRange, IntRange>
+
+class Day4  : Day<Int, Int, List<Assignment>> ({
+    example = """
         2-4,6-8
         2-3,4-5
         5-7,7-9
@@ -14,60 +16,35 @@ class Day4 {
         6-6,4-6
         2-6,4-8
     """.trimIndent()
-
-    fun parseInput(s: String) = s
-        .lines()
-        .map { it.mapLine() }
-
-    fun String.mapLine() =
-        split(',')
-        .map { it.parseRange() }
-            .let { it[0] to it[1] }
-
-    fun String.parseRange() = split('-')
-        .let {
-        it[0].toInt()..it[1].toInt()
+    part1 {
+        exampleExpected = 2
+        expected = 448
     }
+    part2 {
+        exampleExpected = 4
+        expected = 794
+    }
+}){
+    override fun part1(input: List<Assignment>): Int = input.count { it.hasCompleteOverlap() }
 
-    fun Pair<IntRange, IntRange>.hasCompleteOverlap() : Boolean {
+    override fun part2(input: List<Assignment>): Int = input.count { it.hasOverlap() }
+
+    override fun parseInput(s: String) = s.lines().map { it.mapLine() }
+
+    private fun String.mapLine() = split(',').map { it.parseRange() }.let { it[0] to it[1] }
+
+    private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }
+
+    private fun Pair<IntRange, IntRange>.hasCompleteOverlap() : Boolean {
       return if (first.first < second.first) {
            first.last >= second.last
-       } else if(first.first > second.first) {
+       } else if (first.first > second.first) {
            second.last >= first.last
       } else {
           true
       }
     }
 
-    fun Pair<IntRange, IntRange>.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()
+    private fun Pair<IntRange, IntRange>.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()
 
-    @Test
-    fun part1Example() {
-        val result = parseInput(example)
-            .count { it.hasCompleteOverlap() }
-        println(result)
-        assertEquals(2, result)
-    }
-
-    @Test
-    fun part1() {
-        val result = input
-            .count { it.hasCompleteOverlap() }
-        println(result)
-        assertEquals(448, result)
-    }
-
-    @Test
-    fun part2Example() {
-        val result = parseInput(example).count { it.hasOverlap() }
-        println(result)
-        assertEquals(4, result)
-    }
-
-    @Test
-    fun part2() {
-        val result = input.count { it.hasOverlap() }
-        println(result)
-        assertEquals(794, result)
-    }
 }
