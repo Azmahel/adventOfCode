@@ -28,14 +28,10 @@ class Day4  : Day<Int, Int, List<Assignment>> () {
 
     private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }
 
-    private fun Assignment.hasCompleteOverlap() : Boolean {
-      return if (first.first < second.first) {
-           first.last >= second.last
-       } else if (first.first > second.first) {
-           second.last >= first.last
-      } else {
-          true
-      }
+    private fun Assignment.hasCompleteOverlap() = when {
+        (first.first < second.first) -> first.last >= second.last
+        (first.first > second.first) -> second.last >= first.last
+        else -> true
     }
 
     private fun Pair<IntRange, IntRange>.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()

@@ -13,6 +13,7 @@ class Day3 : Day<Int, Int, List<Rucksack>>() {
         ttgJtRGJQctTZtZT
         CrZsJsPPZsGzwwsLwLmpwMDw
     """.trimIndent()
+
     override fun String.parse() = lines().map { it.toRucksack() }
 
     init {

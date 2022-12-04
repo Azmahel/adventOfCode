@@ -27,10 +27,7 @@ class Day2: Day<Int, Int, List<Move>>() {
         }
     }
 
-    private fun getSymbolForResult(wanted: Pair<Symbol, Result>):  Symbol {
-        val (enemyMove, wantedResult) = wanted
-        return moves[wantedResult]!!.find{ it.first == enemyMove }!!.second
-    }
+    private fun getSymbolForResult(wanted: Pair<Symbol, Result>) = moves[wanted.second]!!.find{ it.first == wanted.first }!!.second
 
     private enum class Symbol { PAPER, ROCK, SCISSORS, }
     private enum class Result { WIN, LOOSE, DRAW }
