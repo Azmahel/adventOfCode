@@ -57,7 +57,7 @@ abstract class  Day<T,V, R>(
 
     }
 
-    fun <K>runPart(part: Part<K>, partFunction: (R) -> K) {
+    private fun <K>runPart(part: Part<K>, partFunction: (R) -> K) {
         val exampleResult = partFunction(example)
         println("example: $exampleResult")
         part.exampleExpected?.also { expected ->
