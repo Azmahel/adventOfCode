@@ -21,8 +21,8 @@ abstract class  Day<T,V, R>(
      }
 
      class Part<T> {
-        var exampleExpected : T? = null;
-        var expected : T? = null;
+        var exampleExpected : T? = null
+        var expected : T? = null
     }
 
      private val context: Context<T,V>
@@ -41,8 +41,8 @@ abstract class  Day<T,V, R>(
         throw IllegalStateException()
     }
 
-     val example = parseInput(context.example)
-     val input = parseInput(FileUtil.readInput("2022/${this.javaClass.simpleName.lowercase()}"))
+     val example by lazy { parseInput(context.example) }
+    val input by lazy { parseInput(FileUtil.readInput("2022/${this.javaClass.simpleName.lowercase()}")) }
 
     @Test
     fun run() {
