@@ -1,14 +1,11 @@
 package de.twittgen.aoc.y2022
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.Day
 
 typealias Rucksack = Pair<Set<Char>,Set<Char>>
 
-class Day3 {
-    val input by lazy { parseInput(FileUtil.readInput("2022/day3")) }
-    val example = """
+class Day3 : Day<Int, Int, List<Rucksack>>() {
+    override val  example = """
         vJrwpWtwJgWrhcsFMMfFFhFp
         jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
         PmmdzqPrVvPwwTWBwg
@@ -16,54 +13,24 @@ class Day3 {
         ttgJtRGJQctTZtZT
         CrZsJsPPZsGzwwsLwLmpwMDw
     """.trimIndent()
+    override fun String.parse() = lines().map { it.toRucksack() }
+
+    init {
+        part1(157, 8085) {
+            map { (a, b) -> a.intersect(b).single() }.sumOf { priorities[it]!! }
+        }
+        part2(70, 2515) {
+            findBadges().sumOf { priorities[it]!! }
+        }
+    }
 
     private val alphabet = ('a'..'z')+('A'..'Z')
     private val priorities: Map<Char, Int> = (alphabet).mapIndexed { i, c -> c to i+1 }.toMap()
 
-    private fun parseInput(input: String) = input.lines().map { it.toRucksack() }
+    private fun String.toRucksack() = chunked(length/2).let { it[0].toSet() to it[1].toSet() }
 
-    @Test
-    fun part1Example() {
-        val result = parseInput(example)
-            .map { (a, b) -> a.intersect(b).single() }
-            .sumOf { priorities[it]!! }
-        println(result)
-        assertEquals(157, result)
-    }
-
-    @Test
-    fun part1() {
-        val result = input
-            .map { (a, b) -> a.intersect(b).single() }
-            .sumOf { priorities[it]!! }
-        println(result)
-        assertEquals(8085, result)
-    }
-
-    @Test
-    fun part2Example() {
-        val result = parseInput(example)
-            .findBadges()
-            .sumOf { priorities[it]!! }
-        println(result)
-        assertEquals(70, result)
-    }
-
-    @Test
-    fun part2() {
-        val result = input
-            .findBadges()
-            .sumOf { priorities[it]!! }
-        println(result)
-        assertEquals(2515, result)
-    }
-
-
-    private fun String.toRucksack() = chunked(length/2)
-        .let { it[0].toSet() to it[1].toSet() }
-
-    private fun List<Rucksack>.findBadges() = chunked(3)
-        .map { group ->
+    private fun List<Rucksack>.findBadges() =
+        chunked(3).map { group ->
             group
                 .map { it.first + it.second }
                 .fold(alphabet.toSet()) { a, b -> a.intersect(b) }

@@ -5,71 +5,43 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.lang.IllegalStateException
 
-abstract class  Day<T,V, R>(
-     contextBuilder: Context<T,V>.()->Unit
-     ) {
-     class Context<T,V> {
-        var part1: Part<T>? = null
-        var part2: Part<V>? = null
-        lateinit var example :String
-        fun part1(builder: Part<T>.()->Unit) {
-            part1 = Part<T>().apply(builder)
-        }
-        fun part2(builder: Part<V>.()->Unit) {
-            part2 = Part<V>().apply(builder)
-        }
-     }
+abstract class  Day<T, V, R> {
 
-     class Part<T> {
-        var exampleExpected : T? = null
-        var expected : T? = null
-    }
+    private var part1 : Part<T, R>? = null
+    private var part2 : Part<V, R>? = null
 
-     private val context: Context<T,V>
+    abstract fun String.parse() : R
+    abstract val example : String
 
-     init {
-         context = Context<T,V>().apply(contextBuilder)
-     }
+    fun part1(expectedExample : T, expected : T? = null, function : R.() -> T ) { part1 = Part(function, expectedExample, expected) }
+    fun part2(expectedExample : V, expected : V? = null, function : R.() -> V ) { part2 = Part(function, expectedExample, expected) }
 
-     abstract fun parseInput(s: String) : R
-     open fun part1(input: R) : T {
-         println("Part1 not yet implemented")
-         throw IllegalStateException()
-     }
-    open fun part2(input: R) : V {
-        println("Part2 not yet implemented")
-        throw IllegalStateException()
-    }
-
-     val example by lazy { parseInput(context.example) }
-    val input by lazy { parseInput(FileUtil.readInput("2022/${this.javaClass.simpleName.lowercase()}")) }
+    private val exampleParsed by lazy { example.parse() }
+    private val rawInput by lazy {FileUtil.readInput("2022/${this.javaClass.simpleName.lowercase()}")}
+    private val input by lazy { rawInput.parse() }
 
     @Test
     fun run() {
-        context.part1?.also {
-            println("PART1")
-            runPart(it, this::part1)
-        }
-        context.part2?.also {
-            println("PART2")
-            runPart(it, this::part2)
-        }
-
+        part1?.also { part -> println("PART1").also { runPart(part) } }
+        part2?.also { part ->  println("PART2").also { runPart(part) } }
     }
 
-    private fun <K>runPart(part: Part<K>, partFunction: (R) -> K) {
-        val exampleResult = partFunction(example)
-        println("example: $exampleResult")
-        part.exampleExpected?.also { expected ->
-            assertEquals(expected, exampleResult)
-        }
-
-        val result = partFunction(input)
-        println("real: $result")
-        part.expected?.also { expected ->
-            assertEquals(expected, result)
-        }
+    private fun <K>runPart(part: Part<K,R>, ) {
+        run(part.function, exampleParsed, part.exampleExpected, "example")
+        run(part.function, input, part.expected, "real")
     }
+
+    private fun <K> run(partFunction: (R) -> K, input: R, expected: K?, title: String) {
+        val result = partFunction(input).also { println("$title: $it") }
+        expected?.also { assertEquals(it, result) }
+    }
+
+
+    data class Part<T,R> (
+        var function : R.() -> T,
+        var exampleExpected : T,
+        var expected : T? = null,
+    )
 }
 
 
