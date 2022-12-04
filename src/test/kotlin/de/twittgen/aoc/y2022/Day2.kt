@@ -27,7 +27,8 @@ class Day2: Day<Int, Int, List<Move>>() {
         }
     }
 
-    private fun getSymbolForResult(wanted: Pair<Symbol, Result>) = moves[wanted.second]!!.find{ it.first == wanted.first }!!.second
+    private fun getSymbolForResult(wanted: Pair<Symbol, Result>) =
+        moves[wanted.second]!!.find{ it.first == wanted.first }!!.second
 
     private enum class Symbol { PAPER, ROCK, SCISSORS, }
     private enum class Result { WIN, LOOSE, DRAW }
@@ -41,9 +42,9 @@ class Day2: Day<Int, Int, List<Move>>() {
     private val moves = rules.entries.groupBy { it.value }.mapValues { it.value.map { it.key } }
     private val exampleKey = mapOf('A' to ROCK, 'B' to PAPER, 'C' to SCISSORS, 'X' to ROCK, 'Y' to PAPER, 'Z' to SCISSORS,)
     private val symbolKey = mapOf('A' to ROCK, 'B' to PAPER, 'C' to SCISSORS,)
-    private val resultKey = mapOf('X' to LOOSE, 'Y' to DRAW, 'Z' to WIN)
+    private val resultKey = mapOf('X' to LOOSE, 'Y' to DRAW, 'Z' to WIN,)
     private val gameScores = mapOf(WIN to 6, DRAW to 3, LOOSE to 0,)
-    private val symbolScores = mapOf(ROCK to 1, PAPER to 2, SCISSORS to 3)
+    private val symbolScores = mapOf(ROCK to 1, PAPER to 2, SCISSORS to 3,)
 
     private fun playRound(chosen: Pair<Symbol, Symbol>) = gameScores[rules[chosen]]!! + symbolScores[chosen.second]!!
 }

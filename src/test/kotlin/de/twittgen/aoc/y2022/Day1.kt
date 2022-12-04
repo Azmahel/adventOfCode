@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class Day1 : Day<Int, Int, List<Int>>() {
-
     override val example = """
         1000
         2000
@@ -23,9 +22,7 @@ class Day1 : Day<Int, Int, List<Int>>() {
 
         10000
     """.trimIndent()
-
-    override fun String.parse() = split("\n\n").map { it.lines().map { it.toInt() } }.map { it.sum() }
-
+    override fun String.parse() = split("\n\n").map { it.lines().sumOf(String::toInt) }
     init {
         part1(24000, 71780) {
             maxOrNull()!!
