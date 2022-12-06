@@ -10,16 +10,11 @@ class Day6 : Day<Int, Int, String>() {
         part1(7, 1210) {
             findDistinctBlock(4)
         }
-        part2(19,) {
+        part2(19, 3476) {
             findDistinctBlock(14)
         }
     }
 
-    private fun String.findDistinctBlock(blockSize: Int) = withIndex()
-        .windowed(blockSize, 1, true) { block ->
-            block.last().index to (block.map { it.value }.distinct().size == blockSize)
-        }
-        .first { it.second }.first + 1
-
-
+    private fun String.findDistinctBlock(blockSize: Int) = windowed(blockSize)
+        .indexOfFirst { it.toSet().size == blockSize }  + blockSize
 }
