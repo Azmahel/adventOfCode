@@ -21,11 +21,11 @@ move 1 from 1 to 2
         super.mutableModel = true
         part1("CMZ", "VCTFTJQCG") {
             second.forEach { first.performInstruction(it) }
-            first.map { it.pop() }.joinToString("")
+            first.map(Stack<Char>::pop).joinToString("")
         }
         part2("MCD", "GCFGLDNJZ") {
             second.forEach { first.performInstructionV2(it) }
-            first.map { it.pop() }.joinToString("")
+            first.map(Stack<Char>::pop).joinToString("")
         }
     }
 
@@ -36,8 +36,7 @@ move 1 from 1 to 2
         repeat(instruction.amount) { get(instruction.to).push(get(instruction.from).pop()) }
     }
     private fun Ship.performInstructionV2(instruction: Instruction) {
-        (1..instruction.amount).map { get(instruction.from).pop() }.reversed()
-            .forEach { get(instruction.to).push(it) }
+        (1..instruction.amount).map { get(instruction.from).pop() }.reversed().forEach { get(instruction.to).push(it) }
     }
 
 
