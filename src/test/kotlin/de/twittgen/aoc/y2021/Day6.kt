@@ -1,52 +1,34 @@
 package de.twittgen.aoc.y2021
 
+import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Day6 {
-    val input by lazy { FileUtil.readInput("2021/day6").parse() }
-    val example = """3,4,3,1,2""".parse()
+class Day6 : Day<Long, Long, Map<Int, Long>>(){
+    override val example = """3,4,3,1,2"""
+    override fun String.parse() = split(",")
+        .map(String::toInt)
+        .groupBy { it }
+        .mapValues { (_,v) -> v.size.toLong() }
 
-    private fun String.parse() = split(",").map { it.toInt() }.groupBy { it }.mapValues { (_,v) -> v.size.toLong() }
+    init {
+        part1(5934, 350605) { advanceTime(80).values.sum() }
+        part2(26984457539, 1592778185024) { advanceTime(256).values.sum() }
+    }
 
-    private fun Map<Int,Long>.advanceTime(steps: Int): Map<Int, Long> {
-        val newState = mapKeys { (k,_) -> k-1 }.toMutableMap()
-        if(newState[-1] != null) {
-            newState[8] = newState[-1]!!
-            newState[6] = (newState[6] ?: 0) + newState[-1]!!
-            newState.remove(-1)
+    private tailrec fun Map<Int,Long>.advanceTime(steps: Int): Map<Int, Long> {
+        return if(steps == 0) {
+            this
+        } else {
+            mapKeys { (k,_) -> k-1 }.toMutableMap().apply { reproduce() }.advanceTime(steps -1)
         }
-        if(steps ==1) return newState
-        return newState.advanceTime(steps -1)
     }
 
-    @Test
-    fun example() {
-        val finalState = example.advanceTime(80)
-        val result = finalState.values.sum()
-        assertEquals(5934, result)
-    }
-
-    @Test
-    fun example2() {
-        val finalState = example.advanceTime(256)
-        val result = finalState.values.sum()
-        assertEquals(26984457539, result)
-    }
-
-    @Test
-    fun part1() {
-        val finalState = input.advanceTime(80)
-        val result = finalState.values.sum()
-        println(result)
-    }
-
-    @Test
-    fun part2() {
-        val finalState = input.advanceTime(256)
-        val result = finalState.values.sum()
-        println(result)
+    private fun MutableMap<Int, Long>.reproduce() {
+        set(8, getOrDefault(-1, 0))
+        set(6, getOrDefault(6,0) + getOrDefault(-1, 0))
+        remove(-1)
     }
 }
 

@@ -1,74 +1,52 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.second
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
 
-class Day2 {
-    val input by lazy { FileUtil.readInput("2021/day2").parse() }
-    val example = """forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2""".parse()
+class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
 
-    private fun String.parse() = lines().map { with(it.split(" ")) { first() to second().toInt()}}
+    override val example = """
+        forward 5
+        down 5
+        forward 8
+        up 3
+        down 8
+        forward 2
+    """.trimIndent()
+
+    override fun String.parse() = lines().map { with(it.split(" ")) { first() to second().toInt()}}
+
+    init {
+        part1(150, 2102357) { move(start).run { first * second } }
+        part2(900, 2101031224) { moveWithAim(start).run { first * second } }
+    }
+
     val start = 0 to 0
 
-    private fun Pair<Int,Int>.move(instructions : List<Pair<String,Int>>) : Pair<Int,Int> {
-        val instruction = instructions.first()
+    private fun List<Pair<String, Int>>.move(point: Pair<Int, Int>) : Pair<Int,Int> {
+        val instruction = first()
         val next = when(instruction.first) {
-            "forward" -> first +instruction.second to second
-            "down" -> first to second + instruction.second
-            "up" -> first to second - instruction.second
-            else -> this
+            "forward" -> point.first +instruction.second to point.second
+            "down" -> point.first to point.second + instruction.second
+            "up" -> point.first to point.second - instruction.second
+            else -> point
         }
-        val remaining = instructions.drop(1)
+        val remaining = drop(1)
         if(remaining.isEmpty()) return next
-        return next.move(remaining)
+        return remaining.move(next)
     }
 
-    private fun Pair<Int,Int>.moveWithAim(instructions : List<Pair<String,Int>>, aim: Int = 0) : Pair<Int,Int> {
-        val instruction = instructions.first()
-
-        val nextAim = when(instruction.first) {
-            "down" -> aim + instruction.second
-            "up" -> aim - instruction.second
+    private tailrec fun List<Pair<String, Int>>.moveWithAim(point: Pair<Int, Int>, aim: Int = 0) : Pair<Int,Int> {
+        val nextAim = when (first().first) {
+            "down" -> aim + first().second
+            "up" -> aim - first().second
             else -> aim
         }
-
-        val next = when(instruction.first) {
-            "forward" -> first +instruction.second to second + (nextAim * instruction.second)
-            else -> this
+        val next = when (first().first) {
+            "forward" -> point.first + first().second to point.second + (nextAim * first().second)
+            else -> point
         }
-        val remaining = instructions.drop(1)
-        if(remaining.isEmpty()) return next
-        return next.moveWithAim(remaining, nextAim)
+        return if (drop(1).isEmpty()) next else drop(1).moveWithAim(next, nextAim)
     }
 
-    @Test
-    fun example() {
-        val result = start.move(example)
-        assertEquals(150, result.first * result.second)
-    }
-
-    @Test
-    fun example2() {
-        val result = start.moveWithAim(example)
-        assertEquals(900, result.first * result.second)
-    }
-
-    @Test
-    fun part1() {
-        val result = start.move(input)
-        println(result.first * result.second)
-    }
-
-    @Test
-    fun part2() {
-        val result = start.moveWithAim(input)
-        println(result.first * result.second)
-    }
 }

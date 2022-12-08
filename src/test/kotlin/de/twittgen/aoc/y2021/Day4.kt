@@ -1,12 +1,9 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
+import de.twittgen.aoc.Day
 
-class Day4 {
-    val input by lazy { FileUtil.readInput("2021/day4").parse() }
-    val example = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
+class Day4 : Day<Int, Int, Day4.BingoGame>() {
+    override val example = """7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
  8  2 23  4 24
@@ -24,99 +21,56 @@ class Day4 {
 10 16 15  9 19
 18  8 23 26 20
 22 11 13  6  5
- 2  0 12  3  7""".parse()
+ 2  0 12  3  7"""
 
-    data class Board(val id: Int, val numbers : List<List<Pair<Int,Boolean>>>)
-    data class BingoGame(val numbers: List<Int>, val boards: List<Board>)
-    private fun String.parse(): BingoGame {
-        var lines = lines()
-        val numbers = lines.first().split(",").map(String::toInt)
-        lines = lines.drop(2)
-        val boards = lines
+    override fun String.parse() = BingoGame(
+        lines().first().split(",").map(String::toInt),
+        lines()
+            .drop(2)
             .chunked(6)
-            .map {
-               if(it.last().isEmpty()) it.dropLast(1) else it
-            }.map { board ->
-                board.map { line ->
-                    line.chunked(3).map { number -> number.trim().toInt() to false }
-                }
-            }.mapIndexed { i , it -> Board(i, it) }
-        return BingoGame(numbers, boards)
+            .map { it.filter(String::isNotEmpty) }
+            .mapIndexed { i, board ->
+                Board(i, board.map { line -> line.chunked(3).map { number -> number.trim().toInt() to false } })
+            }
+    )
+
+    init {
+        part1(4512, ) { this.runGame(getFirstWinner).run { first.getScore(second) } }
+        part2(1924, ) { this.runGame(getLastWinner).run { first.getScore(second) } }
     }
 
-    fun BingoGame.takeTurn(): BingoGame {
-        val currentNumber = numbers.first()
-        val remainingNumbers = numbers.drop(1)
-        val newBoards = boards.map { board ->
-            Board(board.id, board.numbers.map { row ->
-                row.map {  (cell, marked) ->
-                    cell to (cell == currentNumber || marked)
-                }
-            })
+
+    private fun BingoGame.takeTurn(): BingoGame = BingoGame(
+        numbers.drop(1),
+        boards.map { board ->
+            board.copy(
+                numbers = board.numbers
+                    .map { row -> row.map { (cell, marked) -> cell to (cell == numbers.first() || marked) } }
+            ) },
+            numbers.first()
+        )
+
+    private val getFirstWinner: (BingoGame, BingoGame) -> Board?  = { _, new ->  new.findWinners().firstOrNull()}
+    private val getLastWinner: (BingoGame, BingoGame) -> Board?  = { old, new ->
+        if(new.boards.size == new.findWinners().size) {
+            new.findWinners().first { it.id !in old.findWinners().map(Board::id) }
+        } else {
+            null
         }
-        return BingoGame(remainingNumbers, newBoards)
     }
 
-    fun BingoGame.findWinners() = boards.filter { it.isWinner() }
-
-    fun Board.isWinner() = hasWinningRow() || hasWinningColumn()
-
-    fun Board.hasWinningRow() = numbers.any { row -> row.all { (_, marked) -> marked } }
-
-    fun Board.hasWinningColumn() = (0 until numbers.first().size).any { i ->
-        numbers.all { row -> row[i].second }
-    }
-
-    fun Board.getScore(lastCall: Int) = numbers.flatten().filter { !it.second }.map { it.first }.sum() * lastCall
-
-    fun runGame(game: BingoGame): Int {
-        var currentGameState = game
-        var winners = emptyList<Board>()
-        while(winners.isEmpty()) {
-            currentGameState = currentGameState.takeTurn()
-            winners = currentGameState.findWinners()
+    private fun BingoGame.runGame(winnerFunction: (BingoGame, BingoGame) -> Board?) : Pair<Board, Int> =
+        takeTurn().let { new ->
+            winnerFunction(this, new)?.let { winner -> winner to new.lastCall } ?: new.runGame(winnerFunction)
         }
-        val winner = winners.first()
-        val lastCall = game.numbers.dropLast(currentGameState.numbers.size).last()
-        return winner.getScore(lastCall)
+
+    data class Board(val id: Int, val numbers : List<List<Pair<Int,Boolean>>>) {
+        fun hasWinningRow() = numbers.any { row -> row.all { (_, marked) -> marked } }
+        fun hasWinningColumn() = (0 until numbers.first().size).any { i -> numbers.all { row -> row[i].second } }
+        fun getScore(lastCall: Int) = numbers.flatten().filter { !it.second }.sumOf { it.first } * lastCall
     }
 
-    fun runLoosingGame(game: BingoGame): Int {
-        var currentGameState = game
-        var winners = emptyList<Board>()
-        var oldWinners = emptyList<Board>()
-        while(winners.size < game.boards.size) {
-            oldWinners = winners
-            currentGameState = currentGameState.takeTurn()
-            winners = currentGameState.findWinners()
-
-        }
-        val winner = winners.first { it.id !in oldWinners.map { it.id } }
-        val lastCall = game.numbers.dropLast(currentGameState.numbers.size).last()
-        return winner.getScore(lastCall)
+    data class BingoGame(val numbers: List<Int>, val boards: List<Board>, val lastCall : Int = 0) {
+        fun findWinners() = boards.filter { it.hasWinningRow() || it.hasWinningColumn() }
     }
-    @Test
-    fun example() {
-        val score = runGame(example)
-        assertEquals(4512, score)
-    }
-
-    @Test
-    fun example2() {
-        val score = runLoosingGame(example)
-        assertEquals(1924, score)
-    }
-
-    @Test
-    fun part1() {
-        val score = runGame(input)
-        println(score)
-    }
-
-    @Test
-    fun part2() {
-        val score = runLoosingGame(input)
-        println(score)
-    }
-
 }

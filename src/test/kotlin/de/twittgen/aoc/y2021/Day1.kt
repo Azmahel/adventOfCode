@@ -1,51 +1,32 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.second
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
-class Day1 {
-    val input  by lazy { FileUtil.readInput("2021/day1").lines().map { it.toInt() } }
-    val example = """199
-200
-208
-210
-200
-207
-240
-269
-260
-263""".lines().map { it.toInt() }
+class Day1 : Day<Int, Int, List<Int>>() {
 
-    private fun getDepthIncreased(points: List<Int>) = points.drop(1).mapIndexed { i , it ->
-        it > points[i]
-    }
-    private fun List<Int>.to3PMeassurement() =
-        dropLast(2).mapIndexed { i, it ->
-            it+this[i+1]+this[i+2]
-        }
+    override val example = """
+        199
+        200
+        208
+        210
+        200
+        207
+        240
+        269
+        260
+        263
+    """.trimIndent()
 
-    @Test
-    fun example() {
-        val increases = getDepthIncreased(example).count { it }
-        assertEquals(7, increases)
+    override fun String.parse() = lines().map { it.toInt() }
+
+    init {
+        part1(7, 1195) { getDepthIncreased().count { it } }
+        part2(5, 1235) { to3PMeasurement().getDepthIncreased().count { it } }
     }
 
-    @Test
-    fun example2() {
-        val increases = getDepthIncreased(example.to3PMeassurement()).count { it }
-        assertEquals(5, increases)
-    }
-
-    @Test
-    fun part1() {
-        val increases = getDepthIncreased(input).count { it }
-       println(increases)
-    }
-
-    @Test
-    fun part2() {
-        val increases = getDepthIncreased(input.to3PMeassurement()).count { it }
-         println(increases)
-    }
+    private fun List<Int>.getDepthIncreased() = windowed(2).map{ it.first() < it.second() }
+    private fun List<Int>.to3PMeasurement() = windowed(3,).map { it.sum() }
 }

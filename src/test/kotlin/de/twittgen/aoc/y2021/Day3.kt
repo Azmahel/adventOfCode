@@ -1,86 +1,54 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
+import de.twittgen.aoc.Day
 
-class Day3 {
-    val input by lazy { FileUtil.readInput("2021/day3").parse() }
-    val example = """00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010""".parse()
+class Day3 : Day<Int,Int,List<String>>() {
 
-    private fun String.parse() = lines()
+    override val example = """
+        00100
+        11110
+        10110
+        10111
+        10101
+        01111
+        00111
+        11100
+        10000
+        11001
+        00010
+        01010
+    """.trimIndent()
 
-    private fun getGamma(report: List<String>): String {
-        return (0 until report[0].length).map { index ->
-            report.count { line -> line[index] == '1'}
+    override fun String.parse() = lines()
+
+    init {
+        part1(198, 2250414) {
+            getGamma().let { gamma ->  gamma.toInt(2) * gamma.getEpsilon().toInt(2) }
+        }
+        part2(230, 6085575) {
+            getRating(::getOxygenRatingFunction).toInt(2) * getRating(::getCo2RatingFunction).toInt(2)
+        }
+    }
+
+    private fun List<String>.getGamma(): String {
+        return (0 until this[0].length).map { index ->
+            count { line -> line[index] == '1'}
         }.map {
-            if(it.toDouble() >= (report.size/2.0)) 1 else 0
+            if(it.toDouble() >= (size /2.0)) 1 else 0
         }.joinToString("")
     }
 
-    private fun getEpsilon(gamma:String) = gamma.map { if(it == '1') 0 else 1 }.joinToString("")
+    private fun String.getEpsilon() = map { if(it == '1') 0 else 1 }.joinToString("")
 
-    @Test
-    fun example() {
-        val gamma = getGamma(example)
-        assertEquals("10110", gamma)
-        val epsilon = getEpsilon(gamma)
-        assertEquals("01001", epsilon)
-        val result = gamma.toInt(2) * epsilon.toInt(2)
-        assertEquals(198, result)
-    }
+    private fun getOxygenRatingFunction(gamma: String) = { x: Char, i: Int  -> gamma[i] == x }
 
-    @Test
-    fun example2() {
-        val oxygen = getRating(example, ::getOxygenRatingFunction)
-        assertEquals("10111", oxygen)
-        val co2 = getRating(example, ::getCo2RatingFunction)
-        assertEquals("01010", co2)
-        val result = oxygen.toInt(2) * co2.toInt(2)
-        assertEquals(230, result)
-    }
+    private fun getCo2RatingFunction(gamma: String) = { x: Char, i: Int  -> gamma[i] != x }
 
-    @Test
-    fun part1() {
-        val gamma = getGamma(input)
-        val epsilon = getEpsilon(gamma)
-        val result = gamma.toInt(2) * epsilon.toInt(2)
-        println(result)
-    }
-
-    @Test
-    fun part2() {
-        val oxygen = getRating(input, ::getOxygenRatingFunction)
-        val co2 = getRating(input, ::getCo2RatingFunction)
-        val result = oxygen.toInt(2) * co2.toInt(2)
-        println(result)
-    }
-
-    private fun getOxygenRatingFunction(gamma: String) = { x: Char, i: Int  ->
-        gamma[i] == x
-    }
-
-    private fun getCo2RatingFunction(gamma: String) = { x: Char, i: Int  ->
-        gamma[i] != x
-    }
-
-    private fun getRating(report: List<String>, ratingFunction : (String) ->((Char, Int) -> Boolean)): String {
-        var remaining = report
+    private fun List<String>.getRating(ratingFunction: (String) -> (Char, Int) -> Boolean): String {
+        var remaining = this
         var index = 0
         while(remaining.size > 1) {
-            val gamma = getGamma(remaining)
-            remaining = remaining.filter { ratingFunction(gamma)(it[index], index)}
+            remaining = remaining.filter { ratingFunction(remaining.getGamma())(it[index], index)}
             index ++
         }
         return remaining.first()
