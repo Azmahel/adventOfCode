@@ -1,12 +1,12 @@
 package de.twittgen.aoc.y2019.day1
 
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
+import de.twittgen.aoc.util.FileUtil.readInput
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class Day1{
-    val input = readInput("day1")
+    val input = readInput("2019/day1")
     @Test
     fun part1() {
         val result = input.toRocket().getFuelNeeded()

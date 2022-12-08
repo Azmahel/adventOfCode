@@ -1,14 +1,14 @@
 package de.twittgen.aoc.y2019.day3
 
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil.readInput
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private typealias  Instruction = Pair<String,Int>
 class Day3 {
 
-    val input = readInput("day3").toInstructions()
+    val input = readInput("2019/day3").toInstructions()
 
     @Test
     fun part1() {

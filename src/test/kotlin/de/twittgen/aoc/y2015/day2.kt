@@ -1,6 +1,6 @@
 package de.twittgen.aoc.y2015
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 
 class day2 {

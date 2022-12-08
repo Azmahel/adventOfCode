@@ -1,6 +1,6 @@
 package de.twittgen.aoc.y2019.day4
 
-import de.twittgen.aoc.y2019.shared.util.digits
+import de.twittgen.aoc.util.digits
 
 object PasswordUtil {
 

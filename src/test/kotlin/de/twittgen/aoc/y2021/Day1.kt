@@ -1,6 +1,6 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 

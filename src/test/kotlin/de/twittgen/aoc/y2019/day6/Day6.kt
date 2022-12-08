@@ -1,11 +1,11 @@
 package de.twittgen.aoc.y2019.day6
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
+import de.twittgen.aoc.util.FileUtil.readInput
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class Day6 {
-    private val input = readInput("day6")
+    private val input = readInput("2019/day6")
 
     @Test
     fun part1() {

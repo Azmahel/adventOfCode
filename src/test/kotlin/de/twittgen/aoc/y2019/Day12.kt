@@ -1,39 +1,16 @@
 package de.twittgen.aoc.y2019
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 class Day12 {
     val moons = listOf(
-        Moon(
-            Coordinate(
-                6,
-                10,
-                10
-            )
-        ),
-        Moon(
-            Coordinate(
-                -9,
-                3,
-                17
-            )
-        ),
-        Moon(
-            Coordinate(
-                9,
-                -4,
-                14
-            )
-        ),
-        Moon(
-            Coordinate(
-                4,
-                14,
-                4
-            )
-        )
+        Moon(Coordinate(6, 10, 10)),
+        Moon(Coordinate(-9, 3, 17)),
+        Moon(Coordinate(9, -4, 14)),
+        Moon(Coordinate(4, 14, 4))
     )
     @Test
     fun getA() {
@@ -70,6 +47,7 @@ class Day12 {
     fun lcm(a: Long, b: Long): Long = a / gcd(a, b) * b
 
     @Test
+    @Disabled
     fun getB2() {
         val xs = listOf(
             PV(6),

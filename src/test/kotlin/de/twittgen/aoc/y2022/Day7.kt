@@ -1,7 +1,8 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.y2019.shared.util.second
+import de.twittgen.aoc.util.second
+import de.twittgen.aoc.util.secondOrNull
 import java.lang.IllegalStateException
 
 
@@ -39,7 +40,7 @@ class Day7 : Day<Long, Long, Day7.Directory>(){
         override fun size() = children.map { it.value.size() }.sum()
         private fun getSubdirectories(): List<Directory> = children.values
             .filterIsInstance<Directory>()
-            .flatMap {  it.getSubdirectories()  }
+            .flatMap {  it.getSubdirectories() + it }
         fun getSubdirectoriesIncludingSelf() = getSubdirectories() + this
     }
 
@@ -58,7 +59,9 @@ class Day7 : Day<Long, Long, Day7.Directory>(){
     private fun performNextInstruction(currentDirectory : Directory, instructions : List<String>) {
         if (instructions.isEmpty()) return
         assert(instructions.first().startsWith('$'))
-        val (cmd, param) =  (instructions.first().drop(2).split(" ")).run { first() to second()  }
+        val (cmd, param) =  (instructions.first().drop(2).split(" ")).run {
+            first() to secondOrNull()
+        }
         val remainder = instructions.drop(1)
         when(cmd) {
             "cd" -> {

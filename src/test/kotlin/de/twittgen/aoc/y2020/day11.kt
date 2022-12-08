@@ -1,9 +1,8 @@
 package de.twittgen.aoc.y2020
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.y2020.day11.TileState.*
 import org.junit.jupiter.api.Test
-import java.util.*
 
 typealias Floorplan = List<List<day11.TileState>>
 class day11 {

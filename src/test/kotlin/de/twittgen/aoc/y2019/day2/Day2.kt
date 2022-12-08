@@ -1,13 +1,13 @@
 package de.twittgen.aoc.y2019.day2
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import de.twittgen.aoc.y2019.shared.util.toIntcodeProgram
+import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.toIntcodeProgram
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.lang.IllegalStateException
 
 class Day2 {
-    val input = FileUtil.readInput("day2").toIntcodeProgram()
+    val input = FileUtil.readInput("2019/day2").toIntcodeProgram()
 
     @Test
     fun part1() {

@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 import kotlin.math.absoluteValue
 
 class Day10 {
-    private val input = this::class.java.getResource("day10").readText().split("\r\n").toCoordinates()
+    private val input = FileUtil.readInput("2019/day10").split("\r\n").toCoordinates()
 
     @Test
     fun getA() {

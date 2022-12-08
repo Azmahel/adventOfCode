@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2019.day7
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
-import de.twittgen.aoc.y2019.shared.util.toIntcodeProgram
+import de.twittgen.aoc.util.FileUtil.readInput
+import de.twittgen.aoc.util.toIntcodeProgram
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 class Day7 {
 
-    val input = readInput("day7").toIntcodeProgram()
+    val input = readInput("2019/day7").toIntcodeProgram()
 
     @Test
     fun getA() {

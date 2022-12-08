@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 
 class Day8 {
-    val input = this::class.java.getResource("day8").readText().chunked(25 * 6)
+    val input = FileUtil.readInput("2019/day8").chunked(25 * 6)
     @Test
     fun getA() {
         val x = input.minByOrNull {

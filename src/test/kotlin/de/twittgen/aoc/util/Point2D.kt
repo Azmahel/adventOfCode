@@ -1,4 +1,4 @@
-package de.twittgen.aoc.y2019.shared
+package de.twittgen.aoc.util
 
 import kotlin.math.absoluteValue
 

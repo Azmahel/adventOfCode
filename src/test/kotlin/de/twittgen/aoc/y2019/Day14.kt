@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 
 class Day14 {
-    val input = this::class.java.getResource("day14").readText().parseInput()
+    val input = FileUtil.readInput("2019/day14").parseInput()
 
     @Test
     fun getA() = println(getOreNeeded())

@@ -1,6 +1,6 @@
 package de.twittgen.aoc.y2019.day5
 
-import de.twittgen.aoc.y2019.shared.util.toInt
+import de.twittgen.aoc.util.toInt
 
 private const val ADD = 1
 private const val MULT = 2

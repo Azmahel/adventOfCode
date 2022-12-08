@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2020
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import de.twittgen.aoc.y2019.shared.util.second
+import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.second
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -63,7 +63,7 @@ class day16 {
 
     @Test
     fun part1() {
-        val (requirements, my, other) = parseInput(input)
+        val (requirements, _ , other) = parseInput(input)
         val result = other.getInvalidFields(requirements).sum()
         println(result)
     }
@@ -95,12 +95,6 @@ class day16 {
                 }
             }
         }
-    }
-
-    @Test
-    fun readFile() {
-        val text = File("C:\\Users\\trist\\Documents\\cyoa\\OEBPS\\chapter001").readText()
-        val x =0
     }
 }
 

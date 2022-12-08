@@ -1,11 +1,9 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import de.twittgen.aoc.y2019.shared.util.second
+import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.second
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 class Day14 {
     val input by lazy { FileUtil.readInput("2021/day14").parse() }

@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 import kotlin.math.absoluteValue
 
 class Day16 {
-    val input = this::class.java.getResource("day16").readText().toIntList()
+    val input = FileUtil.readInput("2019/day16").toIntList()
 
     val basePattern = listOf(0,1,0,-1)
     private fun getPatterns(length: Int) =

@@ -1,7 +1,4 @@
-package de.twittgen.aoc.y2019.shared.util
-
-import java.io.File
-import java.lang.Exception
+package de.twittgen.aoc.util
 
 object FileUtil {
     fun readInput(dir: String) =

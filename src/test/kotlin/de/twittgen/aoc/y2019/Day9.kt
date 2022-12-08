@@ -1,5 +1,6 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.launch
@@ -7,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 class Day9 {
-    val input = this::class.java.getResource("day9").readText().split(",").map { it.toLong(10) }
+    val input = FileUtil.readInput("2019/day9").split(",").map { it.toLong(10) }
     
     @Test
     fun getA() {

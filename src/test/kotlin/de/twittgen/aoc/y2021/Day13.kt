@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import de.twittgen.aoc.y2019.shared.util.second
+import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day13.FoldDirection.X
 import de.twittgen.aoc.y2021.Day13.FoldDirection.Y
 import org.junit.jupiter.api.Assertions.assertEquals

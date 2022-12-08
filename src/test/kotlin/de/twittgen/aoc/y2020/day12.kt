@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2020
 
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.y2020.day12.Facing.*
 import org.junit.jupiter.api.Test
 import java.lang.IllegalArgumentException
@@ -68,7 +68,7 @@ class day12 {
 
 
 
-    class GuidedShip(position: Point2D= Point2D(0,0), facing: Point2D = Point2D(-1,10) ) : Ship(position, facing)  {
+    class GuidedShip(position: Point2D = Point2D(0,0), facing: Point2D = Point2D(-1,10) ) : Ship(position, facing)  {
         override fun copy(position: Point2D, facing: Point2D): GuidedShip {
             return GuidedShip(position, facing)
         }

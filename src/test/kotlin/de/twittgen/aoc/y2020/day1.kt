@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2020
 
 import org.junit.jupiter.api.Test
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 class Day1 {
     val input = FileUtil.readInput("2020/day1")
     val example = listOf(1721, 979, 366, 299, 675, 1456)

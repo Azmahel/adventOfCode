@@ -1,6 +1,10 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.column
+import de.twittgen.aoc.util.columns
+import de.twittgen.aoc.util.product
+import de.twittgen.aoc.util.takeUntil
 
 class Day8 : Day<Int, Int, List<List<Int>>>() {
     override val example = """
@@ -38,12 +42,6 @@ class Day8 : Day<Int, Int, List<List<Int>>>() {
         .filter { (y, it) -> y==0 || it > take(y).maxOrNull()!! }.map { (y , _) -> y }
         .toSet()
 
-
-    private fun List<Int>.product() = foldRight(1) { a,b -> a * b }
-    private fun <T> List<List<T>>.column(i: Int) = map { it[i] }
-    private fun <T> List<List<T>>.columns() = (0..get(0).lastIndex).map { column(it) }
-    private fun <T> List<T>.takeUntil(predicate: (T)-> Boolean): List<T> =
-        firstOrNull(predicate) ?.let { takeWhile{ x -> !predicate(x) } + it } ?: takeWhile{ !predicate(it) }
 
     private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) =
         listOf(

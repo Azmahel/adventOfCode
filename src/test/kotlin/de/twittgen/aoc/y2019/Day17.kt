@@ -1,8 +1,8 @@
 package de.twittgen.aoc.y2019
 
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import de.twittgen.aoc.y2019.shared.util.toIntcodeProgram
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.toIntcodeProgram
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.toList
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import java.lang.NumberFormatException
 
 class Day17 {
-    val input = FileUtil.readInput("day17").toIntcodeProgram().map{ it.toLong()}
+    val input = FileUtil.readInput("2019/day17").toIntcodeProgram().map{ it.toLong()}
 
     @Test
     fun getA() {
@@ -188,25 +188,25 @@ class Day17 {
         UP("U") {
             override val left: Facing get() = LEFT
             override val right: Facing get()= RIGHT
-            override fun getAhead(it: Point2D): Point2D =   it.run{ Point2D(x, y -1)}
+            override fun getAhead(it: Point2D): Point2D =   it.run{ Point2D(x, y -1) }
 
         },
         DOWN("D")  {
             override val left: Facing get() = RIGHT
             override val right: Facing get()= LEFT
-            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x, y +1)}
+            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x, y +1) }
 
         },
         LEFT("L") {
             override val left: Facing get() = DOWN
             override val right: Facing get()= UP
-            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x-1, y )}
+            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x-1, y ) }
 
         },
         RIGHT("R") {
             override val left: Facing get() = UP
             override val right: Facing get()= DOWN
-            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x+1, y )}
+            override fun getAhead(it: Point2D): Point2D =  it.run{ Point2D(x+1, y ) }
         };
 
         abstract val left  : Facing

@@ -1,10 +1,10 @@
 package de.twittgen.aoc.y2019
 
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil.readInput
 
 class Day18 {
- val input = readInput("day18")
+ val input = readInput("2019/day18")
      .replace("\r","")
      .split("\n")
      .mapIndexed { y, it ->
@@ -21,7 +21,7 @@ class Day18 {
 
     }
 
-    private fun getPathToKeys(start: Point2D,  keys: Map<Point2D,Char>, map: Map<Point2D,Char> ) {
+    private fun getPathToKeys(start: Point2D, keys: Map<Point2D,Char>, map: Map<Point2D,Char> ) {
 
 
     }

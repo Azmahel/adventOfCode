@@ -4,7 +4,7 @@ import de.twittgen.aoc.y2019.day4.PasswordUtil.hasIdenticalAdjacentNumbers
 import de.twittgen.aoc.y2019.day4.PasswordUtil.hasTwoNumberRun
 import de.twittgen.aoc.y2019.day4.PasswordUtil.isSixDigitNumber
 import de.twittgen.aoc.y2019.day4.PasswordUtil.numbersAreRising
-import de.twittgen.aoc.y2019.shared.util.toIntRange
+import de.twittgen.aoc.util.toIntRange
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

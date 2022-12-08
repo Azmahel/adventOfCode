@@ -1,9 +1,7 @@
 package de.twittgen.aoc.y2020
 
-import de.twittgen.aoc.y2019.Day12
-import de.twittgen.aoc.y2019.Day12.Coordinate
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Test
 
 class day3 {

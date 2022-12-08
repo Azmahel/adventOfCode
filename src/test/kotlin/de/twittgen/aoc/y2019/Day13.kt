@@ -1,5 +1,6 @@
 package de.twittgen.aoc.y2019
 
+import de.twittgen.aoc.util.FileUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import org.junit.jupiter.api.Test
@@ -7,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.sign
 
 class Day13 {
-    val input = this::class.java.getResource("day13").readText().split(",").map { it.toLong(10) }
+    val input = FileUtil.readInput("2019/day13").split(",").map { it.toLong(10) }
 
     @InternalCoroutinesApi
     @ExperimentalCoroutinesApi

@@ -1,12 +1,12 @@
 package de.twittgen.aoc.y2019.day5
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil.readInput
-import de.twittgen.aoc.y2019.shared.util.toIntcodeProgram
+import de.twittgen.aoc.util.FileUtil.readInput
+import de.twittgen.aoc.util.toIntcodeProgram
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class Day5 {
-    val input = readInput("day5").toIntcodeProgram()
+    val input = readInput("2019/day5").toIntcodeProgram()
 
     @Test
     fun getA() {

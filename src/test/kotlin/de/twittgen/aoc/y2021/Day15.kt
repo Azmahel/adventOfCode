@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.y2019.shared.Point2D
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -27,7 +27,7 @@ class Day15 {
 
     private fun Map<Point2D,Int>.dijkstra(): Int {
         val start = Point2D(0, 0)
-        val end =Point2D(keys.maxByOrNull { it.x }!!.x, keys.maxByOrNull { it.y }!!.y)
+        val end = Point2D(keys.maxByOrNull { it.x }!!.x, keys.maxByOrNull { it.y }!!.y)
         val dist = mutableMapOf(start to 0 )
         val distQ = mutableMapOf(start to 0)
         while(distQ.isNotEmpty()) {

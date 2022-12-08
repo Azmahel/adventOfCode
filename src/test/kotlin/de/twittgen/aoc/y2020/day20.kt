@@ -1,6 +1,6 @@
 package de.twittgen.aoc.y2020
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.y2020.day20.Tile
 import de.twittgen.aoc.y2020.day20.Tile.Direction.*
 import org.junit.jupiter.api.Test

@@ -1,9 +1,8 @@
 package de.twittgen.aoc
 
-import de.twittgen.aoc.y2019.shared.util.FileUtil
+import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.lang.IllegalStateException
 
 abstract class  Day<T, V, R> {
 
@@ -20,7 +19,7 @@ abstract class  Day<T, V, R> {
 
     abstract val example : String
     private val exampleParsed by lazy { example.parse() }
-    private val rawInput by lazy {FileUtil.readInput("2022/${this.javaClass.simpleName.lowercase()}")}
+    private val rawInput by lazy {FileUtil.readInput("${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}")}
     private val input by lazy { rawInput.parse() }
 
     @Test
@@ -56,6 +55,8 @@ abstract class  Day<T, V, R> {
         var exampleExpected : T,
         var expected : T? = null,
     )
+
+    private fun getYearFormPackage() = this.javaClass.packageName.split('.').last().drop(1)
 }
 
 

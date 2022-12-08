@@ -1,9 +1,6 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.y2019.shared.util.FileUtil
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 class Day1 : Day<Int, Int, List<Int>>() {
     override val example = """
