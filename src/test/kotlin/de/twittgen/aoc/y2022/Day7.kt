@@ -44,7 +44,7 @@ class Day7 : Day<Long, Long, Day7.Directory>(){
         fun getSubdirectoriesIncludingSelf() = getSubdirectories() + this
     }
 
-    override fun String.parse(): Directory = Directory().also { performNextInstruction(it, lines().drop(1)) }
+    override fun String.parse(): Directory = Directory().also { it.performNextInstruction(lines().drop(1)) }
 
     init {
         part1(95437, 1886043) {
@@ -56,29 +56,27 @@ class Day7 : Day<Long, Long, Day7.Directory>(){
         }
     }
 
-    private fun performNextInstruction(currentDirectory : Directory, instructions : List<String>) {
+    private tailrec fun Directory.performNextInstruction(instructions: List<String>) {
         if (instructions.isEmpty()) return
         assert(instructions.first().startsWith('$'))
-        val (cmd, param) =  (instructions.first().drop(2).split(" ")).run {
-            first() to secondOrNull()
-        }
+        val (cmd, param) = (instructions.first().drop(2).split(" ")).run { first() to secondOrNull() }
         val remainder = instructions.drop(1)
         when(cmd) {
             "cd" -> {
                 when(param) {
-                    ".." -> performNextInstruction(currentDirectory.parent!! , remainder)
-                    else -> performNextInstruction(currentDirectory.children[param] as Directory, remainder)
+                    ".." -> parent!!.performNextInstruction(remainder)
+                    else -> (children[param] as Directory).performNextInstruction(remainder)
                 }
             }
             "ls" -> {
                 remainder.takeWhile { !it.startsWith('$') }.forEach {
                     val (obj, name) = it.split(" ").run { first() to second() }
-                    when(obj) {
-                        "dir" -> currentDirectory.children += name to Directory(currentDirectory)
-                        else ->  currentDirectory.children += name to File( obj.toLong())
+                    children += when(obj) {
+                        "dir" -> name to Directory(this)
+                        else -> name to File(obj.toLong())
                     }
                 }
-                performNextInstruction(currentDirectory, remainder.dropWhile { !it.startsWith('$') })
+                this.performNextInstruction(remainder.dropWhile { !it.startsWith('$') })
             }
             else -> throw IllegalStateException()
         }
