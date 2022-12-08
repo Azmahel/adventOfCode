@@ -5,15 +5,6 @@ import de.twittgen.aoc.Day
 typealias Rucksack = Pair<Set<Char>,Set<Char>>
 
 class Day3 : Day<Int, Int, List<Rucksack>>() {
-    override val  example = """
-        vJrwpWtwJgWrhcsFMMfFFhFp
-        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-        PmmdzqPrVvPwwTWBwg
-        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-        ttgJtRGJQctTZtZT
-        CrZsJsPPZsGzwwsLwLmpwMDw
-    """.trimIndent()
-
     override fun String.parse() = lines().map { it.toRucksack() }
 
     init {
@@ -30,13 +21,22 @@ class Day3 : Day<Int, Int, List<Rucksack>>() {
 
     private fun String.toRucksack() = chunked(length/2).let { it[0].toSet() to it[1].toSet() }
 
-    private fun List<Rucksack>.findBadges() =
-        chunked(3).map { group ->
+    private fun List<Rucksack>.findBadges() = chunked(3)
+        .map { group ->
             group
                 .map { it.first + it.second }
                 .fold(alphabet.toSet()) { a, b -> a.intersect(b) }
                 .single()
         }
+
+    override val  example = """
+        vJrwpWtwJgWrhcsFMMfFFhFp
+        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+        PmmdzqPrVvPwwTWBwg
+        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+        ttgJtRGJQctTZtZT
+        CrZsJsPPZsGzwwsLwLmpwMDw
+    """.trimIndent()
 }
 
 

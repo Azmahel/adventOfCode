@@ -7,14 +7,6 @@ import de.twittgen.aoc.util.product
 import de.twittgen.aoc.util.takeUntil
 
 class Day8 : Day<Int, Int, List<List<Int>>>() {
-    override val example = """
-        30373
-        25512
-        65332
-        33549
-        35390
-    """.trimIndent()
-
     override fun String.parse() = lines().map { it.map { c ->  c.digitToInt() } }
 
     init {
@@ -43,11 +35,18 @@ class Day8 : Day<Int, Int, List<List<Int>>>() {
         .toSet()
 
 
-    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) =
-        listOf(
-            column(y).take(x).reversed(),
-            column(y).drop(x+1),
-            get(x).take(y).reversed(),
-            get(x).drop(y+1),
-        )
- }
+    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) = listOf(
+        column(y).take(x).reversed(),
+        column(y).drop(x+1),
+        get(x).take(y).reversed(),
+        get(x).drop(y+1),
+    )
+
+    override val example = """
+        30373
+        25512
+        65332
+        33549
+        35390
+    """.trimIndent()
+}

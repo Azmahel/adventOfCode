@@ -3,6 +3,12 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 
 class Day1 : Day<Int, Int, List<Int>>() {
+    override fun String.parse() = split("\n\n").map { it.lines().sumOf(String::toInt) }
+    init {
+        part1(24000, 71780) { maxOrNull()!! }
+        part2(45000, 212489) { sortedDescending().take(3).sum() }
+    }
+
     override val example = """
         1000
         2000
@@ -19,13 +25,4 @@ class Day1 : Day<Int, Int, List<Int>>() {
 
         10000
     """.trimIndent()
-    override fun String.parse() = split("\n\n").map { it.lines().sumOf(String::toInt) }
-    init {
-        part1(24000, 71780) {
-            maxOrNull()!!
-        }
-        part2(45000, 212489) {
-            sortedDescending().take(3).sum()
-        }
-    }
 }

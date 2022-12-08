@@ -4,17 +4,14 @@ import de.twittgen.aoc.Day
 
 class Day6 : Day<Int, Int, String>() {
     override fun String.parse() = this
-    override val example = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
 
     init {
-        part1(7, 1210) {
-            findDistinctBlock(4)
-        }
-        part2(19, 3476) {
-            findDistinctBlock(14)
-        }
+        part1(7, 1210) { findDistinctBlock(4) }
+        part2(19, 3476) { findDistinctBlock(14) }
     }
 
-    private fun String.findDistinctBlock(blockSize: Int) = windowed(blockSize)
-        .indexOfFirst { it.toSet().size == blockSize }  + blockSize
+    private fun String.findDistinctBlock(blockSize: Int) =
+        windowed(blockSize).indexOfFirst { it.toSet().size == blockSize } + blockSize
+
+    override val example = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
 }

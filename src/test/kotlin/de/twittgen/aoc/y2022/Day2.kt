@@ -3,12 +3,6 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 
 class Day2: Day<Int, Int, List<String>>() {
-    override val example = """
-        A Y
-        B X
-        C Z
-    """.trimIndent()
-
     override fun String.parse() = lines()
 
     init {
@@ -19,4 +13,10 @@ class Day2: Day<Int, Int, List<String>>() {
             sumOf { listOf("B X", "C X", "A X", "A Y", "B Y", "C Y", "C Z", "A Z", "B Z").indexOf(it) + 1 }
         }
     }
+
+    override val example = """
+        A Y
+        B X
+        C Z
+    """.trimIndent()
 }
