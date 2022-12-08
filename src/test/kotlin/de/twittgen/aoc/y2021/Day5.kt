@@ -18,12 +18,12 @@ class Day5 : Day<Int, Int, List<Day5.LineDef>>(){
     """.trimIndent()
 
     override fun String.parse(): List<LineDef> {
-        return lines().map {
-            it.split(" -> ")
-                .map { it.split(",").map { it.toInt() }.run { first() to second() } }
-                .run { LineDef(first(), second()) }
-        }
+        return lines().map { toLineDef() }
     }
+
+    private fun String.toLineDef() = split(" -> ")
+            .map { it.split(",").map(String::toInt).run { first() to second() } }
+            .run { LineDef(first(), second()) }
 
     init {
         part1(5, 5690) {
