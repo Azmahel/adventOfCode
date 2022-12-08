@@ -11,13 +11,13 @@ class Day8 : Day<Int, Int, List<List<Int>>>() {
         35390
     """.trimIndent()
 
-    override fun String.parse() = lines().map { it.map { it.digitToInt() } }
+    override fun String.parse() = lines().map { it.map { c ->  c.digitToInt() } }
 
     init {
         part1(21, 1719) {
            findVisibleTrees().size
         }
-        part2(8, ) {
+        part2(8, 590824) {
             mapIndexed { x , row ->
                 row.mapIndexed {
                     y, tree -> getSightLinesAt(x,y).map { line -> line.takeUntil { it >= tree }.size }.product()
