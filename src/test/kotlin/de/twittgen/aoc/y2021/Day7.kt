@@ -16,16 +16,15 @@ class Day7 : Day<Int,Int, List<Int>>(){
             getFuelForAlignment(getMedian())
         }
         part2(168, 99540554) {
-            getMean().toInt().let{
+            getMean().let{
                 listOf(getFuelForAlignment(it, gaussSum) , getFuelForAlignment(it+1, gaussSum)).minOrNull()!!
             }
         }
     }
 
-    private fun List<Int>.getMean() = (sum().toDouble() / size)
+    private fun List<Int>.getMean() = (sum().toDouble() / size).toInt()
     private fun List<Int>.getMedian() = sorted()[(size+1)/2]
     private fun List<Int>.getFuelForAlignment(i: Int, fuelFunc: (Int) -> Int = { it })  = sumOf { fuelFunc(abs(it - i)) }
-
     private val gaussSum : (Int) -> Int = { it*(it+1)/2 }
 
 
