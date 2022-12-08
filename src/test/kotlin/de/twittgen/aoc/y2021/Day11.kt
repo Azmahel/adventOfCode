@@ -1,97 +1,60 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.filterIn
 
-class Day11 {
-    val input by lazy { FileUtil.readInput("2021/day11").parse() }
-    val example = """5483143223
-2745854711
-5264556173
-6141336146
-6357385478
-4167524645
-2176841721
-6882881134
-4846848554
-5283751526""".parse()
+typealias EnergyLevels = Map<Pair<Int, Int>, Int>
 
-    private fun String.parse() = lines().map { line-> line.map { it.digitToInt() } }.toMap()
-
+class Day11 : Day<Int, Int, EnergyLevels>() {
+    override fun String.parse() = lines().map { line-> line.map { it.digitToInt() } }.toMap()
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> (x to y) to v } }.toMap()
 
-    private fun Pair<Int,Int>.getAdjacents() = listOf(
-        (first-1) to second,
-        (first+1) to second,
-        first to (second-1),
-        first to (second+1),
-        (first-1) to (second-1),
-        (first+1) to (second-1),
-        (first-1) to (second+1),
-        (first+1) to (second+1),
-    )
-
-    private fun Map<Pair<Int,Int>,Int>.print() = (0..9).map { x -> (0..9).map { y -> get(x to y) }.joinToString("") }
-    fun Map<Pair<Int,Int>,Int>.runStep(): MutableMap<Pair<Int, Int>, Int> {
-        val flashed = mutableSetOf<Pair<Int,Int>>()
-        val current = mapValues { (_,v) -> v + 1 }.toMutableMap()
-        while(current.any { it.value > 9 && it.key !in flashed }) {
-            val flash = current.filter { it.value >9 && it.key !in flashed}.keys
-            flashed.addAll(flash)
-            val adjacents = flash.flatMap { it.getAdjacents() }
-            adjacents.forEach {
-                if(it in current.keys) current[it] = current[it]!! + 1
-            }
-        }
-        flashed.forEach {
-            current[it] =0
-        }
-        return current
+    init {
+        part1(1656, ){ runSteps(100) }
+        part2(195, ) { findSynchronisation() }
     }
 
-    fun Map<Pair<Int,Int>,Int>.runSteps(i: Int, totalFlashes: Int = 0): Int
-    {
-        val next = runStep()
-        val flashes = next.values.count { it == 0 }
-        if (i==1) return  flashes + totalFlashes
-        return next.runSteps(i-1, flashes +totalFlashes)
-    }
+    private fun Pair<Int,Int>.getAdjacency() =
+        (-1..1).flatMap { a -> (-1..1).map { b -> (first + a) to (second + b) } }.minus(this)
 
-    fun Map<Pair<Int,Int>,Int>.findSyncronisation(): Int {
-        var steps = 0
-        var current = this
-        while(true) {
-            if(current.values.all { it == 0 }) return steps
-            current = current.runStep()
-            steps ++
+    private fun EnergyLevels.singleStep(): EnergyLevels = mapValues { (_, v) -> v+1 }.subStep()
+
+    private tailrec fun EnergyLevels.subStep(flashed: Set<Pair<Int, Int>> = emptySet()) : EnergyLevels {
+        return if (none { it.readyToFlash(flashed) }) {
+            mapValues { (k,v) -> if (k in flashed) 0 else v }
+        } else {
+            val flashing = filter { it.readyToFlash(flashed) }.keys
+            val adjacency = flashing.flatMap {
+                it.getAdjacency() }.groupBy { it }.mapValues { (_,v) -> v.size  }
+            mapValues { (k,v) ->  v + adjacency.getOrDefault(k, 0) }.subStep(flashed + flashing)
         }
     }
 
+    private fun Map.Entry<Pair<Int, Int>, Int>.readyToFlash(flashed: Set<Pair<Int, Int>>) = value > 9 && key !in flashed
 
-
-    @Test
-    fun example() {
-        val result = example.runSteps(100)
-        assertEquals(1656, result)
+    private tailrec fun EnergyLevels.runSteps(i: Int, flashes: Int = 0): Int {
+         if (i==0) {
+             return flashes
+        } else {
+            with(singleStep()) { return runSteps(i-1, values.count { it == 0 } + flashes) }
+        }
     }
 
-    @Test
-    fun example2() {
-        val result = example.findSyncronisation()
-        assertEquals(195, result)
+    private tailrec fun EnergyLevels.findSynchronisation(steps: Int = 0): Int {
+        return if (values.all { it == 0 }) steps else singleStep().findSynchronisation(steps+1)
     }
 
-    @Test
-    fun part1() {
-        val result = input.runSteps(100)
-        println(result)
-    }
-
-    @Test
-    fun part2() {
-        val result = input.findSyncronisation()
-        println(result)
-    }
+    override val example = """
+        5483143223
+        2745854711
+        5264556173
+        6141336146
+        6357385478
+        4167524645
+        2176841721
+        6882881134
+        4846848554
+        5283751526
+    """.trimIndent()
 }
 

@@ -2,6 +2,10 @@ package de.twittgen.aoc.util
 
 fun <T> List<T>.second() = get(1)
 fun <T> List<T>.secondOrNull() = getOrNull(1)
+fun <T> List<T>.middle() = get((size-1) /2)
+fun <T> List<T>.filterIn(other: Collection<T>) = filter { it in other }
+fun <T> List<T>.hasDuplicate() = toSet().size != size
+
 
 operator fun <T> List<T>.times(times: Int): List<T> = (1..times).flatMap { this }
 fun List<Int>.product() = foldRight(1) { a,b -> a * b }

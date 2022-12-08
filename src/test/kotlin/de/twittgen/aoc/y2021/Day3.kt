@@ -1,24 +1,9 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.columns
 
 class Day3 : Day<Int,Int,List<String>>() {
-
-    override val example = """
-        00100
-        11110
-        10110
-        10111
-        10101
-        01111
-        00111
-        11100
-        10000
-        11001
-        00010
-        01010
-    """.trimIndent()
-
     override fun String.parse() = lines()
 
     init {
@@ -30,13 +15,11 @@ class Day3 : Day<Int,Int,List<String>>() {
         }
     }
 
-    private fun List<String>.getGamma(): String {
-        return (0 until this[0].length).map { index ->
-            count { line -> line[index] == '1'}
-        }.map {
-            if(it.toDouble() >= (size /2.0)) 1 else 0
-        }.joinToString("")
-    }
+    private fun List<String>.getGamma() = map(String::toList)
+            .columns()
+            .map { column -> column.count { it == '1'} }
+            .map { if(it.toDouble() >= (size /2.0)) 1 else 0 }
+            .joinToString("")
 
     private fun String.getEpsilon() = map { if(it == '1') 0 else 1 }.joinToString("")
 
@@ -53,4 +36,19 @@ class Day3 : Day<Int,Int,List<String>>() {
         }
         return remaining.first()
     }
+
+    override val example = """
+        00100
+        11110
+        10110
+        10111
+        10101
+        01111
+        00111
+        11100
+        10000
+        11001
+        00010
+        01010
+    """.trimIndent()
 }

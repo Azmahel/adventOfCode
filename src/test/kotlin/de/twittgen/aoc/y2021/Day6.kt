@@ -6,11 +6,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class Day6 : Day<Long, Long, Map<Int, Long>>(){
-    override val example = """3,4,3,1,2"""
-    override fun String.parse() = split(",")
-        .map(String::toInt)
-        .groupBy { it }
-        .mapValues { (_,v) -> v.size.toLong() }
+    override fun String.parse() = split(",").map(String::toInt).groupBy { it }.mapValues { (_,v) -> v.size.toLong() }
 
     init {
         part1(5934, 350605) { advanceTime(80).values.sum() }
@@ -30,5 +26,7 @@ class Day6 : Day<Long, Long, Map<Int, Long>>(){
         set(6, getOrDefault(6,0) + getOrDefault(-1, 0))
         remove(-1)
     }
+
+    override val example = """3,4,3,1,2"""
 }
 
