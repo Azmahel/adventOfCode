@@ -14,33 +14,23 @@ class Day8 : Day<Int, Int, List<List<Int>>>() {
            findVisibleTrees().size
         }
         part2(8, 590824) {
-            mapIndexed { x , row ->
-                row.mapIndexed {
-                    y, tree -> getSightLinesAt(x,y).map { line -> line.takeUntil { it >= tree }.size }.product()
-                }.maxOrNull()!!
-            }.maxOrNull()!!
+            flatMapIndexed { x , row -> row.mapIndexed { y, tree ->
+                getSightLinesAt(x,y).map { line -> line.takeUntil { it >= tree }.size }.product()
+            } }.maxOrNull()!!
         }
     }
 
-    private fun List<List<Int>>.findVisibleTrees(): Set<Pair<Int, Int>> {
-        val visibleForRows = flatMapIndexed { x, it -> it.findVisibleIndices().map { y -> x to y } }.toSet()
-        val visibleForColumns = columns().flatMapIndexed { y, it -> it.findVisibleIndices().map { x -> x to y } }.toSet()
-        return visibleForRows + visibleForColumns
-    }
+    private fun List<List<Int>>.findVisibleTrees() = visible() + columns().visible().map { (x,y) -> y to x }
+    private fun List<List<Int>>.visible() = flatMapIndexed { x, it -> it.findVisibleIndices().map { y -> x to y } }.toSet()
 
     private fun List<Int>.findVisibleIndices() = lookAt() + reversed().lookAt().map { lastIndex - it }
 
     private fun List<Int>.lookAt() = withIndex()
-        .filter { (y, it) -> y==0 || it > take(y).maxOrNull()!! }.map { (y , _) -> y }
-        .toSet()
+        .filter { (y, it) -> y==0 || it > take(y).maxOrNull()!! }.map { (y , _) -> y }.toSet()
 
 
-    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) = listOf(
-        column(y).take(x).reversed(),
-        column(y).drop(x+1),
-        get(x).take(y).reversed(),
-        get(x).drop(y+1),
-    )
+    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) =
+        listOf(column(y).take(x).reversed(), column(y).drop(x+1), get(x).take(y).reversed(), get(x).drop(y+1))
 
     override val example = """
         30373
