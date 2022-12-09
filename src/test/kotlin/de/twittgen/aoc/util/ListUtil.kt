@@ -13,3 +13,5 @@ fun <T> List<List<T>>.column(i: Int) = map { it[i] }
 fun <T> List<List<T>>.columns() = (0..get(0).lastIndex).map { column(it) }
 fun <T> List<T>.takeUntil(predicate: (T)-> Boolean): List<T> =
     firstOrNull(predicate) ?.let { takeWhile{ x -> !predicate(x) } + it } ?: takeWhile{ !predicate(it) }
+
+fun<T,R> Triple<T, T, T>.forEach(m:(T)-> (R)) = Triple(m(first), m(second), m(third))
