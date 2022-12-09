@@ -1,29 +1,31 @@
 package de.twittgen.aoc.y2021
 
+import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.filterIn
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Day15 {
+class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
 
-    val input by lazy { FileUtil.readInput("2021/day15").parse() }
-    val example = """1163751742
-1381373672
-2136511328
-3694931569
-7463417111
-1319128137
-1359912421
-3125421639
-1293138521
-2311944581""".parse()
+    override fun String.parse() = lines()
+        .map { line -> line.toList().map { it.digitToInt() }}
+        .flatMapIndexed { y, line -> line.mapIndexed { x, i -> Point2D(x , y ) to i }  }
+        .toMap()
 
-    private fun String.parse() =
-        lines()
-            .map { line -> line.toList().map { it.digitToInt() }}
-            .flatMapIndexed { y, line -> line.mapIndexed { x, i -> Point2D(x , y ) to i }  }
-            .toMap()
+    init {
+        part1(40, 403) { dijkstra() }
+        part2(315, 2840) { expand(5).dijkstra() }
+    }
+
+    private fun Map<Point2D,Int>.expand(times: Int = 5): Map<Point2D, Int> {
+        val maxX = keys.maxByOrNull { it.x }!!.x + 1
+        val maxY = keys.maxByOrNull { it.y }!!.y +1
+        return entries.flatMap { (k, v) -> (0 until times).flatMap { dx -> (0 until times).map { dy ->
+            Point2D(k.x + (maxX*dx) , (k.y + (maxY*dy))) to ((v+dx+dy)-1) % 9 +1
+        } } }.toMap()
+    }
 
     private fun Map<Point2D,Int>.dijkstra(): Int {
         val start = Point2D(0, 0)
@@ -41,52 +43,24 @@ class Day15 {
                     distQ[neighbor] = alt
                 }
             }
-
         }
         return dist[end]!!
     }
 
-    private fun Map<Point2D,Int>.expand(times: Int = 5): Map<Point2D, Int> {
-        val maxX = keys.maxByOrNull { it.x }!!.x + 1
-        val maxY = keys.maxByOrNull { it.y }!!.y +1
-        return entries.flatMap { (k, v) ->  (0 until times).flatMap { dx ->
-            (0 until times).map { dy ->
-                Point2D(k.x + (maxX*dx) , (k.y + (maxY*dy))) to ((v+dx+dy)-1) % 9 +1
-            }
-        } }.toMap()
-    }
-
     private fun Point2D.getAdjacentOn(map: Map<Point2D,Int>): List<Point2D> =
-        listOf(
-            Point2D(x,y+1),
-            Point2D(x,y-1),
-            Point2D(x+1,y),
-            Point2D(x-1,y),
-        ).filter { it in map.keys }
+        listOf(Point2D(x,y+1), Point2D(x,y-1), Point2D(x+1,y), Point2D(x-1,y),).filterIn(map.keys)
 
-
-    @Test
-    fun example() {
-        val result = example.dijkstra()
-        assertEquals(40, result)
-    }
-
-    @Test
-    fun example2() {
-        val result = example.expand(5).dijkstra()
-        assertEquals(315, result)
-    }
-
-    @Test
-    fun part1() {
-        val result = input.dijkstra()
-        println(result)
-    }
-
-    @Test
-    fun part2() {
-        val result = input.expand(5).dijkstra()
-        println(result)
-    }
+    override val example = """
+        1163751742
+        1381373672
+        2136511328
+        3694931569
+        7463417111
+        1319128137
+        1359912421
+        3125421639
+        1293138521
+        2311944581
+    """.trimIndent()
 }
 

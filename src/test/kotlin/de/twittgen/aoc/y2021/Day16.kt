@@ -12,14 +12,15 @@ class Day16 {
     val example = """D2FE28""".parse()
 
     private fun String.parse() =
-        BitStream(map { Integer.toBinaryString(it.toString().toInt(16)).padStart(4,'0') }
-            .joinToString(""))
+        BitStream(
+            map { Integer.toBinaryString(it.toString().toInt(16)).padStart(4,'0') }.joinToString("")
+        )
 
     class BitStream(private val binaryString: String) {
         private var pointer = 0
 
         fun readBits(count: Int) = binaryString
-            .substring(pointer,min(pointer +count, binaryString.length))
+            .substring(pointer, min(pointer +count, binaryString.length))
             .also { pointer += count }
 
         fun hasNext() = pointer < binaryString.lastIndex
@@ -33,40 +34,33 @@ class Day16 {
 
 
 
-    sealed class Packet(open val version: Int) {
-        abstract fun score() : Long
-    }
-    sealed class  Operator(override val version: Int, open val packets: List<Packet>): Packet(version) {
-    }
-    data class Literal(override val version:Int, val value: Long,): Packet(version) {
+    sealed class Packet(open val version: Int) { abstract fun score() : Long }
+    sealed class Operator(override val version: Int, open val packets: List<Packet>): Packet(version)
+
+    data class Literal(override val version:Int, val value: Long): Packet(version) {
         override fun score(): Long = value
     }
-
-    data class Sum(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class Sum(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = packets.sumOf { it.score() }
     }
-
-    data class Prod(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class Prod(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = packets.fold(1L) { i, it ->  it.score() *i }
     }
-
-    data class Min(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class Min(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = packets.minOf { it.score() }
     }
-
-    data class Max(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class Max(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = packets.maxOf { it.score() }
     }
-
-    data class GT(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class GT(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = if (packets.first().score() > packets.second().score()) 1L else 0L
     }
 
-    data class LT(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class LT(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = if (packets.first().score() < packets.second().score()) 1L else 0L
     }
 
-    data class Equal(override val version: Int, override val packets: List<Packet>) :  Operator(version,packets) {
+    data class Equal(override val version: Int, override val packets: List<Packet>): Operator(version,packets) {
         override fun score() = if (packets.first().score() ==  packets.second().score()) 1L else 0L
     }
 
@@ -79,9 +73,9 @@ class Day16 {
         val version = readBits(3).toInt(2)
         return when(readBits(3).toInt(2)) {
             4 -> Literal(version, decodeLiteral())
-            0 -> Sum(version,decodeOperator())
+            0 -> Sum(version, decodeOperator())
             1 -> Prod(version, decodeOperator())
-            2 -> Min(version,decodeOperator())
+            2 -> Min(version, decodeOperator())
             3 -> Max(version, decodeOperator())
             5 -> GT(version, decodeOperator())
             6 -> LT(version, decodeOperator())

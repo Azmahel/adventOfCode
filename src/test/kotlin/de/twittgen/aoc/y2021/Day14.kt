@@ -1,45 +1,29 @@
 package de.twittgen.aoc.y2021
 
-import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.second
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlin.math.roundToLong
 
-class Day14 {
-    val input by lazy { FileUtil.readInput("2021/day14").parse() }
-    val example = """NNCB
+typealias Rules = Map<Pair<Char, Char>, Char>
+typealias Polymer = List<Char>
 
-CH -> B
-HH -> N
-CB -> H
-NH -> C
-HB -> C
-HC -> B
-HN -> C
-NN -> C
-BH -> H
-NC -> B
-NB -> B
-BN -> B
-BB -> N
-BC -> B
-CC -> N
-CN -> C""".parse()
+class Day14 : Day<Int, Long, Pair<Polymer, Rules>>() {
+    override fun String.parse(): Pair<Polymer, Rules> = lines().first().toList() to lines().drop(2).toRules()
 
-    private fun String.parse() =
-        lines().first().toList() to lines()
-            .drop(2)
-            .associate {
-                it
-                    .split(" -> ")
-                    .let {
-                        (with(it.first().toList()) { first() to second() }) to it.second().first()
-                    }
-            }
+    private fun List<String>.toRules() = associate {
+        it.split(" -> ").run {
+            first().run { get(0) to get(1) } to second().single() }
+    }
 
+    init {
+        part1(1588, 2068) { let { (poly, rules) -> poly.transform(rules,10).score()  }}
+        part2(2188189693529, 2158894777814) {
+            let { (poly, rules) -> poly.toPairCount().transform(rules, 40).score() }
+        }
+    }
 
-    private tailrec fun List<Char>.doSteps(insertions: Map<Pair<Char, Char>, Char>, i: Int): List<Char> {
-        if (i == 0) return this
+    private tailrec fun Polymer.transform(insertions: Rules, steps: Int): Polymer {
+        if (steps == 0) return this
         return windowed(2, 1)
             .flatMap { (a, b) ->
                 if (a to b !in insertions) {
@@ -47,17 +31,13 @@ CN -> C""".parse()
                 } else {
                     listOf(a, insertions[a to b]!!)
                 }
-            }
-            .plus(last()) //last char will always stay last
-            .doSteps(insertions, i - 1)
+            }.plus(last())
+            .transform(insertions, steps - 1)
     }
 
-    private tailrec fun Map<Pair<Char, Char>, Long>.doSteps(
-        insertions: Map<Pair<Char, Char>, Char>,
-        i: Int,
-    ): Map<Pair<Char, Char>, Long> {
+    private tailrec fun Map<Pair<Char, Char>, Long>.transform(insertions: Rules, i: Int, ): Map<Pair<Char, Char>, Long> {
         if (i == 0) return this
-        val x = flatMap { (pair, count) ->
+        return flatMap { (pair, count) ->
             if (pair !in insertions) {
                 listOf(pair to count)
             } else {
@@ -67,57 +47,47 @@ CN -> C""".parse()
                     (insert to pair.second) to count,
                 )
             }
-        }.groupBy { it.first }.mapValues { (_, v) -> v.sumOf { it.second } }.toMap()
-
-        return x.doSteps(insertions, i - 1)
+        }.groupBy { it.first }
+            .mapValues { (_, v) -> v.sumOf { it.second } }
+            .toMap()
+            .transform(insertions, i - 1)
     }
 
-    private fun List<Char>.toPairCount() = windowed(2, 1).map { (a, b) -> a to b }.let {
-        it.associateWith { pair ->
-            it.count { it == pair }.toLong()
-        }
-    }
+    private fun Polymer.toPairCount() = windowed(2, 1)
+        .map { (a, b) -> a to b }
+        .groupBy { it }
+        .mapValues { (_,v) -> v.size.toLong() }
 
-    private fun List<Char>.score() = toSet().map { c -> count { it == c } }.let {
-        it.maxOrNull()!! - it.minOrNull()!!
-    }
+    private fun Polymer.score() = toSet().map { c -> count { it == c } }.let { it.maxOrNull()!! - it.minOrNull()!! }
 
-    private fun Map<Pair<Char, Char>, Long>.score(initial: List<Char>) =
+    private fun Map<Pair<Char, Char>, Long>.score() =
         flatMap { (k, v) -> listOf(k.first to v, k.second to v) }
             .groupBy { it.first }
-            .mapValues { (k, v) ->
-                v.sumOf { it.second }
-                    //every char except first and last is in 2 pairs
-                    .let { if (k in listOf(initial.first(), initial.last())) it + 1 else it }
-                    .div(2)
-            }
-            .let {
-                it.entries.maxByOrNull { it.value }!!.value - it.entries.minByOrNull { it.value }!!.value
-            }
+            .values
+            .map{ v -> v.sumOf { it.second }.toDouble() / 2 }
+            .map{ it.roundToLong() }
+            .run { maxOrNull()!! - minOrNull()!! }
 
-    @Test
-    fun example() {
-        val result = with(example) { first.doSteps(second, 10).score() }
-        assertEquals(1588, result)
-    }
-
-    @Test
-    fun example2() {
-        val result = with(example) { first.toPairCount().doSteps(second, 40).score(first) }
-        assertEquals(2188189693529, result)
-    }
-
-    @Test
-    fun part1() {
-        val result = with(input) { first.doSteps(second, 10).score() }
-        println(result)
-    }
-
-    @Test
-    fun part2() {
-        val result = with(input) { first.toPairCount().doSteps(second, 40).score(first) }
-        println(result)
-    }
+    override val example = """
+        NNCB
+        
+        CH -> B
+        HH -> N
+        CB -> H
+        NH -> C
+        HB -> C
+        HC -> B
+        HN -> C
+        NN -> C
+        BH -> H
+        NC -> B
+        NB -> B
+        BN -> B
+        BB -> N
+        BC -> B
+        CC -> N
+        CN -> C
+    """.trimIndent()
 }
 
 
