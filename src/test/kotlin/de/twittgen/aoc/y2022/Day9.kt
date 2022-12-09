@@ -7,9 +7,11 @@ import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.times
 import kotlin.math.sign
 
-typealias Instruction = Pair<Char,Int>
+typealias Instruction = Char
 class Day9 : Day<Int, Int, List<Instruction>>() {
-    override fun String.parse() = lines().map { it.split(" ").run { first().single() to second().toInt() } }
+    override fun String.parse() = lines()
+        .map { it.split(" ").run { listOf(first().single()).times(second().toInt()) } }
+        .flatten()
 
     init {
         part1(13, 5883) { run().size }
@@ -23,10 +25,9 @@ class Day9 : Day<Int, Int, List<Instruction>>() {
         path: Set<Point2D> = emptySet()
     ): Set<Point2D> {
         if (isEmpty()) return path
-        val (direction, amount) = first()
+        val direction = first()
         val newRope = with(rope) { drop(1).runningFold(first().move1(direction)) { before, it -> it.follow(before) } }
-        val remaining = if(amount == 1) drop(1) else listOf(Instruction(direction, amount-1)) + drop(1)
-        return remaining.run(newRope, path + newRope.last())
+        return drop(1).run(newRope, path + newRope.last())
     }
 
     private fun Point2D.follow(newH: Point2D) =
