@@ -7,14 +7,10 @@ class Day8 : Day<List<List<Int>>>() {
     override fun String.parse() = lines().map { it.map { c ->  c.digitToInt() } }
 
     init {
-        part1(21, 1719) {
-           findVisibleTrees().size
-        }
-        part2(8, 590824) {
-            flatMapIndexed { x , row -> row.mapIndexed { y, tree ->
-                getSightLinesAt(x,y).map { line -> line.takeUntil { it >= tree }.size }.product()
-            } }.maxOrNull()!!
-        }
+        part1(21, 1719) { it.findVisibleTrees().size }
+        part2(8, 590824) { it.flatMapIndexed { x , row -> row.mapIndexed { y, tree ->
+                it.getSightLinesAt(x,y).map { line -> line.takeUntil { other -> other >= tree }.size }.product()
+        } }.maxOrNull()!! }
     }
 
     private fun List<List<Int>>.findVisibleTrees() = visible() + columns().visible().map(Point2D::transpose)

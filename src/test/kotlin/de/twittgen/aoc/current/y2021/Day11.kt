@@ -9,8 +9,8 @@ class Day11 : Day<EnergyLevels>() {
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> Point2D(x, y) to v } }.toMap()
 
     init {
-        part1(1656, 1667){ runSteps(100) }
-        part2(195, 488) { findSynchronisation() }
+        part1(1656, 1667){ it.runSteps(100) }
+        part2(195, 488) { it.findSynchronisation() }
     }
 
     private fun Pair<Int,Int>.getAdjacency() =

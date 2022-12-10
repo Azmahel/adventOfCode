@@ -13,8 +13,8 @@ class Day15 : Day<Map<Point2D, Int>>() {
         .toMap()
 
     init {
-        part1(40, 403) { dijkstra() }
-        part2(315, 2840) { expand(5).dijkstra() }
+        part1(40, 403) { it.dijkstra() }
+        part2(315, 2840) { it.expand(5).dijkstra() }
     }
 
     private fun Map<Point2D,Int>.expand(times: Int = 5): Map<Point2D, Int> {

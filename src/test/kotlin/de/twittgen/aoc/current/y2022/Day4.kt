@@ -11,8 +11,8 @@ class Day4 : Day<List<Assignment>> () {
     private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }
 
     init {
-        part1(2, 448) { count { it.hasCompleteOverlap() } }
-        part2(4, 794) { count { it.hasOverlap() } }
+        part1(2, 448) { it.count { a -> a.hasCompleteOverlap() } }
+        part2(4, 794) { it.count { a -> a.hasOverlap() } }
     }
 
     private fun Assignment.hasCompleteOverlap() = first containsAll second || second containsAll first

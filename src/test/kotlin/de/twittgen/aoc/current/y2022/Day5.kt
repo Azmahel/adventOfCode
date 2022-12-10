@@ -23,16 +23,16 @@ class Day5 : Day<Pair<Ship, List<Day5.Instruction>>>() {
 
     init {
         super.mutableModel = true
-        part1("CMZ", "VCTFTJQCG") { let { (ship, instructions) ->
+        part1("CMZ", "VCTFTJQCG") { (ship, instructions) ->
             ship.apply {
                 instructions.forEach { performInstruction(it) }
             }.tops.joinToString("")
-        }}
-        part2("MCD", "GCFGLDNJZ") { let { (ship, instructions) ->
+        }
+        part2("MCD", "GCFGLDNJZ") { (ship, instructions) ->
             ship.apply {
                 instructions.forEach { performInstructionV2(it) }
             }.tops.joinToString("")
-        }}
+        }
     }
 
     private fun Ship.performInstruction(instruction: Instruction) =

@@ -6,8 +6,8 @@ class Day6 : Day<String>() {
     override fun String.parse() = this
 
     init {
-        part1(7, 1210) { findDistinctBlock(4) }
-        part2(19, 3476) { findDistinctBlock(14) }
+        part1(7, 1210) { it.findDistinctBlock(4) }
+        part2(19, 3476) { it.findDistinctBlock(14) }
     }
 
     private fun String.findDistinctBlock(blockSize: Int) =

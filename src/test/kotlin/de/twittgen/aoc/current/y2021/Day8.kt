@@ -15,11 +15,11 @@ class Day8 : Day<List<DecodingEntry>>() {
 
     init {
         part1(26, 387) {
-            sumOf { it.second.count { i -> with(i) { is1() || is4() || is7() || is8() } } }
+            it.sumOf {entry ->  entry.second.count { i -> with(i) { is1() || is4() || is7() || is8() } } }
         }
 
         part2(61229, 986034) {
-            sumOf { (sequence, cypher) -> cypher.decode(sequence.getDecoder()).toInt() }
+            it.sumOf { (sequence, cypher) -> cypher.decode(sequence.getDecoder()).toInt() }
         }
     }
 

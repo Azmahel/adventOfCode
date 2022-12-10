@@ -14,9 +14,9 @@ class Day5 : Day<List<Line>>(){
 
     init {
         part1(5, 5690) {
-            filter { it.isVertical() || it.isHorizontal() }.intersections().size
+            it.filter {line ->  line.isVertical() || line.isHorizontal() }.intersections().size
         }
-        part2(12, 17741) { intersections().size }
+        part2(12, 17741) { it.intersections().size }
     }
 
     data class LineDef(val a: Point2D, val b: Point2D) {

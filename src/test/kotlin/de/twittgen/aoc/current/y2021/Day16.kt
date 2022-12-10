@@ -16,8 +16,8 @@ class Day16 : Day<Packet> (){
             .joinToString("").let { BitStream(it).decodePacket() }
 
     init {
-        part1(16, 891) { versionScore() }
-        part2(15, 673042777597) { score() }
+        part1(16, 891) { it.versionScore() }
+        part2(15, 673042777597) { it.score() }
     }
 
     private fun BitStream.decodePacket() = readBits(3).toInt(2).let { version ->

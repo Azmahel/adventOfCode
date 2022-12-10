@@ -5,8 +5,8 @@ import de.twittgen.aoc.Day
 class Day1 : Day<List<Int>>() {
     override fun String.parse() = split("\n\n").map { it.lines().sumOf(String::toInt) }
     init {
-        part1(24000, 71780) { maxOrNull()!! }
-        part2(45000, 212489) { sortedDescending().take(3).sum() }
+        part1(24000, 71780) { it.maxOrNull()!! }
+        part2(45000, 212489) { it.sortedDescending().take(3).sum() }
     }
 
     override val example = """

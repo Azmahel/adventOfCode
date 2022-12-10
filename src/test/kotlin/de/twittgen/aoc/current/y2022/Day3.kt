@@ -9,11 +9,9 @@ class Day3 : Day<List<Rucksack>>() {
 
     init {
         part1(157, 8085) {
-            map { (a, b) -> a.intersect(b).single() }.sumOf { priorities[it]!! }
+            it.map { (a, b) -> a.intersect(b).single() }.sumOf { p -> priorities[p]!! }
         }
-        part2(70, 2515) {
-            findBadges().sumOf { priorities[it]!! }
-        }
+        part2(70, 2515) { it.findBadges().sumOf { b-> priorities[b]!! } }
     }
 
     private val priorities: Map<Char, Int> = (alphabet).mapIndexed { i, c -> c to i+1 }.toMap()

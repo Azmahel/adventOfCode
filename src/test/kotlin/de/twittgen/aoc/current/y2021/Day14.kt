@@ -13,9 +13,9 @@ class Day14 : Day<Pair<Polymer, Rules>>() {
         associate { it.split(" -> ").run { first().run { get(0) to get(1) } to second().single() } }
 
     init {
-        part1(1588, 2068) { let { (poly, rules) -> poly.transform(rules,10).score()  } }
-        part2(2188189693529, 2158894777814) {
-            let { (poly, rules) -> poly.toPairCount().transform(rules, 40).score() }
+        part1(1588, 2068) { (poly, rules) -> poly.transform(rules,10).score()  }
+        part2(2188189693529, 2158894777814) { (poly, rules) ->
+            poly.toPairCount().transform(rules, 40).score()
         }
     }
 

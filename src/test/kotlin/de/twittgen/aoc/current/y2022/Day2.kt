@@ -7,10 +7,10 @@ class Day2: Day<List<String>>() {
 
     init {
         part1(15, 13924) {
-            sumOf { listOf("B X", "C Y", "A Z", "A X", "B Y", "C Z", "C X", "A Y", "B Z").indexOf(it) + 1 }
+            it.sumOf { listOf("B X", "C Y", "A Z", "A X", "B Y", "C Z", "C X", "A Y", "B Z").indexOf(it) + 1 }
         }
         part2(12, 13448) {
-            sumOf { listOf("B X", "C X", "A X", "A Y", "B Y", "C Y", "C Z", "A Z", "B Z").indexOf(it) + 1 }
+           it.sumOf { listOf("B X", "C X", "A X", "A Y", "B Y", "C Y", "C Z", "A Z", "B Z").indexOf(it) + 1 }
         }
     }
 

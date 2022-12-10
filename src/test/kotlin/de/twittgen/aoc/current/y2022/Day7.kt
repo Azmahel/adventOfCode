@@ -13,10 +13,10 @@ class Day7 : Day<Directory>(){
     init {
         mutableModel = true
         part1(95437, 1886043) {
-            getSubdirectoriesIncludingSelf().filter { it.size() <= 100_000 }.sumOf { it.size() }
+            it.getSubdirectoriesIncludingSelf().filter { d -> d.size() <= 100_000 }.sumOf { it.size() }
         }
-        part2(24933642) {
-            getSubdirectoriesIncludingSelf().map { it.size() }.filter { it > -40000000 + size() }.minOrNull()!!
+        part2(24933642) { it.getSubdirectoriesIncludingSelf()
+            .map { d -> d.size() }.filter { s -> s > -40000000 + it.size() }.minOrNull()!!
         }
     }
 

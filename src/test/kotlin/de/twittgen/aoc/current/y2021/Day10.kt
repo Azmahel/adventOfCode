@@ -8,11 +8,11 @@ class Day10: Day<List<Line>>() {
     override fun String.parse() = lines().map { it.toList() }
 
     init {
-        part1(26397, 296535) {
-            map { it.parse() }.filterIsInstance<Error>().sumOf { it.char.score() }
+        part1(26397, 296535) { lines ->
+           lines.map { it.parse() }.filterIsInstance<Error>().sumOf { it.char.score() }
         }
-        part2(288957, 4245130838) {
-            map { it.parse() }.filterIsInstance<Success>().map(Success::missingChars).score()
+        part2(288957, 4245130838) { lines ->
+            lines.map { it.parse() }.filterIsInstance<Success>().map(Success::missingChars).score()
         }
     }
 

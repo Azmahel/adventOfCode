@@ -10,8 +10,8 @@ class Day12: Day<CaveMap>() {
     override fun String.parse() = lines().map { it.split("-").run { first().toCave() to second().toCave() } }.toSet()
 
     init {
-        part1(226, 4167) { findPaths { singleUseSmallCaves() }.size }
-        part2(3509, 98441) { findPaths { oneSmallCanBeRevisited() }.size }
+        part1(226, 4167) { it.findPaths { singleUseSmallCaves() }.size }
+        part2(3509, 98441) { it.findPaths { oneSmallCanBeRevisited() }.size }
     }
 
     private fun Cave.getAdjacent(map: CaveMap) =

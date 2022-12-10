@@ -15,12 +15,10 @@ class Day18: Day<List<SnailNumber>>(){
         replace('[', '<').replace(']', '>').lines().map { it.toSnailNumber() }
 
     init {
-        part1(4140, 4137) { reduce(SnailNumber::plus).getMagnitude() }
-        part2(3993,4573) {
-            flatMap { a -> map { b ->
+        part1(4140, 4137) { it.reduce(SnailNumber::plus).getMagnitude() }
+        part2(3993,4573) { it.flatMap { a -> it.map { b ->
                 if(b!=a) (a+b).getMagnitude() else 0}
-            }.maxOrNull()!!
-        }
+        }.maxOrNull()!! }
     }
 
     override val example = """

@@ -9,10 +9,8 @@ class Day6 : Day<Colony>(){
         .mapValues { (_,v) -> v.size.toLong() }
 
     init {
-        part1(5934, 350605) {
-            advanceTime(80).values.sum()
-        }
-        part2(26984457539, 1592778185024) { advanceTime(256).values.sum() }
+        part1(5934, 350605) { it.advanceTime(80).values.sum() }
+        part2(26984457539, 1592778185024) { it.advanceTime(256).values.sum() }
     }
 
     private tailrec fun Colony.advanceTime(steps: Int): Colony {

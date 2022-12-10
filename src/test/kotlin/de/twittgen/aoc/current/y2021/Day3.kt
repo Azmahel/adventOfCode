@@ -8,10 +8,10 @@ class Day3 : Day<List<String>>() {
 
     init {
         part1(198, 2250414) {
-            getGamma().let { gamma ->  gamma.toInt(2) * gamma.getEpsilon().toInt(2) }
+            it.getGamma().let { gamma ->  gamma.toInt(2) * gamma.getEpsilon().toInt(2) }
         }
         part2(230, 6085575) {
-            getRating(::getOxygenRatingFunction).toInt(2) * getRating(::getCo2RatingFunction).toInt(2)
+            it.getRating(::getOxygenRatingFunction).toInt(2) * it.getRating(::getCo2RatingFunction).toInt(2)
         }
     }
 

@@ -7,10 +7,10 @@ class Day7 : Day<List<Int>>(){
     override fun String.parse() = split(",").map { it.toInt() }
 
     init {
-        part1(37, 349769) { getFuelForAlignment(getMedian()) }
-        part2(168, 99540554) {
-            getMean().let{ listOf(getFuelForAlignment(it, gaussSum) , getFuelForAlignment(it+1, gaussSum)).minOrNull()!! }
-        }
+        part1(37, 349769) { it.getFuelForAlignment(it.getMedian()) }
+        part2(168, 99540554) { it.getMean().let{ mean ->
+            listOf(it.getFuelForAlignment(mean, gaussSum) , it.getFuelForAlignment(mean+1, gaussSum)).minOrNull()!!
+        } }
     }
 
     private fun List<Int>.getMean() = (sum().toDouble() / size).toInt()

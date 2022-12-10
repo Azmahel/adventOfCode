@@ -12,10 +12,10 @@ class Day9 : Day<Heightmap>() {
 
     init {
         part1(15, 535) {
-            findLowPoints().values.sumOf { it+1 }
+            it.findLowPoints().values.sumOf { it+1 }
         }
         part2(1134, 1122700) {
-            getBasins(findLowPoints()).getScore()
+            it.getBasins(it.findLowPoints()).getScore()
         }
     }
 

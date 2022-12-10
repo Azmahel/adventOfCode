@@ -8,7 +8,7 @@ import de.twittgen.aoc.current.y2021.Day13.FoldDirection.X
 import de.twittgen.aoc.current.y2021.Day13.FoldDirection.Y
 
 
-class Day13 : Day<Pair<Marks, List<Fold>>>() {
+class Day13 : Day<Pair<Paper, List<Fold>>>() {
     override fun String.parse() = split("\n\n").let { (rawMarks, rawFolds) ->
         rawMarks.parseMarks() to rawFolds.parseFolds()
     }
@@ -29,8 +29,8 @@ class Day13 : Day<Pair<Marks, List<Fold>>>() {
         ®®®®®
      """.trimIndent()
     init {
-        part1(17, 661) { let { (marks, folds) -> marks.foldAt(folds.first()).size } }
-        part2(part2ExampleExpected, ) { let { (marks, folds) -> folds.fold(marks) { m, f -> m.foldAt(f) }.toPaper() } }
+        part1(17, 661) { (paper, folds) -> paper.foldAt(folds.first()).size }
+        part2(part2ExampleExpected, ) { (paper, folds) -> folds.fold(paper) { p, f -> p.foldAt(f) }.print() }
     }
 
     enum class FoldDirection { X, Y;
@@ -39,12 +39,12 @@ class Day13 : Day<Pair<Marks, List<Fold>>>() {
 
     data class Fold(val direction: FoldDirection, val at: Int)
 
-    private fun Marks.foldAt(fold: Fold) = map { when (fold.direction) {
+    private fun Paper.foldAt(fold: Fold) = map { when (fold.direction) {
         X -> it.first.foldAt(fold.at) to it.second
         Y ->  it.first  to it.second.foldAt(fold.at)
     } }.toSet()
 
-    private fun Marks.toPaper() =
+    private fun Paper.print() =
         "\n" + (0..maxByOrNull { it.first }!!.first).map { x -> (0..maxByOrNull { it.second }!!.second).map{ y ->
             if (x to y in this) '®' else ' '
         } }.columns().joinToString("\n") { it.joinToString("") }
@@ -76,6 +76,6 @@ class Day13 : Day<Pair<Marks, List<Fold>>>() {
    """.trimIndent()
 }
 
-private typealias Marks = Set<Pair<Int, Int>>
+private typealias Paper = Set<Pair<Int, Int>>
 
 

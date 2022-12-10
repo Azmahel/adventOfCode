@@ -12,8 +12,8 @@ class Day9 : Day<List<Instruction>>() {
         .flatten()
 
     init {
-        part1(13, 5883) { runWithLength(2).size }
-        part2(1, 2367) { runWithLength(10).size }
+        part1(13, 5883) { it.runWithLength(2).size }
+        part2(1, 2367) { it.runWithLength(10).size }
     }
 
     private fun List<Instruction>.runWithLength(i: Int) = run(listOf(ORIGIN).times(i))

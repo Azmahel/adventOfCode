@@ -19,8 +19,8 @@ class Day10: Day<List<Instruction>>() {
 #######       #######       #######     
  """
     init {
-        part1(13140, 15140) { run().findSignificant().sumOf { it.first * it.second } }
-        part2(exampleExpected) { "\n" + run().chunked(40).joinToString("\n") { it.draw() } }
+        part1(13140, 15140) { it.run().findSignificant().sumOf { (t,v) -> t * v } }
+        part2(exampleExpected) { "\n" + it.run().chunked(40).joinToString("\n") { l ->  l.draw() } }
     }
 
     private fun Signal.draw() = joinToString("") { (i, x) -> if ((pixel(i)) in sprite(x)) "#" else " " }

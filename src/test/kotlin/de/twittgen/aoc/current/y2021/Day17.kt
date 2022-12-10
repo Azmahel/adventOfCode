@@ -16,8 +16,8 @@ class Day17 : Day<TargetArea>(){
     }
 
     init {
-        part1(45, 12561) { getHittingShots().getHighest() }
-        part2(112, 3785) { getHittingShots().size }
+        part1(45, 12561) { it.getHittingShots().getHighest() }
+        part2(112, 3785) { it.getHittingShots().size }
     }
 
     data class TargetArea(val targetX : IntRange, val targetY: IntRange) {

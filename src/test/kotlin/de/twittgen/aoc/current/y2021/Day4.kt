@@ -16,8 +16,8 @@ class Day4 : Day<BingoGame>() {
         }
 
     init {
-        part1(4512, 54275) { this.runGame(getFirstWinner).score() }
-        part2(1924, 13158) { this.runGame(getLastWinner).score() }
+        part1(4512, 54275) { it.runGame(getFirstWinner).score() }
+        part2(1924, 13158) { it.runGame(getLastWinner).score() }
     }
 
     private fun Pair<Board, Int>.score() = let {(board, lastCall) ->  board.getScore(lastCall) }

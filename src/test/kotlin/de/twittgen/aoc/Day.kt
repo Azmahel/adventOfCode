@@ -17,8 +17,8 @@ abstract class  Day<R> {
     abstract fun String.parse() : R
 
 
-    fun part1(expectedExample: Any, expected: Any? = null, function: R.() -> Any) { part1 = Part(function, expectedExample, expected) }
-    fun part2(expectedExample : Any, expected : Any? = null, function : R.() -> Any ) { part2 = Part(function, expectedExample, expected) }
+    fun part1(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part1 = Part(function, expectedExample, expected) }
+    fun part2(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part2 = Part(function, expectedExample, expected) }
 
     abstract val example : String
     private val exampleParsed by lazy { example.parse() }
@@ -63,10 +63,10 @@ abstract class  Day<R> {
     }
 
 
-    data class Part<R> (
-        var function : R.() -> Any,
-        var exampleExpected : Any,
-        var expected : Any? = null,
+    data class Part<R>(
+        var function: (R) -> Any,
+        var exampleExpected: Any,
+        var expected: Any? = null,
     )
 
     private fun getYearFormPackage() = this.javaClass.packageName.split('.').last().drop(1)

@@ -10,8 +10,8 @@ class Day2 : Day<List<Pair<String, Int>>>() {
     override fun String.parse() = lines().map { it.split(" ").run { first() to second().toInt() } }
 
     init {
-        part1(150, 2102357) { move().run { x * y } }
-        part2(900, 2101031224) { moveWithAim().run { x * y } }
+        part1(150, 2102357) { it.move().run { x * y } }
+        part2(900, 2101031224) { it.moveWithAim().run { x * y } }
     }
 
     private tailrec fun List<Pair<String, Int>>.move(point: Point2D= ORIGIN) : Point2D {
