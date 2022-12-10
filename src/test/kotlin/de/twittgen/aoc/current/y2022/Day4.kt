@@ -5,7 +5,7 @@ import de.twittgen.aoc.util.containsAll
 
  private typealias Assignment = Pair<IntRange, IntRange>
 
-class Day4 : Day<Int, Int, List<Assignment>> () {
+class Day4 : Day<List<Assignment>> () {
     override fun String.parse() = lines().map { it.mapLine() }
     private fun String.mapLine() = split(',').map { it.parseRange() }.let { it[0] to it[1] }
     private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }

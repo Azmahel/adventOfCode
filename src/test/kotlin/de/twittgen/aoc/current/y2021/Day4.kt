@@ -1,8 +1,9 @@
 package de.twittgen.aoc.current.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.y2021.Day4.BingoGame
 
-class Day4 : Day<Int, Int, Day4.BingoGame>() {
+class Day4 : Day<BingoGame>() {
     override fun String.parse() = BingoGame(
         lines().first().split(",").map(String::toInt),
         lines().drop(2).toBoards()

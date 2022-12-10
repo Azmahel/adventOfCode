@@ -7,7 +7,7 @@ import de.twittgen.aoc.current.y2022.Day7.Directory
 import java.lang.IllegalStateException
 
 
-class Day7 : Day<Long, Long, Directory>(){
+class Day7 : Day<Directory>(){
     override fun String.parse(): Directory = Directory().also { it.performNextInstruction(lines().drop(1)) }
 
     init {

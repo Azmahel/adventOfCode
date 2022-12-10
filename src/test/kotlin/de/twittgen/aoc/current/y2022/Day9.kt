@@ -6,7 +6,7 @@ import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.times
 
-class Day9 : Day<Int, Int, List<Instruction>>() {
+class Day9 : Day<List<Instruction>>() {
     override fun String.parse() = lines()
         .map { it.split(" ").run { listOf(first().single()).times(second().toInt()) } }
         .flatten()

@@ -9,7 +9,7 @@ import kotlin.math.max
 
  private typealias Trace = List<Point2D>
 
-class Day17 : Day<Int, Int, TargetArea>(){
+class Day17 : Day<TargetArea>(){
     override val example = """target area: x=20..30, y=-10..-5"""
     override fun String.parse() = split(", ").let { (a, b) ->
         TargetArea(a.takeLastWhile { it != '=' }.toIntRange("..") , b.takeLastWhile { it!= '=' }.toIntRange(".."))

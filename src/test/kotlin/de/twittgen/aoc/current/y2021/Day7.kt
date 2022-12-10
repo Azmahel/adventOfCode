@@ -3,7 +3,7 @@ package de.twittgen.aoc.current.y2021
 import de.twittgen.aoc.Day
 import kotlin.math.abs
 
-class Day7 : Day<Int,Int, List<Int>>(){
+class Day7 : Day<List<Int>>(){
     override fun String.parse() = split(",").map { it.toInt() }
 
     init {

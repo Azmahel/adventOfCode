@@ -8,7 +8,7 @@ import de.twittgen.aoc.current.y2021.Day13.FoldDirection.X
 import de.twittgen.aoc.current.y2021.Day13.FoldDirection.Y
 
 
-class Day13 : Day<Int, String, Pair<Marks, List<Fold>>>() {
+class Day13 : Day<Pair<Marks, List<Fold>>>() {
     override fun String.parse() = split("\n\n").let { (rawMarks, rawFolds) ->
         rawMarks.parseMarks() to rawFolds.parseFolds()
     }

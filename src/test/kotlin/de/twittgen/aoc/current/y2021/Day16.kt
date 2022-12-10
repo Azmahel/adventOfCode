@@ -7,7 +7,7 @@ import de.twittgen.aoc.current.y2021.Day16.Packet
 import java.lang.IllegalStateException
 import java.lang.Integer.min
 
-class Day16 : Day<Int, Long, Packet> (){
+class Day16 : Day<Packet> (){
 
     override val example = """8A004A801A8002F478"""
 

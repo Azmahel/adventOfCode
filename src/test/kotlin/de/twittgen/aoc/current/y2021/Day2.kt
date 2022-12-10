@@ -5,7 +5,7 @@ import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
 import de.twittgen.aoc.util.second
 
-class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
+class Day2 : Day<List<Pair<String, Int>>>() {
 
     override fun String.parse() = lines().map { it.split(" ").run { first() to second().toInt() } }
 

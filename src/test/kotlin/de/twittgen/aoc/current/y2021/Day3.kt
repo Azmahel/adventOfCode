@@ -3,7 +3,7 @@ package de.twittgen.aoc.current.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.columns
 
-class Day3 : Day<Int,Int,List<String>>() {
+class Day3 : Day<List<String>>() {
     override fun String.parse() = lines()
 
     init {

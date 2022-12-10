@@ -5,7 +5,7 @@ import de.twittgen.aoc.Day
  private typealias Heightmap = Map<Pair<Int,Int>, Int>
  private typealias Basin = Set<Pair<Int, Int>>
 
-class Day9 : Day<Int, Int, Heightmap>() {
+class Day9 : Day<Heightmap>() {
 
     override fun String.parse() = lines().map {line -> line.map { it.digitToInt() } }.toMap()
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> (x to y) to v } }.toMap()

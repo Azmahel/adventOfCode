@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.current.y2022.Day10.Instruction
 import de.twittgen.aoc.util.second
 
-class Day10: Day<Int,String,List<Instruction>>() {
+class Day10: Day<List<Instruction>>() {
     override fun String.parse() = lines().map { when(it) {
         "noop" -> NOOP
         else -> ADD(it.split(" ").second().toInt())

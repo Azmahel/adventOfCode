@@ -5,7 +5,7 @@ import de.twittgen.aoc.util.second
 
  private typealias DecodingEntry = Pair<List<Set<Char>>, List<Set<Char>>>
 
-class Day8 : Day<Int, Int, List<DecodingEntry>>() {
+class Day8 : Day<List<DecodingEntry>>() {
     override fun String.parse(): List<DecodingEntry> = lines()
         .map { line ->
             line.split(" | ")

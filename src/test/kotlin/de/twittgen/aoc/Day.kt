@@ -3,23 +3,22 @@ package de.twittgen.aoc
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class  Day<T, V, R> {
+abstract class  Day<R> {
 
-    private var part1 : Part<T, R>? = null
-    private var part2 : Part<V, R>? = null
+    private var part1 : Part<R>? = null
+    private var part2 : Part<R>? = null
 
     protected var mutableModel: Boolean = false
 
     abstract fun String.parse() : R
 
 
-    fun part1(expectedExample: T, expected: T? = null, function: R.() -> T) { part1 = Part(function, expectedExample, expected) }
-    fun part2(expectedExample : V, expected : V? = null, function : R.() -> V ) { part2 = Part(function, expectedExample, expected) }
+    fun part1(expectedExample: Any, expected: Any? = null, function: R.() -> Any) { part1 = Part(function, expectedExample, expected) }
+    fun part2(expectedExample : Any, expected : Any? = null, function : R.() -> Any ) { part2 = Part(function, expectedExample, expected) }
 
     abstract val example : String
     private val exampleParsed by lazy { example.parse() }
@@ -42,7 +41,7 @@ abstract class  Day<T, V, R> {
         part2?.also { part ->  println("PART2").also { runPart(part) } }
     }
 
-    private fun <K>runPart(part: Part<K,R>, ) {
+    private fun runPart(part: Part<R>, ) {
         run(
             part.function,
             if(mutableModel) example.parse() else exampleParsed,
@@ -58,16 +57,16 @@ abstract class  Day<T, V, R> {
         }
     }
 
-    private fun <K> run(partFunction: (R) -> K, input: R, expected: K?, title: String) {
+    private fun run(partFunction: (R) -> Any, input: R, expected: Any?, title: String) {
         val result = partFunction(input).also { println("$title: $it") }
-        expected?.also { assertEquals(it, result) }
+        expected?.also { assertEquals(it.toString(), result.toString()) }
     }
 
 
-    data class Part<T,R> (
-        var function : R.() -> T,
-        var exampleExpected : T,
-        var expected : T? = null,
+    data class Part<R> (
+        var function : R.() -> Any,
+        var exampleExpected : Any,
+        var expected : Any? = null,
     )
 
     private fun getYearFormPackage() = this.javaClass.packageName.split('.').last().drop(1)

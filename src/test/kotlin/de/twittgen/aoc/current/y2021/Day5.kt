@@ -5,7 +5,7 @@ import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.current.y2021.Day5.Line
 
-class Day5 : Day<Int, Int, List<Line>>(){
+class Day5 : Day<List<Line>>(){
     override fun String.parse() = lines().map { it.toLine() }
 
     private fun String.toLine() = split(" -> ")

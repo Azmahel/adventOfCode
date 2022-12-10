@@ -6,7 +6,7 @@ import de.twittgen.aoc.util.second
 import kotlin.math.roundToLong
 
 
-class Day14 : Day<Int, Long, Pair<Polymer, Rules>>() {
+class Day14 : Day<Pair<Polymer, Rules>>() {
     override fun String.parse(): Pair<Polymer, Rules> = lines().first().toList() to lines().drop(2).toRules()
 
     private fun List<String>.toRules() =

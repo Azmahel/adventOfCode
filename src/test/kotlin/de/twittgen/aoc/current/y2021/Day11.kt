@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 
 
-class Day11 : Day<Int, Int, EnergyLevels>() {
+class Day11 : Day<EnergyLevels>() {
     override fun String.parse() = lines().map { line-> line.map { it.digitToInt() } }.toMap()
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> Point2D(x, y) to v } }.toMap()
 

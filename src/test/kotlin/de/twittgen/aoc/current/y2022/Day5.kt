@@ -3,7 +3,7 @@ package de.twittgen.aoc.current.y2022
 import de.twittgen.aoc.Day
 import java.util.*
 
-class Day5 : Day<String, String, Pair<Ship, List<Day5.Instruction>>>() {
+class Day5 : Day<Pair<Ship, List<Day5.Instruction>>>() {
     override fun String.parse(): Pair<Ship, List<Instruction>> = split("\n\n")
         .let { it[0].parseShip() to it[1].parseInstructions() }
 

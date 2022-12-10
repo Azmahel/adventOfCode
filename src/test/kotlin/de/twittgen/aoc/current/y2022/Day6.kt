@@ -2,7 +2,7 @@ package de.twittgen.aoc.current.y2022
 
 import de.twittgen.aoc.Day
 
-class Day6 : Day<Int, Int, String>() {
+class Day6 : Day<String>() {
     override fun String.parse() = this
 
     init {

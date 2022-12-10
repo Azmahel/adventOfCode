@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.alphabet
 
 
-class Day3 : Day<Int, Int, List<Rucksack>>() {
+class Day3 : Day<List<Rucksack>>() {
     override fun String.parse() = lines().map { it.toRucksack() }
 
     init {

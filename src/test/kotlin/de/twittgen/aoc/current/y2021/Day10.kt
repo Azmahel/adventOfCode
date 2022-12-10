@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.middle
 import java.util.*
 
-class Day10: Day<Int, Long, List<Line>>() {
+class Day10: Day<List<Line>>() {
     override fun String.parse() = lines().map { it.toList() }
 
     init {

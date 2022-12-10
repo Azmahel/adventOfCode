@@ -5,7 +5,7 @@ import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.ofLength
 
 
-class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
+class Day15 : Day<Map<Point2D, Int>>() {
 
     override fun String.parse() = lines()
         .map { line -> line.toList().map { it.digitToInt() }}

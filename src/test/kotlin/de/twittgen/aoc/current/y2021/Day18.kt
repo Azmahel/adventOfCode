@@ -10,7 +10,7 @@ private const val EXPLODER_MARKER = "Ø"
 private val findTerminalPair = Regex(".*<([^<>]*)>.*")
 private val splitOnExploder = Regex("(.*)$EXPLODER_MARKER(.*)")
 
-class Day18: Day<Int, Int, List<SnailNumber>>(){
+class Day18: Day<List<SnailNumber>>(){
     override fun String.parse() =
         replace('[', '<').replace(']', '>').lines().map { it.toSnailNumber() }
 

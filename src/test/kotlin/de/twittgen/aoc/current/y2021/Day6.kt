@@ -2,7 +2,7 @@ package de.twittgen.aoc.current.y2021
 
 import de.twittgen.aoc.Day
 
-class Day6 : Day<Long, Long, Colony>(){
+class Day6 : Day<Colony>(){
     override fun String.parse() = split(",")
         .map(String::toInt)
         .groupBy { it }

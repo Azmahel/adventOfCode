@@ -6,7 +6,7 @@ import de.twittgen.aoc.util.isLowerCase
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.current.y2021.Day12.Cave
 
-class Day12: Day<Int, Int, CaveMap>() {
+class Day12: Day<CaveMap>() {
     override fun String.parse() = lines().map { it.split("-").run { first().toCave() to second().toCave() } }.toSet()
 
     init {
