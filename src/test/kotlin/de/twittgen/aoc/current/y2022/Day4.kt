@@ -3,7 +3,6 @@ package de.twittgen.aoc.current.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.containsAll
 
- private typealias Assignment = Pair<IntRange, IntRange>
 
 class Day4 : Day<List<Assignment>> () {
     override fun String.parse() = lines().map { it.mapLine() }
@@ -17,7 +16,7 @@ class Day4 : Day<List<Assignment>> () {
 
     private fun Assignment.hasCompleteOverlap() = first containsAll second || second containsAll first
 
-    private fun Pair<IntRange, IntRange>.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()
+    private fun Assignment.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()
 
     override val example = """
         2-4,6-8
@@ -28,3 +27,4 @@ class Day4 : Day<List<Assignment>> () {
         2-6,4-8
     """.trimIndent()
 }
+private typealias Assignment = Pair<IntRange, IntRange>

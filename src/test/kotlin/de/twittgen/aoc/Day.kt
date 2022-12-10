@@ -18,8 +18,13 @@ abstract class  Day<R> {
 
     abstract fun String.parse() : R
 
-    fun part1(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part1 = Part(function, expectedExample, expected) }
-    fun part2(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part2 = Part(function, expectedExample, expected) }
+    fun part1(expectedExample: Any, expected: Any? = null, function: (R) -> Any) {
+        part1 = Part(function, expectedExample, expected)
+    }
+
+    fun part2(expectedExample: Any, expected: Any? = null, function: (R) -> Any) {
+        part2 = Part(function, expectedExample, expected)
+    }
 
     abstract val example : String
     private val exampleParsed by lazy { example.parse() }
@@ -38,6 +43,7 @@ abstract class  Day<R> {
         assumeTrue(part1 !=null)
         part1!!.also { part -> println("PART1").also { part.run() } }
     }
+
     @Test
     fun part2() {
         assumeTrue(part2 !=null)
