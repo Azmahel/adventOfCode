@@ -16,7 +16,6 @@ abstract class  Day<R> {
 
     abstract fun String.parse() : R
 
-
     fun part1(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part1 = Part(function, expectedExample, expected) }
     fun part2(expectedExample: Any, expected: Any? = null, function: (R) -> Any) { part2 = Part(function, expectedExample, expected) }
 
@@ -34,25 +33,25 @@ abstract class  Day<R> {
 
     @Test
     fun part1() {
-        part1?.also { part -> println("PART1").also { runPart(part) } }
+        part1?.also { part -> println("PART1").also { part.run() } }
     }
     @Test
     fun part2() {
-        part2?.also { part ->  println("PART2").also { runPart(part) } }
+        part2?.also { part ->  println("PART2").also { part.run() } }
     }
 
-    private fun runPart(part: Part<R>, ) {
+    private fun Part<R>.run() {
         run(
-            part.function,
+            function,
             if(mutableModel) example.parse() else exampleParsed,
-            part.exampleExpected,
+            exampleExpected,
             "example"
         )
         if(rawInput.isNotEmpty()) {
             run(
-                part.function,
+                function,
                 if (mutableModel) rawInput.parse() else input,
-                part.expected,
+                expected,
                 "real")
         }
     }
@@ -61,7 +60,6 @@ abstract class  Day<R> {
         val result = partFunction(input).also { println("$title: $it") }
         expected?.also { assertEquals(it.toString(), result.toString()) }
     }
-
 
     data class Part<R>(
         var function: (R) -> Any,
