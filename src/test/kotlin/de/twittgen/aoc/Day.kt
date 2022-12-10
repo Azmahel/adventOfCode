@@ -2,8 +2,12 @@ package de.twittgen.aoc
 
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class  Day<T, V, R> {
 
     private var part1 : Part<T, R>? = null
@@ -19,12 +23,22 @@ abstract class  Day<T, V, R> {
 
     abstract val example : String
     private val exampleParsed by lazy { example.parse() }
-    private val rawInput by lazy {FileUtil.readInput("${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}")}
+    private val identifier = "${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}"
+
+    private val rawInput by lazy {FileUtil.readInput(identifier)}
     private val input by lazy { rawInput.parse() }
 
+    @BeforeAll
+    fun init() {
+        println("Running $identifier")
+    }
+
     @Test
-    fun run() {
+    fun part1() {
         part1?.also { part -> println("PART1").also { runPart(part) } }
+    }
+    @Test
+    fun part2() {
         part2?.also { part ->  println("PART2").also { runPart(part) } }
     }
 
