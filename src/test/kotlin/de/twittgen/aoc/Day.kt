@@ -3,6 +3,7 @@ package de.twittgen.aoc
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assumptions
+import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -34,12 +35,12 @@ abstract class  Day<R> {
 
     @Test
     fun part1() {
-        Assumptions.assumeTrue(part1 !=null)
+        assumeTrue(part1 !=null)
         part1!!.also { part -> println("PART1").also { part.run() } }
     }
     @Test
     fun part2() {
-        Assumptions.assumeTrue(part2 !=null)
+        assumeTrue(part2 !=null)
         part2!!.also { part ->  println("PART2").also { part.run() } }
     }
 
