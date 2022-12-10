@@ -3,7 +3,6 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import java.util.*
 
-typealias Ship = List<Stack<Char>>
 class Day5 : Day<String, String, Pair<Ship, List<Day5.Instruction>>>() {
     override fun String.parse(): Pair<Ship, List<Instruction>> = split("\n\n")
         .let { it[0].parseShip() to it[1].parseInstructions() }
@@ -24,24 +23,27 @@ class Day5 : Day<String, String, Pair<Ship, List<Day5.Instruction>>>() {
 
     init {
         super.mutableModel = true
-        part1("CMZ", "VCTFTJQCG") {
-            second.forEach { first.performInstruction(it) }
-            first.map(Stack<Char>::pop).joinToString("")
-        }
-        part2("MCD", "GCFGLDNJZ") {
-            second.forEach { first.performInstructionV2(it) }
-            first.map(Stack<Char>::pop).joinToString("")
-        }
+        part1("CMZ", "VCTFTJQCG") { let { (ship, instructions) ->
+            ship.apply {
+                instructions.forEach { performInstruction(it) }
+            }.tops.joinToString("")
+        }}
+        part2("MCD", "GCFGLDNJZ") { let { (ship, instructions) ->
+            ship.apply {
+                instructions.forEach { performInstructionV2(it) }
+            }.tops.joinToString("")
+        }}
     }
 
-    private fun Ship.performInstruction(instruction: Instruction) {
+    private fun Ship.performInstruction(instruction: Instruction) =
         repeat(instruction.amount) { get(instruction.to).push(get(instruction.from).pop()) }
-    }
-    private fun Ship.performInstructionV2(instruction: Instruction) {
-        (1..instruction.amount).map { get(instruction.from).pop() }.reversed().forEach { get(instruction.to).push(it) }
-    }
+
+    private fun Ship.performInstructionV2(instruction: Instruction) =
+        get(instruction).forEach { get(instruction.to).push(it) }
+
 
     data class Instruction(val amount: Int, val from: Int, val to: Int)
+    private fun Ship.get(i: Instruction) = (1..i.amount).map { get(i.from).pop() }.reversed()
 
     override val example = """
     [D]    
@@ -55,7 +57,8 @@ move 2 from 2 to 1
 move 1 from 1 to 2    
     """.trimIndent()
 }
-
+typealias Ship = List<Stack<Char>>
+private val Ship.tops get() = map(Stack<Char>::pop)
 
 
 

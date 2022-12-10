@@ -14,7 +14,7 @@ abstract class  Day<T, V, R> {
     abstract fun String.parse() : R
 
 
-    fun part1(expectedExample : T, expected : T? = null, function : R.() -> T ) { part1 = Part(function, expectedExample, expected) }
+    fun part1(expectedExample: T, expected: T? = null, function: R.() -> T) { part1 = Part(function, expectedExample, expected) }
     fun part2(expectedExample : V, expected : V? = null, function : R.() -> V ) { part2 = Part(function, expectedExample, expected) }
 
     abstract val example : String

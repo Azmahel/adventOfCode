@@ -1,29 +1,26 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.util.columns
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day13.Fold
 import de.twittgen.aoc.y2021.Day13.FoldDirection.X
 import de.twittgen.aoc.y2021.Day13.FoldDirection.Y
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 typealias Marks = Set<Pair<Int, Int>>
 
 class Day13 : Day<Int, String, Pair<Marks, List<Fold>>>() {
-    override fun String.parse() = with(lines()) {
-        val marks = takeWhile { it.isNotEmpty() }
-           .map { line -> line.split(",").run { first().toInt() to second().toInt() } }
-           .toSet()
-       val folds = takeLastWhile { it.isNotEmpty() }.map { line ->
-           line.takeLastWhile { it != ' ' }
-               .split("=")
-               .run { Fold(FoldDirection.from(first()), second().toInt()) }
-       }
-       marks to folds
+    override fun String.parse() = split("\n\n").let { (rawMarks, rawFolds) ->
+        rawMarks.parseMarks() to rawFolds.parseFolds()
     }
+
+    private fun String.parseFolds() = lines().map { line ->
+        line.takeLastWhile { it != ' ' }.split("=").run { Fold(FoldDirection.from(first()), second().toInt()) }
+    }
+    private fun String.parseMarks() = lines().map { line ->
+        line.split(",").run { first().toInt() to second().toInt() }
+    }.toSet()
+
     private val part2ExampleExpected = """
         
         ®®®®®
@@ -40,6 +37,7 @@ class Day13 : Day<Int, String, Pair<Marks, List<Fold>>>() {
     enum class FoldDirection { X, Y;
         companion object { fun from(s: String) = if(s == "x") X else Y }
     }
+
     data class Fold(val direction: FoldDirection, val at: Int)
 
     private fun Marks.foldAt(fold: Fold) = map { when (fold.direction) {
@@ -48,11 +46,9 @@ class Day13 : Day<Int, String, Pair<Marks, List<Fold>>>() {
     } }.toSet()
 
     private fun Marks.toPaper() =
-        "\n" + (0..maxByOrNull { it.first }!!.first).map { x ->
-            (0..maxByOrNull { it.second }!!.second).map{ y ->
-                if (x to y in this) '®' else ' '
-            }
-        }.columns().joinToString("\n") { it.joinToString("") }
+        "\n" + (0..maxByOrNull { it.first }!!.first).map { x -> (0..maxByOrNull { it.second }!!.second).map{ y ->
+            if (x to y in this) '®' else ' '
+        } }.columns().joinToString("\n") { it.joinToString("") }
 
     private fun Int.foldAt( other: Int) = if(this <= other) this else other - (this -other)
 

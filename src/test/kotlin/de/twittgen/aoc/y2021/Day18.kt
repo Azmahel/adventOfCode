@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Mapping
+import de.twittgen.aoc.util.alphabet
 import de.twittgen.aoc.util.takeLastPartitioning
 import de.twittgen.aoc.util.takePartitioning
 
@@ -93,9 +94,7 @@ class Terminal(val value: Int): SnailNumber() {
     override fun toExplodeString( exploder: Nested?) = value.toString()
 }
 
-private val keys = (('a'..'z') + ('A'..'Z')).map(Char::toString)
-
-tailrec fun String.toSnailNumber(map: Mapping<String, SnailNumber> = Mapping(keys)) : Nested {
+tailrec fun String.toSnailNumber(map: Mapping<String, SnailNumber> = Mapping(alphabet.map(Char::toString))) : Nested {
     if(length == 1) return map[this]!! as Nested
     val target = findTerminalPair.matchEntire(this)!!.groupValues.drop(1).first()
     val (a, b) = target.split(',')

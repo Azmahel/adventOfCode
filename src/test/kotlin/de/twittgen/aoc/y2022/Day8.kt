@@ -1,10 +1,7 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.column
-import de.twittgen.aoc.util.columns
-import de.twittgen.aoc.util.product
-import de.twittgen.aoc.util.takeUntil
+import de.twittgen.aoc.util.*
 
 class Day8 : Day<Int, Int, List<List<Int>>>() {
     override fun String.parse() = lines().map { it.map { c ->  c.digitToInt() } }
@@ -20,17 +17,21 @@ class Day8 : Day<Int, Int, List<List<Int>>>() {
         }
     }
 
-    private fun List<List<Int>>.findVisibleTrees() = visible() + columns().visible().map { (x,y) -> y to x }
-    private fun List<List<Int>>.visible() = flatMapIndexed { x, it -> it.findVisibleIndices().map { y -> x to y } }.toSet()
+    private fun List<List<Int>>.findVisibleTrees() = visible() + columns().visible().map(Point2D::transpose)
 
-    private fun List<Int>.findVisibleIndices() = lookAt() + reversed().lookAt().map { lastIndex - it }
+    private fun List<List<Int>>.visible() = flatMapIndexed { x, it -> it.find().map { y -> Point2D(x,y) } }.toSet()
+
+    private fun List<Int>.find() = lookAt() + reversed().lookAt().map { lastIndex - it }
 
     private fun List<Int>.lookAt() = withIndex()
         .filter { (y, it) -> y==0 || it > take(y).maxOrNull()!! }.map { (y , _) -> y }.toSet()
 
-
-    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) =
-        listOf(column(y).take(x).reversed(), column(y).drop(x+1), get(x).take(y).reversed(), get(x).drop(y+1))
+    private fun <T> List<List<T>>.getSightLinesAt(x : Int, y:Int) = listOf(
+        column(y).take(x).reversed(),
+        column(y).drop(x+1),
+        get(x).take(y).reversed(),
+        get(x).drop(y+1)
+    )
 
     override val example = """
         30373

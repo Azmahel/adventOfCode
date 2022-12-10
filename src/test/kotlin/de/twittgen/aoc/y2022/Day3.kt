@@ -1,8 +1,8 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.alphabet
 
-typealias Rucksack = Pair<Set<Char>,Set<Char>>
 
 class Day3 : Day<Int, Int, List<Rucksack>>() {
     override fun String.parse() = lines().map { it.toRucksack() }
@@ -16,18 +16,15 @@ class Day3 : Day<Int, Int, List<Rucksack>>() {
         }
     }
 
-    private val alphabet = ('a'..'z')+('A'..'Z')
     private val priorities: Map<Char, Int> = (alphabet).mapIndexed { i, c -> c to i+1 }.toMap()
 
     private fun String.toRucksack() = chunked(length/2).let { it[0].toSet() to it[1].toSet() }
 
-    private fun List<Rucksack>.findBadges() = chunked(3)
-        .map { group ->
-            group
-                .map { it.first + it.second }
-                .fold(alphabet.toSet()) { a, b -> a.intersect(b) }
-                .single()
-        }
+    private fun List<Rucksack>.findBadges() = chunked(3).map { group ->
+        group.map { it.allContents }
+            .fold(alphabet.toSet()) { a, b -> a.intersect(b) }
+            .single()
+    }
 
     override val  example = """
         vJrwpWtwJgWrhcsFMMfFFhFp
@@ -38,5 +35,6 @@ class Day3 : Day<Int, Int, List<Rucksack>>() {
         CrZsJsPPZsGzwwsLwLmpwMDw
     """.trimIndent()
 }
-
+typealias Rucksack = Pair<Set<Char>,Set<Char>>
+private val Rucksack.allContents  get() = first +second
 

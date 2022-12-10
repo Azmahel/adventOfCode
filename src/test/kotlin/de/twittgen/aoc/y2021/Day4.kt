@@ -15,10 +15,11 @@ class Day4 : Day<Int, Int, Day4.BingoGame>() {
         }
 
     init {
-        part1(4512, 54275) { this.runGame(getFirstWinner).run { first.getScore(second) } }
-        part2(1924, 13158) { this.runGame(getLastWinner).run { first.getScore(second) } }
+        part1(4512, 54275) { this.runGame(getFirstWinner).score() }
+        part2(1924, 13158) { this.runGame(getLastWinner).score() }
     }
 
+    private fun Pair<Board, Int>.score() = let {(board, lastCall) ->  board.getScore(lastCall) }
 
     private fun BingoGame.takeTurn(): BingoGame = BingoGame(
         numbers.drop(1),
@@ -33,16 +34,15 @@ class Day4 : Day<Int, Int, Day4.BingoGame>() {
     private val getFirstWinner: BingoGame.(BingoGame) -> Board?  = { new ->  new.findWinners().firstOrNull()}
     private val getLastWinner: BingoGame.(BingoGame) -> Board?  = { new ->
         if(new.boards.size == new.findWinners().size) {
-            val winners = findWinners().map(Board::id)
-            new.findWinners().first { it.id !in winners }
+            new.findWinners().first { it.id !in findWinners().map(Board::id) }
         } else {
             null
         }
     }
 
-    private tailrec fun BingoGame.runGame(winnerFunction: BingoGame.(BingoGame) -> Board?) : Pair<Board, Int> {
+    private tailrec fun BingoGame.runGame(getWinner: BingoGame.(BingoGame) -> Board?) : Pair<Board, Int> {
         val new = takeTurn()
-        return winnerFunction(new)?.let { winner -> winner to new.lastCall } ?: new.runGame(winnerFunction)
+        return getWinner(new)?.let { winner -> winner to new.lastCall } ?: new.runGame(getWinner)
     }
 
     data class Board(val id: Int, val spaces : List<List<Pair<Int,Boolean>>>) {

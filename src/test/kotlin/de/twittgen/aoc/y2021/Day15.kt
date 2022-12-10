@@ -2,10 +2,8 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
-import de.twittgen.aoc.util.FileUtil
-import de.twittgen.aoc.util.filterIn
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.util.ofLength
+
 
 class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
 
@@ -22,9 +20,10 @@ class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
     private fun Map<Point2D,Int>.expand(times: Int = 5): Map<Point2D, Int> {
         val maxX = keys.maxByOrNull { it.x }!!.x + 1
         val maxY = keys.maxByOrNull { it.y }!!.y +1
-        return entries.flatMap { (k, v) -> (0 until times).flatMap { dx -> (0 until times).map { dy ->
-            Point2D(k.x + (maxX*dx) , (k.y + (maxY*dy))) to ((v+dx+dy)-1) % 9 +1
-        } } }.toMap()
+        return entries.flatMap { (k, v) -> ofLength(times) { dx -> ofLength(times) { dy ->
+            Point2D(k.x + (maxX*dx), (k.y + (maxY*dy))) to ((v+dx+dy)-1) % 9 + 1
+        } }.flatten() }.toMap()
+
     }
 
     private fun Map<Point2D,Int>.dijkstra(): Int {
@@ -36,7 +35,7 @@ class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
             val current = distQ.minByOrNull { it.value }!!.key
             if (current == end) return distQ[end]!!
             distQ.remove(current)
-            current.getAdjacentOn(this).forEach { neighbor ->
+            current.getAdjacent(this).forEach { neighbor ->
                 val alt = dist[current]!! + get(neighbor)!!
                 if (alt < (dist[neighbor] ?: Int.MAX_VALUE)) {
                     dist[neighbor] = alt
@@ -47,8 +46,7 @@ class Day15 : Day<Int, Int, Map<Point2D, Int>>() {
         return dist[end]!!
     }
 
-    private fun Point2D.getAdjacentOn(map: Map<Point2D,Int>): List<Point2D> =
-        listOf(Point2D(x,y+1), Point2D(x,y-1), Point2D(x+1,y), Point2D(x-1,y),).filterIn(map.keys)
+    private fun Point2D.getAdjacent(map: Map<Point2D,Int>): Set<Point2D> = orthogonallyAdjacent().intersect(map.keys)
 
     override val example = """
         1163751742

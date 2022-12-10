@@ -15,9 +15,7 @@ class Day8 : Day<Int, Int, List<DecodingEntry>>() {
 
     init {
         part1(26, 387) {
-            sumOf {
-                it.second.count { i -> with(i) { is1() || is4() || is7() || is8() } }
-            }
+            sumOf { it.second.count { i -> with(i) { is1() || is4() || is7() || is8() } } }
         }
 
         part2(61229, 986034) {
@@ -32,7 +30,8 @@ class Day8 : Day<Int, Int, List<DecodingEntry>>() {
     private fun Set<Char>.is3(decoded: Map<Int, Set<Char>>) = containsAll(decoded[7]!!) && minus(decoded[7]!!).size == 2
     private fun Set<Char>.is9(decoded: Map<Int, Set<Char>>) = containsAll(decoded[3]!!) && minus(decoded[3]!!).size == 1
     private fun Set<Char>.is5(b: Char) = contains(b) && minus(b).size == 4
-    private fun Set<Char>.is6(decoded: Map<Int, Set<Char>>) = containsAll(decoded[5]!!) && minus(decoded[5]!!).size == 1 && !is9(decoded)
+    private fun Set<Char>.is6(decoded: Map<Int, Set<Char>>) =
+        containsAll(decoded[5]!!) && minus(decoded[5]!!).size == 1 && !is9(decoded)
 
     private fun List<Set<Char>>.getDecoder(): Map<Set<Char>, Char> {
         val result = mutableMapOf<Int, Set<Char>>()

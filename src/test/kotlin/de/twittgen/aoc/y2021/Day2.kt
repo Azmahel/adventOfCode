@@ -1,6 +1,8 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
 import de.twittgen.aoc.util.second
 
 class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
@@ -8,22 +10,22 @@ class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
     override fun String.parse() = lines().map { it.split(" ").run { first() to second().toInt() } }
 
     init {
-        part1(150, 2102357) { move(start).run { first * second } }
-        part2(900, 2101031224) { moveWithAim(start).run { first * second } }
+        part1(150, 2102357) { move().run { x * y } }
+        part2(900, 2101031224) { moveWithAim().run { x * y } }
     }
 
-    private tailrec fun List<Pair<String, Int>>.move(point: Pair<Int, Int>) : Pair<Int, Int> {
+    private tailrec fun List<Pair<String, Int>>.move(point: Point2D= ORIGIN) : Point2D {
         return if (isEmpty()) point else drop(1).move(getNext(point))
     }
 
-    private fun List<Pair<String, Int>>.getNext(point: Pair<Int, Int>) = first().run { when (first) {
-        "forward" -> point.first + second to point.second
-        "down" -> point.first to point.second + second
-        "up" -> point.first to point.second - second
+    private fun List<Pair<String, Int>>.getNext(point: Point2D) = first().let { (d , v) -> when (d) {
+        "forward" -> Point2D(point.x + v , point.y)
+        "down" -> Point2D(point.x, point.y + v)
+        "up" -> Point2D(point.x, point.y - v)
         else -> point
     }}
 
-    private tailrec fun List<Pair<String, Int>>.moveWithAim(point: Pair<Int, Int>, aim: Int = 0) : Pair<Int,Int> {
+    private tailrec fun List<Pair<String, Int>>.moveWithAim(point: Point2D= ORIGIN, aim: Int = 0) : Point2D {
         return if(isEmpty()) {
             point
         } else {
@@ -32,8 +34,8 @@ class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
         }
     }
 
-    private fun Pair<String, Int>.getNextWithAim(point: Pair<Int, Int>, nextAim: Int) = when (first) {
-        "forward" -> point.first + second to point.second + (nextAim * second)
+    private fun Pair<String, Int>.getNextWithAim(point: Point2D, nextAim: Int) = when (first) {
+        "forward" -> Point2D(point.x + second, point.y + (nextAim * second))
         else -> point
     }
 
@@ -43,7 +45,6 @@ class Day2 : Day<Int, Int, List<Pair<String, Int>>>() {
         else -> aim
     }
 
-    val start = 0 to 0
     override val example = """
         forward 5
         down 5

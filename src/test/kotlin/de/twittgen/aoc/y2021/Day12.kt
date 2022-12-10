@@ -1,20 +1,17 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.util.hasDuplicate
 import de.twittgen.aoc.util.isLowerCase
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day12.Cave
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
-typealias CaveMap = List<Pair<Cave, Cave>>
+typealias CaveMap = Set<Pair<Cave, Cave>>
 
 typealias Path = List<Cave>
 
 class Day12: Day<Int, Int, CaveMap>() {
-    override fun String.parse() = lines().map { it.split("-").run { first().toCave() to second().toCave() } }
+    override fun String.parse() = lines().map { it.split("-").run { first().toCave() to second().toCave() } }.toSet()
 
     init {
         part1(226, 4167) { findPaths { singleUseSmallCaves() }.size }

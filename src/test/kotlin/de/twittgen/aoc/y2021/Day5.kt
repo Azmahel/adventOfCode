@@ -1,45 +1,41 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.second
-import de.twittgen.aoc.y2021.Day5.LineDef
+import de.twittgen.aoc.y2021.Day5.Line
 
-class Day5 : Day<Int, Int, List<LineDef>>(){
-    override fun String.parse() = lines().map { it.toLineDef() }
+class Day5 : Day<Int, Int, List<Line>>(){
+    override fun String.parse() = lines().map { it.toLine() }
 
-    private fun String.toLineDef() = split(" -> ")
-            .map { it.split(",").map(String::toInt).run { first() to second() } }
-            .run { LineDef(first(), second()) }
+    private fun String.toLine() = split(" -> ")
+            .map { it.split(",").map(String::toInt).run {Point2D(first(), second()) } }
+            .run { LineDef(first(), second()) }.toLine()
 
     init {
         part1(5, 5690) {
-            filter { it.isVertical() || it.isHorizontal() }.map { it.toLine() }
-                .intersections()
-                .size
+            filter { it.isVertical() || it.isHorizontal() }.intersections().size
         }
-        part2(12, 17741) {
-            map { it.toLine() }.intersections().size
-        }
+        part2(12, 17741) { intersections().size }
     }
 
-    private fun LineDef.isHorizontal() = a.second == b.second
-    private fun LineDef.isVertical() = a.first == b.first
-    private fun LineDef.toLine()= Line(when {
-            isHorizontal() -> range(a.first, b.first).map { it to a.second }
-            isVertical() -> range(a.second, b.second).map { a.first to it }
-            else -> range(a.first, b.first).zip(range(a.second,b.second))
-    })
-
-
-    private fun range(a:Int, b:Int) = if(a<b) a..b else a downTo b
-
-    data class LineDef(val a: Point, val b: Point)
-    data class Line(val points: List<Point>)
+    data class LineDef(val a: Point2D, val b: Point2D) {
+        fun toLine()= Line(when {
+            a.y == b.y -> range(a.x, b.x).map { Point2D(it, a.y) }
+            a.x == b.x -> range(a.y, b.y).map { Point2D(a.x, it) }
+            else -> range(a.x, b.x).zip(range(a.y, b.y)).map(Point2D::of)
+        })
+        private fun range(a:Int, b:Int) = if(a<b) a..b else a downTo b
+    }
+    data class Line(val points: List<Point2D>) {
+        fun isHorizontal() = points.first().y == points.last().y
+        fun isVertical() = points.first().x == points.last().x
+    }
 
     private fun List<Line>.intersections() = flatMap { line -> line.points.map { point -> point to line } }
         .groupBy { it.first }
         .filterValues { it.size > 1 }
-        .map { (k, _) -> k }
+        .keys
 
     override val example = """
         0,9 -> 5,9
@@ -55,4 +51,3 @@ class Day5 : Day<Int, Int, List<LineDef>>(){
     """.trimIndent()
 }
 
-typealias Point = Pair<Int,Int>

@@ -1,10 +1,9 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.ofLength
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day16.Packet
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import java.lang.IllegalStateException
 import java.lang.Integer.min
 
@@ -12,7 +11,8 @@ class Day16 : Day<Int, Long, Packet> (){
 
     override val example = """8A004A801A8002F478"""
 
-    override fun String.parse() = map { Integer.toBinaryString(it.toString().toInt(16)).padStart(4,'0') }
+    override fun String.parse() =
+        map { Integer.toBinaryString(it.toString().toInt(16)).padStart(4,'0') }
             .joinToString("").let { BitStream(it).decodePacket() }
 
     init {
@@ -20,9 +20,8 @@ class Day16 : Day<Int, Long, Packet> (){
         part2(15, 673042777597) { score() }
     }
 
-    private fun BitStream.decodePacket(): Packet {
-        val version = readBits(3).toInt(2)
-        return when(readBits(3).toInt(2)) {
+    private fun BitStream.decodePacket() = readBits(3).toInt(2).let { version ->
+        when(readBits(3).toInt(2)) {
             4 -> Literal(version, decodeLiteral())
             0 -> Sum(version, decodeOperator())
             1 -> Prod(version, decodeOperator())
@@ -32,29 +31,20 @@ class Day16 : Day<Int, Long, Packet> (){
             6 -> LT(version, decodeOperator())
             7 -> Equal(version, decodeOperator())
             else -> throw IllegalStateException()
-        }
-    }
+        } }
 
-    private fun BitStream.decodeOperator(): List<Packet> {
-        val lengthId= readBits(1)
-        val packets = mutableListOf<Packet>()
-        if(lengthId == "0") {
-            val bitCount = readBits(15).toInt(2)
-            val packetBits = BitStream(readBits(bitCount))
-            while(packetBits.hasNext()) { packets.add(packetBits.decodePacket()) }
-        } else {
-            val packetCount = readBits(11).toInt(2)
-            repeat(packetCount) { packets.add(decodePacket()) }
-        }
-        return packets
-    }
+    private fun BitStream.decodeOperator() = if (readBits(1) == "0") decodeByLength() else decodeByCount()
 
-    private fun BitStream.decodeLiteral(): Long {
-        var number = ""
-        while(readBits(1) == "1"){ number += readBits(4) }
-        number += readBits(4)
+    private fun BitStream.decodeByCount(): List<Packet> = ofLength(readBits(11).toInt(2)) { decodePacket() }
 
-        return number.toLong(2)
+    private fun BitStream.decodeByLength(): List<Packet> =BitStream(readBits(readBits(15).toInt(2)))
+        .doRepeat { decodePacket() }
+
+
+    private tailrec fun BitStream.decodeLiteral(current: String = ""): Long {
+        val marker = readBits(1)
+        val next = current + readBits(4)
+        return if(marker != "1") next.toLong(2)else decodeLiteral(next)
     }
 
     class BitStream(private val binaryString: String) {
@@ -63,6 +53,8 @@ class Day16 : Day<Int, Long, Packet> (){
             .substring(pointer, min(pointer +count, binaryString.length))
             .also { pointer += count }
         fun hasNext() = pointer < binaryString.lastIndex
+        fun<T> doRepeat(operation: BitStream.() -> T) = mutableListOf<T>()
+            .also { while (hasNext()) { it.add(operation()) } }
     }
 
     private fun Packet.versionScore() : Int = when(this) {

@@ -29,7 +29,7 @@ class Day7 : Day<Long, Long, Directory>(){
             "cd" -> { when(param) {
                 ".." -> parent!!.performNextInstruction(remainder)
                 else -> (children[param] as Directory).performNextInstruction(remainder)
-            } }
+            }}
             "ls" -> {
                 remainder.takeWhile { !it.startsWith('$') }.forEach {
                     val (obj, name) = it.split(" ").run { first() to second() }

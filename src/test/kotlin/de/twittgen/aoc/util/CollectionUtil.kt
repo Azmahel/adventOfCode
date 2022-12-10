@@ -3,7 +3,6 @@ package de.twittgen.aoc.util
 fun <T> List<T>.second() = get(1)
 fun <T> List<T>.secondOrNull() = getOrNull(1)
 fun <T> List<T>.middle() = get((size-1) /2)
-fun <T> List<T>.filterIn(other: Collection<T>) = filter { it in other }
 fun <T> List<T>.hasDuplicate() = toSet().size != size
 
 
@@ -13,5 +12,8 @@ fun <T> List<List<T>>.column(i: Int) = map { it[i] }
 fun <T> List<List<T>>.columns() = (0..get(0).lastIndex).map { column(it) }
 fun <T> List<T>.takeUntil(predicate: (T)-> Boolean): List<T> =
     firstOrNull(predicate) ?.let { takeWhile{ x -> !predicate(x) } + it } ?: takeWhile{ !predicate(it) }
+fun <T> List<T>.mapIf(predicate: (T) -> Boolean, transform: (T) -> T): List<T> = map { if(predicate(it)) transform(it) else it }
+fun <T> ofLength(i: Int, supplier: (Int)->T) = (0 until i).map { supplier(it) }
 
 fun<T,R> Triple<T, T, T>.forEach(m:(T)-> (R)) = Triple(m(first), m(second), m(third))
+infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = this.intersect(other.toSet()) == this.toSet()

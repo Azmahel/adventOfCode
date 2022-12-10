@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.containsAll
 
 typealias Assignment = Pair<IntRange, IntRange>
 
@@ -10,19 +11,11 @@ class Day4 : Day<Int, Int, List<Assignment>> () {
     private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }
 
     init {
-        part1(2, 448) {
-            count { it.hasCompleteOverlap() }
-        }
-        part2(4, 794) {
-            count { it.hasOverlap() }
-        }
+        part1(2, 448) { count { it.hasCompleteOverlap() } }
+        part2(4, 794) { count { it.hasOverlap() } }
     }
 
-    private fun Assignment.hasCompleteOverlap() = when {
-        (first.first < second.first) -> first.last >= second.last
-        (first.first > second.first) -> second.last >= first.last
-        else -> true
-    }
+    private fun Assignment.hasCompleteOverlap() = first containsAll second || second containsAll first
 
     private fun Pair<IntRange, IntRange>.hasOverlap() : Boolean = first.intersect(second).isNotEmpty()
 
