@@ -26,8 +26,8 @@ abstract class  Day<R> {
         part2 = Part(function, expectedExample, expected)
     }
 
-    abstract val example : String
-    private val exampleParsed by lazy { example.parse() }
+    open val example : String? = null
+    private val exampleParsed by lazy { example!!.parse() }
     private val identifier = "${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}"
 
     private val rawInput by lazy {FileUtil.readInput(identifier)}
@@ -51,12 +51,12 @@ abstract class  Day<R> {
     }
 
     private fun Part<R>.run() {
-        run(
+        if (example != null) {run(
             function,
-            if(mutableModel) example.parse() else exampleParsed,
+            if(mutableModel) example!!.parse() else exampleParsed,
             exampleExpected,
             "example"
-        )
+        )}
         if(rawInput.isNotEmpty()) {
             run(
                 function,

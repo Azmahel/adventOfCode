@@ -1,4 +1,4 @@
 package de.twittgen.aoc.util
 
-val Int.digits
+val Number.digits
     get() = toString().map{ it.toString().toInt() }
