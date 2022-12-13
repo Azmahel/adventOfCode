@@ -41,6 +41,6 @@ class Day17 : Day<TargetArea>(){
         return if(next.y < limit.y || next.x > limit.x)  trace else  decrease().shoot(limit, next, trace + next)
     }
 }
- private typealias Vector = Point2D
+private typealias Vector = Point2D
 private fun Vector.decrease() = Vector(max(x - 1,0), y - 1)
 

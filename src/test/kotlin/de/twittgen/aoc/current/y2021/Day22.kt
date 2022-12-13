@@ -3,6 +3,7 @@ package de.twittgen.aoc.current.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.current.y2021.Day22.Command.OFF
 import de.twittgen.aoc.current.y2021.Day22.Command.ON
+import de.twittgen.aoc.util.Point3D
 import de.twittgen.aoc.util.toIntRange
 import java.math.BigInteger
 import java.math.BigInteger.ONE
@@ -68,7 +69,6 @@ class Day22 : Day<List<Day22.Instruction>>() {
 
 
 
-    data class Point3D(val x: Int, val y: Int, val z: Int)
     override val example = """
       on x=-5..47,y=-31..22,z=-19..33
       on x=-44..5,y=-27..21,z=-14..35
