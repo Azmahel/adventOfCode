@@ -88,7 +88,7 @@ class Terminal(val value: Int): SnailNumber() {
     override fun toExplodeString( exploder: Nested?) = value.toString()
 }
 
-fun String.toSnailNumber() = toNestedList().toSnailNumber()
+private fun String.toSnailNumber() = toNestedList().toSnailNumber()
 
 private fun NestedList.toSnailNumber() : SnailNumber = when(this) {
        is NestedList.Terminal -> Terminal(value)

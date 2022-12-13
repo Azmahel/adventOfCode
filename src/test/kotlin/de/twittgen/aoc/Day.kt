@@ -18,11 +18,11 @@ abstract class  Day<R> {
 
     abstract fun String.parse() : R
 
-    fun part1(expectedExample: Any, expected: Any? = null, function: (R) -> Any) {
+    fun part1(expectedExample: Any?, expected: Any? = null, function: (R) -> Any) {
         part1 = Part(function, expectedExample, expected)
     }
 
-    fun part2(expectedExample: Any, expected: Any? = null, function: (R) -> Any) {
+    fun part2(expectedExample: Any?, expected: Any? = null, function: (R) -> Any) {
         part2 = Part(function, expectedExample, expected)
     }
 
@@ -51,7 +51,7 @@ abstract class  Day<R> {
     }
 
     private fun Part<R>.run() {
-        if (example != null) {run(
+        if (exampleExpected != null) {run(
             function,
             if(mutableModel) example!!.parse() else exampleParsed,
             exampleExpected,
@@ -73,7 +73,7 @@ abstract class  Day<R> {
 
     data class Part<R>(
         var function: (R) -> Any,
-        var exampleExpected: Any,
+        var exampleExpected: Any?,
         var expected: Any? = null,
     )
 
