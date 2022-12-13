@@ -1,13 +1,9 @@
 package de.twittgen.aoc.current.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.Mapping
-import de.twittgen.aoc.util.alphabet
-import de.twittgen.aoc.util.takeLastPartitioning
-import de.twittgen.aoc.util.takePartitioning
+import de.twittgen.aoc.util.*
 
 private const val EXPLODER_MARKER = "Ø"
-private val findTerminalPair = Regex(".*<([^<>]*)>.*")
 private val splitOnExploder = Regex("(.*)$EXPLODER_MARKER(.*)")
 
 class Day18: Day<List<SnailNumber>>(){
@@ -55,7 +51,7 @@ class Nested(val left: SnailNumber, val right: SnailNumber) : SnailNumber() {
             explodeFront(front).let { (a, b, c) -> listOf(a, b.addSplash(exploder.left), c) },
             listOf("0"),
             explodeBack(back).let { (a, b, c) -> listOf(a, b.addSplash(exploder.right), c) }
-        ).flatten().joinToString("").toSnailNumber()
+        ).flatten().joinToString("").toSnailNumber() as Nested
     }
 
     private fun String.addSplash(exploder: SnailNumber) =
@@ -92,18 +88,9 @@ class Terminal(val value: Int): SnailNumber() {
     override fun toExplodeString( exploder: Nested?) = value.toString()
 }
 
-tailrec fun String.toSnailNumber(map: Mapping<String, SnailNumber> = Mapping(alphabet.map(Char::toString))) : Nested {
-    if(length == 1) return map[this]!! as Nested
-    val target = findTerminalPair.matchEntire(this)!!.groupValues.drop(1).first()
-    val (a, b) = target.split(',')
-    return replace("<$target>", map.put(Nested(a.resolveToSnailNumber(map), b.resolveToSnailNumber(map))))
-        .toSnailNumber(map)
-}
+fun String.toSnailNumber() = toNestedList().toSnailNumber()
 
-
-private fun String.resolveToSnailNumber(map: Mapping<String, SnailNumber>) =
-    toIntOrNull()?.let { Terminal(it) } ?: map[this]!!.copy()
-
-
-
-
+private fun NestedList.toSnailNumber() : SnailNumber = when(this) {
+       is NestedList.Terminal -> Terminal(value)
+       is NestedList.Nested -> Nested(content.first().toSnailNumber(), content.second().toSnailNumber())
+   }
