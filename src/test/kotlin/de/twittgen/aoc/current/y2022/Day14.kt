@@ -20,11 +20,18 @@ class Day14 : Day<Cave>()  {
 
     init {
         part1(24,832) { it.simulate().size }
-        part2(93, ) { it.addFloor().simulate().size }
+        part2(93, ) { it.addFloor().simulate().also { sands -> warnIfEdgeIsMet(sands) }.size }
     }
 
+    private fun warnIfEdgeIsMet(sands: Set<Point2D>) {
+        if (sands.map { it.x }.run { minOrNull() == -floorSize || maxOrNull() == floorSize }) {
+            println("Sand might have fallen off, try with larger floor")
+        }
+    }
+
+    private val floorSize = 1000
     private fun Cave.addFloor() = Cave(
-        walls + lineToPoints(Point2D(-1000, floor+2) , Point2D(1000, floor +2) ) //technically it should be -inf and inf, but this fits
+        walls + lineToPoints(Point2D(-floorSize, floor+2) , Point2D(floorSize, floor +2) ) //technically it should be -inf and inf, but this fits
     )
 
     private tailrec fun Cave.simulate(current : Point2D = spawn) : Set<Point2D> {
