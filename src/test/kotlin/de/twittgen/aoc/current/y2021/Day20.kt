@@ -1,6 +1,7 @@
 package de.twittgen.aoc.current.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.Day.TestType.SLOW
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -16,7 +17,7 @@ class Day20 : Day<Pair<Algorithm, Image>>() {
 
     init {
         part1(35, 5708) { (alg, image) -> image.enhance(alg).enhance(alg).values.sum() }
-        part2(3351, 20895) { (alg, image) -> (1..50).fold(image) { i, _ -> i.enhance(alg) }.values.sum() }
+        part2(3351, 20895, SLOW) { (alg, image) -> (1..50).fold(image) { i, _ -> i.enhance(alg) }.values.sum() }
     }
 
     private fun Image.enhance(algorithm : Algorithm, default : Int = 0): Image {

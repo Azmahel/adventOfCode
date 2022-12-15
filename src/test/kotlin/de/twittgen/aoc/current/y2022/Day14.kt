@@ -1,6 +1,7 @@
 package de.twittgen.aoc.current.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.current.y2022.Day14.Cave
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.rangeOf
@@ -19,7 +20,7 @@ class Day14 : Day<Cave>()  {
 
     init {
         part1(24,832) { it.simulate().size }
-        part2(93, ) { it.addFloor().simulate().size }
+        part2(93, 27601, SLOW) { it.addFloor().simulate().size }
     }
 
 

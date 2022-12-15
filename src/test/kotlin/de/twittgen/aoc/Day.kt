@@ -2,6 +2,8 @@ package de.twittgen.aoc
 
 import de.twittgen.aoc.Day.TestState.EXAMPLE
 import de.twittgen.aoc.Day.TestState.REAL
+import de.twittgen.aoc.Day.TestType.NORMAL
+import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assumptions
@@ -17,18 +19,24 @@ abstract class  Day<R> {
     private var part2 : Part<R>? = null
 
     protected var mutableModel: Boolean = false
+    protected var runSlowTests: Boolean = false
+    enum class TestType { SLOW, NORMAL}
+    private var slowTests = emptyList<Part<R>>()
 
     abstract fun String.parse() : R
 
-    fun part1(expectedExample: Any?, expected: Any? = null, function: (R) -> Any) {
-        part1 = Part(function, expectedExample, expected)
+    fun part1(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any) {
+        part1 = Part(function, expectedExample, expected, "PART1")
+        if(type == SLOW) slowTests = slowTests + part1!!
     }
 
-    fun part2(expectedExample: Any?, expected: Any? = null, function: (R) -> Any) {
-        part2 = Part(function, expectedExample, expected)
+    fun part2(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any) {
+        part2 = Part(function, expectedExample, expected, "PART2")
+        if(type == SLOW) slowTests = slowTests + part2!!
     }
 
     open val example : String? = null
+
     private val exampleParsed by lazy { example!!.parse() }
     private val identifier = "${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}"
     protected var testState = EXAMPLE
@@ -45,17 +53,18 @@ abstract class  Day<R> {
 
     @Test
     fun part1() {
-        assumeTrue(part1 !=null)
-        part1!!.also { part -> println("PART1").also { part.run() } }
+        assumeTrue(part1 !=null, "PART 1 skipped: does not exist")
+        part1!!.run()
     }
 
     @Test
     fun part2() {
-        assumeTrue(part2 !=null)
-        part2!!.also { part ->  println("PART2").also { part.run() } }
+        assumeTrue(part2 !=null, "PART2 skipped: does not exist")
+        part2!!.run()
     }
 
     private fun Part<R>.run() {
+        println("===$title===")
         if (exampleExpected != null) {
             testState =EXAMPLE
             run(
@@ -65,6 +74,9 @@ abstract class  Day<R> {
             "example"
         )}
         if(rawInput.isNotEmpty()) {
+            if(!runSlowTests && this in slowTests) {
+                println("skipped real: marked as slow").also { assumeTrue(false)}
+            }
             testState = REAL
             run(
                 function,
@@ -83,6 +95,7 @@ abstract class  Day<R> {
         var function: (R) -> Any,
         var exampleExpected: Any?,
         var expected: Any? = null,
+        val title: String
     )
 
     private fun getYearFormPackage() = this.javaClass.packageName.split('.').last().drop(1)
