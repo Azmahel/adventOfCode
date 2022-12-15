@@ -1,5 +1,7 @@
 package de.twittgen.aoc
 
+import de.twittgen.aoc.Day.TestState.EXAMPLE
+import de.twittgen.aoc.Day.TestState.REAL
 import de.twittgen.aoc.util.FileUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assumptions
@@ -29,6 +31,9 @@ abstract class  Day<R> {
     open val example : String? = null
     private val exampleParsed by lazy { example!!.parse() }
     private val identifier = "${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}"
+    protected var testState = EXAMPLE
+        private set
+    enum class TestState { EXAMPLE, REAL}
 
     private val rawInput by lazy {FileUtil.readInput(identifier)}
     private val input by lazy { rawInput.parse() }
@@ -51,13 +56,16 @@ abstract class  Day<R> {
     }
 
     private fun Part<R>.run() {
-        if (exampleExpected != null) {run(
+        if (exampleExpected != null) {
+            testState =EXAMPLE
+            run(
             function,
             if(mutableModel) example!!.parse() else exampleParsed,
             exampleExpected,
             "example"
         )}
         if(rawInput.isNotEmpty()) {
+            testState = REAL
             run(
                 function,
                 if (mutableModel) rawInput.parse() else input,
