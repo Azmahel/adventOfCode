@@ -7,7 +7,7 @@ import de.twittgen.aoc.old.y2020.day14.Instruction.Mem
 import org.junit.jupiter.api.Test
 import java.lang.IllegalArgumentException
 
- private typealias BitNumber = List<Char?>
+private typealias BitNumber = List<Char?>
 class day14 {
     val input = FileUtil.readInput("2020/day14")
     val example = """

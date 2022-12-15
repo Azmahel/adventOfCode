@@ -5,14 +5,14 @@ import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.times
 
 class Day7 : Day<RuleSet>() {
-    override fun String.parse() =
-        replace("bags", "").replace("bag", "").replace(".","")
-            .lines()
-            .associate { it.split(" contain ").run { first().trim() to second().parseContent() } }
+    private val bagMatcher = Regex("(.*) bags contain (.*)")
+    override fun String.parse() = lines().associate {
+        bagMatcher.matchEntire(it)!!.destructured.let {(a,b) ->  a.trim() to b.parseContent() }
+    }
 
+    private val contentMatcher = Regex("([0-9]*) (.*)bag(s*)\\.*")
     private fun String.parseContent() = split(", ").mapNotNull {
-        Regex("([0-9]*) (.*)").matchEntire(it)?.destructured
-            ?.let { (number, color) -> number.toInt() to color.trim() }
+        contentMatcher.matchEntire(it)?.destructured?.let { (number, color) -> number.toInt() to color.trim() }
     }
 
     private val shinyGold = listOf("shiny gold")

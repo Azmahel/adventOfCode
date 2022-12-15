@@ -25,12 +25,12 @@ abstract class  Day<R> {
 
     abstract fun String.parse() : R
 
-    fun part1(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any) {
+    fun part1(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any?) {
         part1 = Part(function, expectedExample, expected, "PART1")
         if(type == SLOW) slowTests = slowTests + part1!!
     }
 
-    fun part2(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any) {
+    fun part2(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any?) {
         part2 = Part(function, expectedExample, expected, "PART2")
         if(type == SLOW) slowTests = slowTests + part2!!
     }
@@ -86,13 +86,13 @@ abstract class  Day<R> {
         }
     }
 
-    private fun run(partFunction: (R) -> Any, input: R, expected: Any?, title: String) {
+    private fun run(partFunction: (R) -> Any?, input: R, expected: Any?, title: String) {
         val result = partFunction(input).also { println("$title: $it") }
         expected?.also { assertEquals(it.toString(), result.toString()) }
     }
 
     data class Part<R>(
-        var function: (R) -> Any,
+        var function: (R) -> Any?,
         var exampleExpected: Any?,
         var expected: Any? = null,
         val title: String

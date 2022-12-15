@@ -1,4 +1,4 @@
-package de.twittgen.aoc.old.y2020
+package de.twittgen.aoc.current.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.second
