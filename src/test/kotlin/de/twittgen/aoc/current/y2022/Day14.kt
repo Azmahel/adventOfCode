@@ -20,22 +20,26 @@ class Day14 : Day<Cave>()  {
 
     init {
         part1(24,832) { it.simulate().size }
-        part2(93, 27601, SLOW) { it.addFloor().simulate().size }
+        part2(93, 27601) { it.addFloor().simulate().size }
     }
 
 
 
     private fun Cave.addFloor() = Cave(
-        walls + lineToPoints(Point2D(500-(floor+2), floor+2) , Point2D(500+floor+2, floor +2) ) //technically it should be -inf and inf, but this fits
+        walls + lineToPoints(Point2D(500-(floor+2), floor+2) , Point2D(500+floor+2, floor +2) )
     )
 
-    private tailrec fun Cave.simulate(current : Point2D = spawn) : Set<Point2D> {
-        if(current.y > floor || current in blocked) return sands
-        val next = current.getNextOptions().first { it !in blocked }
-        return if( next != current) simulate(next) else Cave(walls, sands+next).simulate()
+    private fun Cave.simulate() : Set<Point2D> {
+        var current = spawn
+        val sands = mutableSetOf<Point2D>()
+        while(current.y <= floor && current !in sands) {
+            val next = current.getNextOptions().first { it !in walls  && it !in sands }
+            current = if (next == current) spawn.also {  sands.add(next) } else next
+        }
+        return sands
     }
 
-    //positive y is down, so we go "up" on a normal grid
+    // positive y is down, so we go "up" on a normal grid
     private fun Point2D.getNextOptions() = listOf(up(), up().left(), up().right(), this )
 
     data class Cave(
