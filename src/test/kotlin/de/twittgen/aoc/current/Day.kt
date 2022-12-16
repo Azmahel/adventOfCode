@@ -50,45 +50,51 @@ abstract class  Day<R> {
         println("Running $identifier")
 
     }
+    @Nested
+    inner class Part1: RunPart(part1)
 
-    @Test
-    fun part1() {
-        assumeTrue(part1 !=null, "PART 1 skipped: does not exist")
-        part1!!.run()
-    }
+    @Nested
+    inner class Part2: RunPart(part2)
 
-    @Test
-    fun part2() {
-        assumeTrue(part2 !=null, "PART2 skipped: does not exist")
-        part2!!.run()
-    }
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    open inner class RunPart(val part: Part<R>?) {
+        @BeforeAll
+        fun start() {
+            if(part == null) println("SKIPPED")
+            assumeTrue(part != null)
+            println("===${part!!.title}===")
+        }
 
-    private fun Part<R>.run() {
-        println("===$title===")
-        if (exampleExpected != null) {
-            testState =EXAMPLE
-            run(
-            function,
-            if(mutableModel) example!!.parse() else exampleParsed,
-            exampleExpected,
-            "example"
-        )}
-        if(rawInput.isNotEmpty()) {
+        @Test
+        @DisplayName("Example")
+        fun example() { part!!.runExample() }
+
+        @Test
+        @DisplayName("Real")
+        fun real() { part!!.run() }
+
+        private fun Part<R>.run() {
+            assumeTrue(rawInput.isNotEmpty())
             if(!runSlowTests && this in slowTests) {
                 println("skipped real: marked as slow").also { assumeTrue(false)}
             }
             testState = REAL
-            run(
-                function,
-                if (mutableModel) rawInput.parse() else input,
-                expected,
-                "real")
-        }
+            run(function, if (mutableModel) rawInput.parse() else input, expected, "real")
     }
 
-    private fun run(partFunction: (R) -> Any?, input: R, expected: Any?, title: String) {
-        val result = partFunction(input).also { println("$title: $it") }
-        expected?.also { assertEquals(it.toString(), result.toString()) }
+        private fun Part<R>.runExample() {
+            assumeTrue(exampleExpected != null)
+            if (exampleExpected != null) {
+                testState =EXAMPLE
+                run(function, if(mutableModel) example!!.parse() else exampleParsed, exampleExpected, "example")
+            }
+        }
+
+
+        private fun run(partFunction: (R) -> Any?, input: R, expected: Any?, title: String) {
+            val result = partFunction(input).also { println("$title: $it") }
+            expected?.also { assertEquals(it.toString(), result.toString()) }
+        }
     }
 
     data class Part<R>(
@@ -97,8 +103,6 @@ abstract class  Day<R> {
         var expected: Any? = null,
         val title: String
     )
-
-
 }
 
 

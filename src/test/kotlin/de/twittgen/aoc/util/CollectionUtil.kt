@@ -22,3 +22,4 @@ fun <T>MutableList<T>.replaceAt(i: Int, v :T): MutableList<T> {
     return this
 }
 infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = this.intersect(other.toSet()) == this.toSet()
+fun <T,R> List<Pair<T,R>>.toPairOfLists() = this.map { it.first } to this.map { it.second }

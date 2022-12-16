@@ -1,7 +1,6 @@
 package de.twittgen.aoc.current.y2022
 
 import de.twittgen.aoc.current.Day
-import de.twittgen.aoc.current.Day.TestType.SLOW
 import de.twittgen.aoc.current.y2022.Day14.Cave
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.rangeOf
@@ -16,17 +15,17 @@ class Day14 : Day<Cave>()  {
         .windowed(2)
         .flatMap { (a,b) -> lineToPoints(a,b)}
 
-    private fun lineToPoints(a: Point2D, b: Point2D) = (rangeOf(a.x, b.x)).flatMap { x -> rangeOf(a.y, b.y).map { y -> Point2D(x,y) } }
+    private fun lineToPoints(a: Point2D, b: Point2D) = (rangeOf(a.x, b.x)).flatMap { x -> rangeOf(a.y, b.y).map { y ->
+        Point2D(x,y)
+    } }
 
     init {
         part1(24,832) { it.simulate().size }
         part2(93, 27601) { it.addFloor().simulate().size }
     }
 
-
-
-    private fun Cave.addFloor() = Cave(
-        walls + lineToPoints(Point2D(500-(floor+2), floor+2) , Point2D(500+floor+2, floor +2) )
+    private fun Cave.addFloor(i: Int = 2) = Cave(
+        walls + lineToPoints(Point2D(spawn.x-(floor+i), floor+i) , Point2D(spawn.x+floor+i, floor +i) )
     )
 
     private fun Cave.simulate() : Set<Point2D> {
@@ -42,13 +41,8 @@ class Day14 : Day<Cave>()  {
     // positive y is down, so we go "up" on a normal grid
     private fun Point2D.getNextOptions() = listOf(up(), up().left(), up().right(), this )
 
-    data class Cave(
-        val walls: Set<Point2D>,
-        val sands: Set<Point2D> = emptySet(),
-        val spawn: Point2D = Point2D(500,0)
-    ) {
-        val blocked = walls + sands
-        val floor = blocked.maxOf { it.y }
+    data class Cave(val walls: Set<Point2D>, val spawn: Point2D = Point2D(500,0)) {
+        val floor = walls.maxOf { it.y }
     }
 
     override val example = """
