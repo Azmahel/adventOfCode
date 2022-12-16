@@ -1,12 +1,10 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.current.y2021.Day22.Command.OFF
 import de.twittgen.aoc.current.y2021.Day22.Command.ON
 import de.twittgen.aoc.util.Point3D
 import de.twittgen.aoc.util.toIntRange
-import java.math.BigInteger
-import java.math.BigInteger.ONE
 
 class Day22 : Day<List<Day22.Instruction>>() {
 

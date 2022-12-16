@@ -1,13 +1,11 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
-import de.twittgen.aoc.current.y2020.Day2.PwRestriction
-import de.twittgen.aoc.util.FileUtil
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.current.Day
+import de.twittgen.aoc.current.y2020.Day02.PwRestriction
 
 private val pwDelimiter = Regex("(.*): ([a-z]*)")
 private val restrictionPattern = Regex("(\\d+)-(\\d+) ([a-z])")
-class Day2: Day<List<Pair<PwRestriction, String>>>() {
+class Day02: Day<List<Pair<PwRestriction, String>>>() {
     override fun String.parse() = lines()
         .map {  l -> pwDelimiter.matchEntire(l)!!.destructured.let { (r, pw) -> r.toPwRestriction() to pw } }
 

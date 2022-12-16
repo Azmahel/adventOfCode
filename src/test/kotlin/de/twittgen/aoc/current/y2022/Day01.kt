@@ -1,8 +1,8 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 
-class Day1 : Day<List<Int>>() {
+class Day01 : Day<List<Int>>() {
     override fun String.parse() = split("\n\n").map { it.lines().sumOf(String::toInt) }
     init {
         part1(24000, 71780) { it.maxOrNull()!! }

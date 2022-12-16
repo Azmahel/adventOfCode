@@ -1,11 +1,11 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.second
-import de.twittgen.aoc.current.y2021.Day5.Line
+import de.twittgen.aoc.current.y2021.Day05.Line
 
-class Day5 : Day<List<Line>>(){
+class Day05 : Day<List<Line>>(){
     override fun String.parse() = lines().map { it.toLine() }
 
     private fun String.toLine() = split(" -> ")

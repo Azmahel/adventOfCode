@@ -1,7 +1,7 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestState.EXAMPLE
+import de.twittgen.aoc.current.Day
+import de.twittgen.aoc.current.Day.TestState.EXAMPLE
 import de.twittgen.aoc.util.Point2D
 import java.lang.IllegalStateException
 import kotlin.math.abs

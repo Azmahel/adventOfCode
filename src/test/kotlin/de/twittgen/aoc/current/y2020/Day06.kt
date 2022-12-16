@@ -1,8 +1,8 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 
-class Day6 : Day<List<List<String>>>(){
+class Day06 : Day<List<List<String>>>(){
     override fun String.parse() = split("\n\n").map { it.lines() }
 
     init {

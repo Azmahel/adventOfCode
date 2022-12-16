@@ -1,8 +1,8 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 
-class Day2: Day<List<String>>() {
+class Day02: Day<List<String>>() {
     override fun String.parse() = lines()
 
     init {

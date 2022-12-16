@@ -1,9 +1,8 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.current.Day
 
-class Day4 : Day<List<Passport>>() {
+class Day04 : Day<List<Passport>>() {
 
     override fun String.parse() = split("\n\n").map { passport ->
         passport.lines().flatMap { it.split(" ") }.associate {

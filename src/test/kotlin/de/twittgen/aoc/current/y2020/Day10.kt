@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 
 class Day10 : Day<List<Int>>() {
     override fun String.parse() = lines().map(String::toInt)

@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.NestedList
 import de.twittgen.aoc.util.NestedList.Nested
 import de.twittgen.aoc.util.NestedList.Terminal

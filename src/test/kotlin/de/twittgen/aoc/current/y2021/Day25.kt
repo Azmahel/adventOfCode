@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.current.y2021.Day25.Colonies
 import de.twittgen.aoc.util.Point2D
 

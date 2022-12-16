@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.mapIf
 import de.twittgen.aoc.util.second
 import kotlin.math.roundToLong

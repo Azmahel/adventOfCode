@@ -1,13 +1,13 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
+import de.twittgen.aoc.current.y2022.Day07.Directory
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.secondOrNull
-import de.twittgen.aoc.current.y2022.Day7.Directory
 import java.lang.IllegalStateException
 
 
-class Day7 : Day<Directory>(){
+class Day07 : Day<Directory>(){
     override fun String.parse(): Directory = Directory().also { it.performNextInstruction(lines().drop(1)) }
 
     init {

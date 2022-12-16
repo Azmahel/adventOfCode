@@ -1,18 +1,17 @@
-package de.twittgen.aoc
+package de.twittgen.aoc.current
 
-import de.twittgen.aoc.Day.TestState.EXAMPLE
-import de.twittgen.aoc.Day.TestState.REAL
-import de.twittgen.aoc.Day.TestType.NORMAL
-import de.twittgen.aoc.Day.TestType.SLOW
+import de.twittgen.aoc.current.Day.TestState.EXAMPLE
+import de.twittgen.aoc.current.Day.TestState.REAL
+import de.twittgen.aoc.current.Day.TestType.NORMAL
+import de.twittgen.aoc.current.Day.TestType.SLOW
 import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.getIdentifier
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.api.Assumptions.assumeTrue
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayNameGeneration(DayNameGenerator::class)
 abstract class  Day<R> {
 
     private var part1 : Part<R>? = null
@@ -38,7 +37,7 @@ abstract class  Day<R> {
     open val example : String? = null
 
     private val exampleParsed by lazy { example!!.parse() }
-    private val identifier = "${getYearFormPackage()}/${this.javaClass.simpleName.lowercase()}"
+    private val identifier = this.javaClass.getIdentifier().lowercase()
     protected var testState = EXAMPLE
         private set
     enum class TestState { EXAMPLE, REAL}
@@ -49,6 +48,7 @@ abstract class  Day<R> {
     @BeforeAll
     fun init() {
         println("Running $identifier")
+
     }
 
     @Test
@@ -98,8 +98,7 @@ abstract class  Day<R> {
         val title: String
     )
 
-    private fun getYearFormPackage() = this.javaClass.packageName.split('.').last().drop(1)
-}
 
+}
 
 

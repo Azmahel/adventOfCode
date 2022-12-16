@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.hasDuplicate
 import de.twittgen.aoc.util.isLowerCase
 import de.twittgen.aoc.util.second

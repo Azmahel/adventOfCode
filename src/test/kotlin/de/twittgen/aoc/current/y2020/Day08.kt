@@ -1,12 +1,10 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.replaceAt
-import org.junit.jupiter.api.Test
 
- private typealias Program = List<Pair<String, Int>>
-class Day8: Day<Program>() {
+private typealias Program = List<Pair<String, Int>>
+class Day08: Day<Program>() {
 
     override fun String.parse() = lines().map {
         Regex("([a-z]+) ([+\\-][0-9]+)").matchEntire(it)!!.destructured.let { (op, v) -> op to v.toInt()}

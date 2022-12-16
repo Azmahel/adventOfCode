@@ -1,9 +1,9 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.Point2D
 
-class Day3 : Day<Treemap>() {
+class Day03 : Day<Treemap>() {
 
     override fun String.parse() = lines()
         .mapIndexed { x, line -> line.mapIndexed { y, value -> Point2D(x, y) to (value == '#') } }

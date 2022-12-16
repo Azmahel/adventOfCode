@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.alphabet
 

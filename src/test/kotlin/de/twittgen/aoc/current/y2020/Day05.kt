@@ -1,10 +1,9 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.current.Day
 
 
-class Day5 : Day<List<String>>() {
+class Day05 : Day<List<String>>() {
     override fun String.parse() = lines()
     init {
         part1(820, 880) { it.maxOf { seat ->  seat.binaryNumber() } }

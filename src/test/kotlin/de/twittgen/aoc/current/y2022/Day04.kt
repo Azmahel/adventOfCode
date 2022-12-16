@@ -1,13 +1,13 @@
 package de.twittgen.aoc.current.y2022
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.containsAll
+import de.twittgen.aoc.util.toIntRange
 
 
-class Day4 : Day<List<Assignment>> () {
+class Day04 : Day<List<Assignment>>() {
     override fun String.parse() = lines().map { it.mapLine() }
-    private fun String.mapLine() = split(',').map { it.parseRange() }.let { it[0] to it[1] }
-    private fun String.parseRange() = split('-').let { it[0].toInt()..it[1].toInt() }
+    private fun String.mapLine() = split(',').map { it.toIntRange("-") }.let { (a, b) ->  a to b }
 
     init {
         part1(2, 448) { it.count { a -> a.hasCompleteOverlap() } }

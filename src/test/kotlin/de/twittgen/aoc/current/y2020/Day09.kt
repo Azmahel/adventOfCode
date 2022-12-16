@@ -1,12 +1,10 @@
 package de.twittgen.aoc.current.y2020
 
-import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestState.EXAMPLE
-import de.twittgen.aoc.util.FileUtil
-import org.junit.jupiter.api.Test
+import de.twittgen.aoc.current.Day
+import de.twittgen.aoc.current.Day.TestState.EXAMPLE
 import java.lang.IllegalStateException
 
-class Day9: Day<Cypher>() {
+class Day09: Day<Cypher>() {
     override fun  String.parse() = lines().map(String::toLong)
 
     init {

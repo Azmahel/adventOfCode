@@ -1,16 +1,14 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.util.second
 
- private typealias DecodingEntry = Pair<List<Set<Char>>, List<Set<Char>>>
 
-class Day8 : Day<List<DecodingEntry>>() {
+class Day08 : Day<List<DecodingEntry>>() {
     override fun String.parse(): List<DecodingEntry> = lines()
         .map { line ->
             line.split(" | ")
-                .map { part -> part.split(" ").map { it.toSet() } }
-                .run { first() to second() }
+                .map { part -> part.split(" ").map { it.toSet() } }.run { first() to second() }
         }
 
     init {
@@ -64,3 +62,4 @@ class Day8 : Day<List<DecodingEntry>>() {
         gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
     """.trimIndent()
 }
+private typealias DecodingEntry = Pair<List<Set<Char>>, List<Set<Char>>>

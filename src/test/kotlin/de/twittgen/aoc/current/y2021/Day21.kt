@@ -1,6 +1,6 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.current.y2021.Day21.Player
 
 class Day21: Day<List<Player>>() {

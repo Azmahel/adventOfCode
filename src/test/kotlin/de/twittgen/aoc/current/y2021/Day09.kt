@@ -1,22 +1,14 @@
 package de.twittgen.aoc.current.y2021
 
-import de.twittgen.aoc.Day
+import de.twittgen.aoc.current.Day
 
- private typealias Heightmap = Map<Pair<Int,Int>, Int>
- private typealias Basin = Set<Pair<Int, Int>>
-
-class Day9 : Day<Heightmap>() {
-
+class Day09 : Day<Heightmap>() {
     override fun String.parse() = lines().map {line -> line.map { it.digitToInt() } }.toMap()
     private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> (x to y) to v } }.toMap()
 
     init {
-        part1(15, 535) {
-            it.findLowPoints().values.sumOf { it+1 }
-        }
-        part2(1134, 1122700) {
-            it.getBasins(it.findLowPoints()).getScore()
-        }
+        part1(15, 535) { it.findLowPoints().values.sumOf { it+1 } }
+        part2(1134, 1122700) { it.getBasins(it.findLowPoints()).getScore() }
     }
 
     private fun Heightmap.getBasins(lowPoints: Heightmap): List<Basin> = growBasins(lowPoints.keys.map { mutableSetOf(it) })
@@ -46,4 +38,6 @@ class Day9 : Day<Heightmap>() {
         9899965678
         """.trimIndent()
 }
+private typealias Heightmap = Map<Pair<Int,Int>, Int>
+private typealias Basin = Set<Pair<Int, Int>>
 
