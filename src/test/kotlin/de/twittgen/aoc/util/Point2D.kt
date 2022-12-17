@@ -18,6 +18,8 @@ data class Point2D (val x : Int, val y: Int) {
     fun adjacent() = orthogonallyAdjacent() + diagonallyAdjacent()
     operator fun plus(other: Point2D) = Point2D(x + other.x, y + other.y)
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
+    operator fun times(i : Int) = Point2D(x*i, y*i)
     fun norm() = Point2D(x.sign, y.sign)
     fun transpose() = Point2D(y,x)
+
 }
