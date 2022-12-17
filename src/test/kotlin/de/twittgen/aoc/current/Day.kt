@@ -60,8 +60,7 @@ abstract class  Day<R> {
     open inner class RunPart(val part: Part<R>?) {
         @BeforeAll
         fun start() {
-            if(part == null) println("SKIPPED")
-            assumeTrue(part != null)
+            if(part == null) println("SKIPPED - does not exist").also { skip() }
             println("===${part!!.title}===")
         }
 
@@ -75,34 +74,27 @@ abstract class  Day<R> {
 
         private fun Part<R>.run() {
             assumeTrue(rawInput.isNotEmpty())
-            if(!runSlowTests && this in slowTests) {
-                println("skipped real: marked as slow").also { assumeTrue(false)}
-            }
+            if(!runSlowTests && this in slowTests) println("SKIPPED - marked as slow").also { skip() }
             testState = REAL
-            run(function, if (mutableModel) rawInput.parse() else input, expected, "real")
-    }
+            run(if (mutableModel) rawInput.parse() else input, "real")
+        }
 
         private fun Part<R>.runExample() {
-            assumeTrue(exampleExpected != null)
-            if (exampleExpected != null) {
-                testState =EXAMPLE
-                run(function, if(mutableModel) example!!.parse() else exampleParsed, exampleExpected, "example")
-            }
+            if(exampleExpected == null) println("SKIPPED - marked as not applicable").also { skip() }
+            testState =EXAMPLE
+            run(if(mutableModel) example!!.parse() else exampleParsed, "example")
         }
 
-
-        private fun run(partFunction: (R) -> Any?, input: R, expected: Any?, title: String) {
-            val result = partFunction(input).also { println("$title: $it") }
-            expected?.also { assertEquals(it.toString(), result.toString()) }
+        private fun Part<R>.run(input: R, title: String) {
+            val result = function(input).also { println("$title: $it") }
+            (if (testState == EXAMPLE) exampleExpected else this.expected)?.let {
+                assertEquals(it.toString(), result.toString())
+            } ?: println("not asserted").also { fail("") }
         }
     }
 
-    data class Part<R>(
-        var function: (R) -> Any?,
-        var exampleExpected: Any?,
-        var expected: Any? = null,
-        val title: String
-    )
+    private fun skip() = assumeTrue(false)
+    data class Part<R>(val function: (R) -> Any?, val exampleExpected: Any?, val expected: Any? = null, val title: String)
 }
 
 

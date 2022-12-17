@@ -13,7 +13,7 @@ class Day17: Day<List<Char>>() {
         part1(3068, 3209 ) {
             it.findHeight(2022)
         }
-        part2(1514285714288,) {
+        part2(1514285714288, 1580758017509) {
             it.findHeight(1000000000000)
         }
     }

@@ -18,13 +18,10 @@ class Day12: Day<Pair<Point2D, PathMap>>() {
     }
 
     init {
-        part1(31, ) { (target, map ) -> map.findPath(setOf(target)) }
-        part2(29, ) { (target, map) -> map
-            .mapValues { (p, d) -> d.let{(ele, _) ->
-                (alphabet.indexOf('z') - ele) to (if (p== target) 0 else Int.MAX_VALUE)
-            } }
-            .findPath(map.filter { (_,d) -> d.first == alphabet.indexOf('a') }.keys)
-        }
+        part1(31,423) { (target, map ) -> map.findPath(setOf(target)) }
+        part2(29, 416) { (target, map) -> map.mapValues { (p, d) -> d.let{ (ele, _) ->
+            (alphabet.indexOf('z') - ele) to (if (p== target) 0 else Int.MAX_VALUE)
+        } }.findPath(map.filter { (_,d) -> d.first == alphabet.indexOf('a') }.keys) }
     }
 
     private tailrec fun PathMap.findPath(targets: Set<Point2D>, currentStep : Int = 0): Int {

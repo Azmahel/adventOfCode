@@ -17,7 +17,7 @@ class Day22 : Day<List<Day22.Instruction>>() {
 
     init {
         part1(474140, 598616) { it.run() }
-        part2(2758514936282235 , ) { it.run2() }
+        part2(2758514936282235 , 1193043154475246) { it.run2() }
     }
 
     fun List<Instruction>.run(target: Cube = Cube(-50..50)): Int {

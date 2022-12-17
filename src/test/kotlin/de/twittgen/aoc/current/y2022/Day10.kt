@@ -10,17 +10,10 @@ class Day10: Day<List<Instruction>>() {
         else -> ADD(it.split(" ").second().toInt())
     } }
 
-    private val exampleExpected = """
-##  ##  ##  ##  ##  ##  ##  ##  ##  ##  
-###   ###   ###   ###   ###   ###   ### 
-####    ####    ####    ####    ####    
-#####     #####     #####     #####     
-######      ######      ######      ####
-#######       #######       #######     
- """
+
     init {
         part1(13140, 15140) { it.run().findSignificant().sumOf { (t,v) -> t * v } }
-        part2(exampleExpected) { "\n" + it.run().chunked(40).joinToString("\n") { l ->  l.draw() } }
+        part2(expected, part2Expected) { "\n" + it.run().chunked(40).joinToString("\n") { l ->  l.draw() } }
     }
 
     private fun Signal.draw() = joinToString("") { (i, x) -> if ((pixel(i)) in sprite(x)) "#" else " " }
@@ -194,6 +187,26 @@ class Day10: Day<List<Instruction>>() {
     """.trimIndent()
 }
 
- private typealias Signal = List<Pair<Int,Int>>
-private fun Signal.next(transform: (Int) -> Int = {it}) =
-    this + last().run { first + 1 to transform(second) }
+
+private typealias Signal = List<Pair<Int,Int>>
+private fun Signal.next(transform: (Int) -> Int = {it}) = this + last().run { first + 1 to transform(second) }
+private val expected = """
+    
+    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  
+    ###   ###   ###   ###   ###   ###   ### 
+    ####    ####    ####    ####    ####    
+    #####     #####     #####     #####     
+    ######      ######      ######      ####
+    #######       #######       #######     
+     
+ """.trimIndent()
+private val part2Expected = """
+    
+    ###  ###    ##  ##  ####  ##   ##  ###  
+    #  # #  #    # #  #    # #  # #  # #  # 
+    ###  #  #    # #  #   #  #    #  # #  # 
+    #  # ###     # ####  #   # ## #### ###  
+    #  # #    #  # #  # #    #  # #  # #    
+    ###  #     ##  #  # ####  ### #  # #    
+     
+""".trimIndent()

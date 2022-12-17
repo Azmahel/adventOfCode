@@ -9,33 +9,21 @@ import de.twittgen.aoc.current.y2021.Day13.FoldDirection.Y
 
 
 class Day13 : Day<Pair<Paper, List<Fold>>>() {
-    override fun String.parse() = split("\n\n").let { (rawMarks, rawFolds) ->
-        rawMarks.parseMarks() to rawFolds.parseFolds()
-    }
+    override fun String.parse() = split("\n\n")
+        .let { (rawMarks, rawFolds) -> rawMarks.parseMarks() to rawFolds.parseFolds() }
 
     private fun String.parseFolds() = lines().map { line ->
         line.takeLastWhile { it != ' ' }.split("=").run { Fold(FoldDirection.from(first()), second().toInt()) }
     }
-    private fun String.parseMarks() = lines().map { line ->
-        line.split(",").run { first().toInt() to second().toInt() }
-    }.toSet()
+    private fun String.parseMarks() = lines()
+        .map { line -> line.split(",").run { first().toInt() to second().toInt() } }.toSet()
 
-    private val part2ExampleExpected = """
-        
-        ®®®®®
-        ®   ®
-        ®   ®
-        ®   ®
-        ®®®®®
-     """.trimIndent()
     init {
         part1(17, 661) { (paper, folds) -> paper.foldAt(folds.first()).size }
-        part2(part2ExampleExpected, ) { (paper, folds) -> folds.fold(paper) { p, f -> p.foldAt(f) }.print() }
+        part2(exampleExpected, part2Expected) { (paper, folds) -> folds.fold(paper) { p, f -> p.foldAt(f) }.print() }
     }
 
-    enum class FoldDirection { X, Y;
-        companion object { fun from(s: String) = if(s == "x") X else Y }
-    }
+    enum class FoldDirection { X, Y; companion object { fun from(s: String) = if(s == "x") X else Y } }
 
     data class Fold(val direction: FoldDirection, val at: Int)
 
@@ -75,7 +63,23 @@ class Day13 : Day<Pair<Paper, List<Fold>>>() {
        fold along x=5
    """.trimIndent()
 }
-
+private val exampleExpected = """
+    
+        ®®®®®
+        ®   ®
+        ®   ®
+        ®   ®
+        ®®®®®
+     """.trimIndent()
+private val part2Expected = """
+    
+        ®®®  ®®®® ®  ® ®    ®  ®  ®®  ®®®® ®®® 
+        ®  ® ®    ® ®  ®    ® ®  ®  ® ®    ®  ®
+        ®  ® ®®®  ®®   ®    ®®   ®    ®®®  ®  ®
+        ®®®  ®    ® ®  ®    ® ®  ®    ®    ®®® 
+        ®    ®    ® ®  ®    ® ®  ®  ® ®    ®   
+        ®    ®    ®  ® ®®®® ®  ®  ®®  ®    ®   
+    """.trimIndent()
 private typealias Paper = Set<Pair<Int, Int>>
 
 

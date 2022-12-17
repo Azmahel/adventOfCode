@@ -11,12 +11,12 @@ class Day13 : Day<List<Pair<NestedList, NestedList>>>() {
         .split("\n\n").map { pair -> pair.lines().map { it.toNestedList() }.let { (a, b) -> a to b } }
 
     init {
-        part1(13,) { it
+        part1(13, 4643) { it
             .mapIndexed { i, p -> i+1 to p.first.isSmallerThan(p.second) }
             .filter { (_,p) ->  p < 0 }
             .sumOf { (i,_) -> i }
         }
-        part2(140,) { it
+        part2(140, 21614) { it
             .flatMap { (a,b) -> listOf(a,b) }
             .plus(divider2).plus(divider6)
             .sortedWith { a,b -> a.isSmallerThan(b) }

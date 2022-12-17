@@ -15,7 +15,7 @@ class Day07 : Day<Directory>(){
         part1(95437, 1886043) {
             it.getSubdirectoriesIncludingSelf().filter { d -> d.size() <= 100_000 }.sumOf { it.size() }
         }
-        part2(24933642) { it.getSubdirectoriesIncludingSelf()
+        part2(24933642, 3842121) { it.getSubdirectoriesIncludingSelf()
             .map { d -> d.size() }.filter { s -> s > -40000000 + it.size() }.minOrNull()!!
         }
     }

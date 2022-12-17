@@ -22,7 +22,7 @@ class Day16 : Day<CaveMap>() {
         Regex("Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel[s]? lead[s]? to valve[s]? (.+)")
 
     init {
-        part1(1651,) {
+        part1(1651,1947) {
             it.toShortestPaths().findRelease(it.start(), 30)
         }
         part2(1707,null, SLOW) {

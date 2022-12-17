@@ -10,7 +10,7 @@ class Day11: Day<Map<Int, Monkey>>() {
     init {
         mutableModel = true
         part1(10605, 55944) { it.doRounds(20) { this / 3} }
-        part2(2713310158, ) {
+        part2(2713310158, 15117269860) {
             val mod = it.values.map { m -> m.checkAgainst }.fold(1L) {a,b -> a*b}
             it.doRounds(10000) { this % mod }
         }
