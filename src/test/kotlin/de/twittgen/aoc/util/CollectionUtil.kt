@@ -25,3 +25,8 @@ infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = this.intersect(other
 fun <T,R> List<Pair<T,R>>.toPairOfLists() = this.map { it.first } to this.map { it.second }
 fun <T> List<T>.cycle() = drop(1) + first()
 fun <T> Iterable<T>.boundaries() = listOf(first(), last())
+fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
+    val added = mutableSetOf<Pair<T,T>>()
+    return asSequence().filterNot { (a,b) -> a to b in added || b to a in added }.map { it.also { added += it } }.toList()
+
+}

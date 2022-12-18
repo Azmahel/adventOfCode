@@ -3,8 +3,8 @@ package de.twittgen.aoc.current.y2022
 import de.twittgen.aoc.current.Day
 import de.twittgen.aoc.current.Day.TestType.SLOW
 import de.twittgen.aoc.current.y2022.Day16.Valve
+import de.twittgen.aoc.util.filterMirrors
 import de.twittgen.aoc.util.toPairOfLists
-import java.lang.Math.abs
 
 
 class Day16 : Day<CaveMap>() {
@@ -20,19 +20,37 @@ class Day16 : Day<CaveMap>() {
 
     private val valveMatcher =
         Regex("Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel[s]? lead[s]? to valve[s]? (.+)")
-
+    var x = 0
     init {
         part1(1651,1947) {
             it.toShortestPaths().findRelease(it.start(), 30)
         }
-        part2(1707,null, SLOW) {
-            it.toShortestPaths().run{ State(it.start()).findElephantRelease(this) }
+        part2(1707,2556, SLOW) {
+            it.toShortestPaths().shareWorkOptions().maxOf { (p,e) ->
+                p.findRelease(it.start(), 26) + e.findRelease(it.start(), 26)
+            }
         }
     }
 
-    private fun CaveMap.start() = first.find { it.name == "AA" }!!
 
-    private fun CaveMap.toShortestPaths()= first.associateWith { it.getShortestPaths(second) }
+    private fun CaveMap.start() = first.find { it.isStart() }!!
+    private fun CaveMap.toShortestPaths()= first.filter{ it.isRelevant() }.associateWith { it.getShortestPaths(second) }
+    private fun Distances.trim() = mapValues { (_,v) -> v.filter { it.first in keys } }
+
+    private fun Distances.shareWorkOptions(): List<Pair<Distances,Distances>>{
+        val start = entries.find { it.key.isStart() }!!.toPair()
+        val options = (this - start.first).toList().calculatePossibleShares().filterMirrors()
+        return options.map { (it.first +start).trim() to (it.second + start).trim()  }
+    }
+
+    private fun List<Pair<Valve,List<Distance>>>.calculatePossibleShares(
+        current: Pair<Distances, Distances> = emptyMap<Valve,List<Distance>>() to emptyMap()
+    ): List<Pair<Distances,Distances>> {
+        if(isEmpty()) return listOf(current)
+        val a =  drop(1).calculatePossibleShares((current.first + first()) to current.second)
+        val b =  drop(1).calculatePossibleShares((current.first) to current.second + first())
+        return (a + b)
+    }
 
     private fun Distances.findRelease(
         current: Valve,
@@ -52,51 +70,14 @@ class Day16 : Day<CaveMap>() {
                 }
                 dist ++
             }
-            return found.map { (k,v) -> k to v }
+            return found.filter { (k,_) -> k.isRelevant() }.map { (k,v) -> k to v }
         }
+        fun isStart() = name == "AA"
+        fun isRelevant() = isStart() || flow != 0
     }
 
-    private fun List<Distance>.getRelevant(open: Set<Valve>, time: Int) = filter { it.second <= time -1 && it.first !in open  && it.first.flow != 0 }
-
-    private fun State.findElephantRelease(dist: Distances) : Int {
-        val nextOpen = open.toMutableSet()
-        var nextRelease = released + open.sumOf { it.flow }
-        var pD = personDelay
-        var eD = elephantDelay
-        var t = time
-        if(personDelay > 0 && elephantDelay > 0) {
-            val dT = minOf(personDelay, elephantDelay)
-            pD -= dT
-            eD -= dT
-            t -= dT
-            nextRelease += dT * open.sumOf { it.flow }
-        }
-        val nextPerson = if(pD == 0) {
-            dist[person]!!.getRelevant(nextOpen,t).also { nextOpen += person }
-        } else {
-            listOf(person to pD-1)
-        }
-        val nextElephant = if(eD == 0) {
-            dist[elephant]!!.getRelevant(nextOpen,t).also { nextOpen += elephant }
-        } else {
-            listOf(elephant to eD-1)
-        }
-        return nextPerson.flatMap { p -> nextElephant.map { e -> p to e } }.map { (p, e) ->
-            State(p.first, p.second, e.first, e.second, nextOpen, t -1, nextRelease)
-                .findElephantRelease(dist)
-        }.maxOrNull() ?: (released + (open.sumOf { it.flow }*(time)))
-
-    }
-
-    data class State(
-        val person: Valve,
-        val personDelay: Int = 0,
-        val elephant: Valve = person,
-        val elephantDelay: Int = 0,
-        val open: Set<Valve> = emptySet(),
-        val time: Int = 27, //+1 because this will open AA on turn 1
-        val released: Int = 0
-    )
+    private fun List<Distance>.getRelevant(open: Set<Valve>, time: Int) =
+        filter { it.second <= time -1 && it.first !in open  && it.first.flow != 0 }
 
     override val example = """
         Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
