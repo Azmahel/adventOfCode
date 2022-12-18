@@ -89,7 +89,7 @@ abstract class  Day<R> {
             val result = function(input).also { println("$title: $it") }
             (if (testState == EXAMPLE) exampleExpected else this.expected)?.let {
                 assertEquals(it.toString(), result.toString())
-            } ?: println("not asserted").also { fail("") }
+            } ?: println("NO ASSERTION").also { fail("") }
         }
     }
 
