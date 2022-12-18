@@ -5,6 +5,7 @@ import de.twittgen.aoc.current.Day.TestType.SLOW
 import de.twittgen.aoc.current.y2022.Day16.Valve
 import de.twittgen.aoc.util.filterMirrors
 import de.twittgen.aoc.util.toPairOfLists
+import kotlinx.coroutines.*
 
 
 class Day16 : Day<CaveMap>() {
@@ -19,16 +20,16 @@ class Day16 : Day<CaveMap>() {
 
     init {
         part1(1651,1947) { it.toShortestPaths().findMax(it.start(), 30) }
-        part2(1707,2556, SLOW) {
-            it.toShortestPaths().shareWorkOptions().maxOf { (p,e) ->
-                p.findMax(it.start(), 26) + e.findMax(it.start(), 26)
-            }
-        }
+        part2(1707,2556,) { runBlocking(Dispatchers.Default) {
+            it.toShortestPaths().shareWorkOptions().map { (p, e) ->
+                async { p.findMax(it.start(), 26)  }  to async{ e.findMax(it.start(), 26)}
+            }.maxOf { (a,b) -> a.await() + b.await() }
+        } }
     }
 
     private fun CaveMap.start() = first.find { it.isStart() }!!
-    private fun CaveMap.toShortestPaths()= first.filter{ it.isRelevant() }.associateWith { it.getShortestPaths(second) }
-    private fun Distances.trim() = mapValues { (_,v) -> v.filter { it.first in keys } }
+    private fun CaveMap.toShortestPaths()= first.filter{ it.isRelevant() }.associateWith { it.getShortestPaths(second).toMap() }
+    private fun Distances.trim() = mapValues { (_,v) -> v.filter { it.key in keys } }
 
     private fun Distances.shareWorkOptions(): List<Pair<Distances,Distances>>{
         val start = entries.find { it.key.isStart() }!!.toPair()
@@ -36,8 +37,8 @@ class Day16 : Day<CaveMap>() {
         return options.map { (it.first + start).trim() to (it.second + start).trim()  }
     }
 
-    private fun List<Pair<Valve,List<Distance>>>.calculatePossibleShares(
-        current: Pair<Distances, Distances> = emptyMap<Valve,List<Distance>>() to emptyMap()
+    private fun List<Pair<Valve,Map<Valve, Int>>>.calculatePossibleShares(
+        current: Pair<Distances, Distances> = emptyMap<Valve,Map<Valve,Int>>() to emptyMap()
     ): List<Pair<Distances,Distances>> {
         if(isEmpty()) return listOf(current)
         val a =  drop(1).calculatePossibleShares((current.first + first()) to current.second)
@@ -45,9 +46,10 @@ class Day16 : Day<CaveMap>() {
         return (a + b)
     }
 
-    private fun Distances.findMax(current: Valve, time: Int = 30, open: Set<Valve> = emptySet(), flow: Int = 0): Int =
-        get(current)!!.getRelevant(open, time).maxOfOrNull { (v,d) ->
-            findMax(v, time-d-1, open+v, flow + (v.flow * (time-d-1)))
+    private fun Distances.findMax(current: Valve, time: Int = 30, open: MutableSet<Valve> = mutableSetOf(), flow: Int = 0): Int =
+        get(current)!!.getRelevant(open, time).maxOfOrNull { (v, d) ->
+            open += v
+            findMax(v, time - d - 1, open, flow + (v.flow * (time - d - 1))).also { open -=v }
         } ?: flow
 
     data class Valve(val name: String, val flow: Int) {
@@ -66,8 +68,8 @@ class Day16 : Day<CaveMap>() {
         fun isRelevant() = isStart() || flow != 0
     }
 
-    private fun List<Distance>.getRelevant(open: Set<Valve>, time: Int) =
-        filter { it.second <= time -1 && it.first !in open  && it.first.flow != 0 }
+    private fun Map<Valve,Int>.getRelevant(open: Set<Valve>, time: Int) =
+        filter { it.value <= time -1 && it.key !in open  && it.key.flow != 0 }
 
     override val example = """
         Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
@@ -83,7 +85,7 @@ class Day16 : Day<CaveMap>() {
     """.trimIndent()
 }
 
-typealias Distances = Map<Valve, List<Distance>>
+typealias Distances = Map<Valve, Map<Valve,Int>>
 typealias Distance = Pair<Valve,Int>
 typealias Adjacency = Map<Valve,List<Valve>>
 typealias CaveMap = Pair<List<Valve>, Adjacency>
