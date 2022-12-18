@@ -8,30 +8,23 @@ import de.twittgen.aoc.util.toPairOfLists
 
 
 class Day16 : Day<CaveMap>() {
+    private val pattern = Regex("Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel[s]? lead[s]? to valve[s]? (.+)")
 
-    override fun String.parse() = lines().map { l ->
-        valveMatcher.matchEntire(l)!!.destructured.let { (valve, flow, other) ->
-            Valve(valve, flow.toInt()) to other.split(", ").map { valve to it }
-        }
-    }.toPairOfLists().let { p ->
+    override fun String.parse() = lines().map{l -> pattern.matchEntire(l)!!.destructured.let { (valve,flow,other)->
+        Valve(valve, flow.toInt()) to other.split(", ").map { valve to it }
+    } }.toPairOfLists().let { p ->
         val valveMap = p.first.associateBy { it.name }
         p.first to p.second.flatten().groupBy({valveMap[it.first]!!},{valveMap[it.second]!! })
     }
 
-    private val valveMatcher =
-        Regex("Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel[s]? lead[s]? to valve[s]? (.+)")
-    var x = 0
     init {
-        part1(1651,1947) {
-            it.toShortestPaths().findRelease(it.start(), 30)
-        }
+        part1(1651,1947) { it.toShortestPaths().findMax(it.start(), 30) }
         part2(1707,2556, SLOW) {
             it.toShortestPaths().shareWorkOptions().maxOf { (p,e) ->
-                p.findRelease(it.start(), 26) + e.findRelease(it.start(), 26)
+                p.findMax(it.start(), 26) + e.findMax(it.start(), 26)
             }
         }
     }
-
 
     private fun CaveMap.start() = first.find { it.isStart() }!!
     private fun CaveMap.toShortestPaths()= first.filter{ it.isRelevant() }.associateWith { it.getShortestPaths(second) }
@@ -40,7 +33,7 @@ class Day16 : Day<CaveMap>() {
     private fun Distances.shareWorkOptions(): List<Pair<Distances,Distances>>{
         val start = entries.find { it.key.isStart() }!!.toPair()
         val options = (this - start.first).toList().calculatePossibleShares().filterMirrors()
-        return options.map { (it.first +start).trim() to (it.second + start).trim()  }
+        return options.map { (it.first + start).trim() to (it.second + start).trim()  }
     }
 
     private fun List<Pair<Valve,List<Distance>>>.calculatePossibleShares(
@@ -52,16 +45,13 @@ class Day16 : Day<CaveMap>() {
         return (a + b)
     }
 
-    private fun Distances.findRelease(
-        current: Valve,
-        time: Int = 30,
-        open: Set<Valve> = emptySet(),
-        flow: Int = 0
-    ): Int = get(current)!!.getRelevant(open, time)
-        .maxOfOrNull { (v,d) -> findRelease(v, time-d-1, open+v, flow + (v.flow * (time-d-1))) } ?: flow
+    private fun Distances.findMax(current: Valve, time: Int = 30, open: Set<Valve> = emptySet(), flow: Int = 0): Int =
+        get(current)!!.getRelevant(open, time).maxOfOrNull { (v,d) ->
+            findMax(v, time-d-1, open+v, flow + (v.flow * (time-d-1)))
+        } ?: flow
 
     data class Valve(val name: String, val flow: Int) {
-        fun getShortestPaths(adj : Adjacencies) : List<Distance> {
+        fun getShortestPaths(adj : Adjacency) : List<Distance> {
             val found = mutableMapOf(this to 0)
             var dist = 0
             while (found.size < adj.keys.size) {
@@ -95,5 +85,5 @@ class Day16 : Day<CaveMap>() {
 
 typealias Distances = Map<Valve, List<Distance>>
 typealias Distance = Pair<Valve,Int>
-typealias Adjacencies = Map<Valve,List<Valve>>
-typealias CaveMap = Pair<List<Valve>, Adjacencies>
+typealias Adjacency = Map<Valve,List<Valve>>
+typealias CaveMap = Pair<List<Valve>, Adjacency>
