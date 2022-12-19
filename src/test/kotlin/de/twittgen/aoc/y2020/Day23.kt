@@ -15,35 +15,36 @@ class Day23 : Day<List<Int>>() {
                 (dropWhile { it != 1 }.drop(1) + takeWhile { it!=1 }).joinToString("").toLong()
             }
         }
-        part2(149245887792, 42271866720, SLOW) {
+        part2(149245887792, 42271866720) {
             playCupGameV2(it,1_000_000, 10_000_000)
         }
     }
 
     private fun playCupGameV2(cups: List<Int>, max: Int, moves: Int): Long {
-        val next = cups.mapIndexed { i, it -> it to (cups.getOrNull(i + 1) ?: (i+2)) }.toMap().toMutableMap()
-        next[max] = cups[0]
+        val next = IntArray(max+1) { if(it==max) cups.first() else it +1 }
+        cups.forEachIndexed { i, it -> next[it] = (cups.getOrNull(i + 1) ?: (i+2)) }
         fun Int.nextSmaller() = (this - 1).let { if (it == 0) max else it }
-        fun Int.next() = next[this] ?: (this +1)
         var pivot = cups.first()
         repeat(moves) {
-            val start =  pivot.next()
-            val sandwich = start.next()
-            val end = sandwich.next()
+            val start = next[pivot]
+            val sandwich = next[start]
+            val end = next[sandwich]
             val dropOut = listOf(start, sandwich, end)
-            next[pivot] = end.next()
+            next[pivot] = next[end]
 
             val insertAfter = pivot.let {
                 var i = it.nextSmaller()
-                while (i in dropOut) { i = i.nextSmaller() }
+                while (i in dropOut) {
+                    i = i.nextSmaller()
+                }
                 i
             }
-            next[end] = insertAfter.next()
+            next[end] = next[insertAfter]
             next[insertAfter] = start
-            pivot = next[pivot]!!
+            pivot = next[pivot]
         }
-        val x = next[1]!!
-        val y = next[x]!!
+        val x = next[1]
+        val y = next[x]
         return x.toLong() * y.toLong()
     }
 
