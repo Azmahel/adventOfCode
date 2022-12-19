@@ -4,4 +4,4 @@
 /build/
 /.idea/
 /.gradle/
-/src/test/kotlin/de/twittgen/aoc/quarantaine/
+/src/test/kotlin/quarantaine/
