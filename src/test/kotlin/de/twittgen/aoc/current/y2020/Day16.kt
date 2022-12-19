@@ -17,7 +17,7 @@ class Day16: Day<Triple<List<FieldConstraint>, Ticket, List<Ticket>>>(){
 
     init {
         part1(71, 25961) { (req, _, other) -> other.getInvalidFields(req).sum() }
-        part2(null, 603409823791) { (req, my, other) ->
+        part2(1, 603409823791) { (req, my, other) ->
             val validOther = other.filter { t -> t.getInvalidField(req).isEmpty() }
             val myTranslated = my.translate(req, validOther)
             myTranslated.filter {f -> f.second.contains("departure") }

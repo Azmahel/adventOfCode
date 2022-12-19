@@ -7,9 +7,9 @@ class Day05 : Day<List<String>>() {
     override fun String.parse() = lines()
     init {
         part1(820, 880) { it.maxOf { seat ->  seat.binaryNumber() } }
-        part2( null, 731) { seats ->
+        part2( 0, 731) { seats ->
             val seatNumbers = seats.map { seat -> seat.binaryNumber() }
-            (0..128*8).filterNot { it in seatNumbers }.first { it + 1 in seatNumbers && it - 1 in seatNumbers }
+            (0..128*8).filterNot { it in seatNumbers }.firstOrNull { it + 1 in seatNumbers && it - 1 in seatNumbers } ?: 0
         }
     }
 

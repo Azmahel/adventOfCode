@@ -1,6 +1,7 @@
 package de.twittgen.aoc.current.y2020
 
 import de.twittgen.aoc.current.Day
+import de.twittgen.aoc.current.Day.TestType.SLOW
 
 class Day15 : Day<List<Long>>() {
     override val example = "3,1,2"
@@ -9,7 +10,7 @@ class Day15 : Day<List<Long>>() {
 
     init {
         part1(1836, 475) { playGame(it, 2020) }
-        part2(362, 11261) { playGame(it, 30000000) }
+        part2(362, 11261, SLOW) { playGame(it, 30000000) }
     }
 
     private fun playGame(start :List<Long>, until: Long ): Long {
