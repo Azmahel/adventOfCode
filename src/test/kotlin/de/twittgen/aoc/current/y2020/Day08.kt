@@ -12,19 +12,13 @@ class Day08: Day<Program>() {
 
     init {
         part1(5, 1446) { it.runUntilDuplicate().first }
-        part2(8, 1403) { p ->
-            p.forEachIndexed { i ,ins ->
-                when(ins.first) {
-                    "jmp" -> "nop" to ins.second
-                    "nop" -> "jmp" to ins.second
-                    else -> null
-                }?.let {v ->
-                    p.toMutableList().replaceAt(i,v).runUntilDuplicate().let { (acc, ins) ->
-                        if (ins.last() == p.lastIndex) return@part2 acc
-                    }
-                }
-            }
-        }
+        part2(8, 1403) { p -> p.forEachIndexed { i ,ins -> when(ins.first) {
+            "jmp" -> "nop" to ins.second
+            "nop" -> "jmp" to ins.second
+            else -> null
+        }?.let {v -> p.toMutableList().replaceAt(i,v).runUntilDuplicate().let { (acc, ins) ->
+            if (ins.last() == p.lastIndex) return@part2 acc
+        } } } }
     }
 
     private fun Program.runUntilDuplicate(): Pair<Int,List<Int>> {

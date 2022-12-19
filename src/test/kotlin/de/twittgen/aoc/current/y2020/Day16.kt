@@ -16,13 +16,13 @@ class Day16: Day<Triple<List<FieldConstraint>, Ticket, List<Ticket>>>(){
     }
 
     init {
-        part1(71, 25961) { it.let { (req, _, other) -> other.getInvalidFields(req).sum() } }
-        part2(null, 603409823791) { it.let { (req, my, other) ->
+        part1(71, 25961) { (req, _, other) -> other.getInvalidFields(req).sum() }
+        part2(null, 603409823791) { (req, my, other) ->
             val validOther = other.filter { t -> t.getInvalidField(req).isEmpty() }
             val myTranslated = my.translate(req, validOther)
             myTranslated.filter {f -> f.second.contains("departure") }
                 .fold(1L) { acc, pair -> acc * pair.first }
-        } }
+        }
     }
 
     private fun List<Ticket>.getInvalidFields(requirements: List<FieldConstraint>) =

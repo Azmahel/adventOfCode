@@ -6,13 +6,13 @@ class Day13 : Day<Pair<Int, List<String>>>() {
     override fun String.parse() = lines().let { (now, busses) -> now.toInt() to busses.split(',') }
 
     init {
-        part1(295, 171) { plan ->  plan.let { (now, busses ) ->
+        part1(295, 171) { (now, busses ) ->
             busses.getNextArrival(now).let { (id, waitTime) -> id.toInt() * waitTime }
-        }}
-        part2(1068781, 539746751134958) { plan -> plan.let { (_, busses) ->
+        }
+        part2(1068781, 539746751134958) { (_, busses) ->
             val modulo = busses.mapIndexedNotNull { i, it -> if (it == "x") null else it.toInt() to it.toInt()-i }
             chineseRemainder(modulo).let { (a,b) -> a mod b }
-        }}
+        }
     }
 
     private fun List<String>.getNextArrival(now: Int) = filterNot { it == "x" }

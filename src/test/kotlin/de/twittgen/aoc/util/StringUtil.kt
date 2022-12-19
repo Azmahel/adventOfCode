@@ -5,6 +5,8 @@ fun String.toIntRange(delimiter: String = "-") = split(delimiter).map { it.toInt
 fun String.isLowerCase() = lowercase() == this
 fun String.isNumber() = toIntOrNull() != null
 val alphabet = ('a'..'z')+('A'..'Z')
+fun String.second(): Char = toList().second()
+fun String.digitsToInt() = map { it.toString().toInt() }
 
 fun String.takePartitioning(vararg m : (Char) -> Boolean): List<String> {
     var remainder = this
