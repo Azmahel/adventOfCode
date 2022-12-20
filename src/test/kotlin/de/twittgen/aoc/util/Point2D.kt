@@ -14,7 +14,7 @@ data class Point2D (val x : Int, val y: Int) {
     fun up() = Point2D(x, y + 1)
     fun down() = Point2D(x, y - 1)
     fun orthogonallyAdjacent() = listOf(up(), down(), left(), right())
-    fun diagonallyAdjacent() = listOf(Point2D(x+1, y+1), Point2D(x+1, y-1), Point2D(x-1, y+1), Point2D(x-1, y-1) )
+    private fun diagonallyAdjacent() = listOf(Point2D(x+1, y+1), Point2D(x+1, y-1), Point2D(x-1, y+1), Point2D(x-1, y-1) )
     fun adjacent() = orthogonallyAdjacent() + diagonallyAdjacent()
     operator fun plus(other: Point2D) = Point2D(x + other.x, y + other.y)
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
