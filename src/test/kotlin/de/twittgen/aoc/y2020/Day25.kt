@@ -11,6 +11,7 @@ class Day25: Day<Pair<Long, Long>>() {
             val private1 = bruteForcePrivate(p1)
             p2.transform(private1)
         }
+        part2(0,0) { 0 } //free star!
     }
 
     private val base = 20201227L
