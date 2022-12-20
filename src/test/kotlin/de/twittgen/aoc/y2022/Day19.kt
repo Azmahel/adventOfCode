@@ -6,6 +6,8 @@ import de.twittgen.aoc.y2022.Day19.Blueprint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlin.math.ceil
+import kotlin.math.floor
 
 class Day19: Day<List<Blueprint>>() {
     private val bpPattern = Regex("\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*")
@@ -45,16 +47,13 @@ class Day19: Day<List<Blueprint>>() {
             var time =state.time
             val resources = state.resources.toMutableList()
             val production = state.production.toMutableList()
-            while(resources.mapIndexed { i, v -> v- robot.cost[i]}.any { it <0 }) {
-                time --
-                production.forEachIndexed {i, v -> resources[i] += v}
-                if(time == 0)
-                    return@maxOf resources[geode]
-            }
-            time --
-            production.forEachIndexed {i, v -> resources[i] += v}
-            if(time == 0)
-                return@maxOf resources[geode]
+            val timeNeeded = robot.cost.mapIndexed { i, v -> i to v- resources[i] }.filterNot { it.second <= 0 }.maxOfOrNull { (i,n) ->
+                ceil(n.toDouble()/production[i]).toInt()
+            }?: 0
+            val spool = minOf(time, timeNeeded +1)
+            time -= spool
+            production.forEachIndexed { i, v -> resources[i] += v * spool  }
+            if(time == 0) return@maxOf resources[geode]
             robot.cost.forEachIndexed { i, v ->  resources[i] -= v }
             robot.production.forEachIndexed { i, v -> production[i] += v  }
             findMax(State(time, resources, production))
