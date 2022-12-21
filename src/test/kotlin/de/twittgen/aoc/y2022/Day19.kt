@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlin.math.ceil
-import kotlin.math.floor
 
 class Day19: Day<List<Blueprint>>() {
     private val bpPattern = Regex("\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*")
@@ -15,10 +14,10 @@ class Day19: Day<List<Blueprint>>() {
         Blueprint(
             id.toInt(),
             listOf(
-            Robot(listOf(ore.toInt(),0,0,0), listOf(1,0,0,0)),
-            Robot(listOf(clay.toInt(),0,0,0), listOf(0,1,0,0)),
-            Robot(listOf(obs1.toInt(), obs2.toInt(),0,0), listOf(0,0,1,0)),
-            Robot(listOf(geo1.toInt(),0, geo2.toInt(), 0), listOf(0,0,0,1))
+                Robot(listOf(ore.toInt(),0,0,0), listOf(1,0,0,0)),
+                Robot(listOf(clay.toInt(),0,0,0), listOf(0,1,0,0)),
+                Robot(listOf(obs1.toInt(), obs2.toInt(),0,0), listOf(0,0,1,0)),
+                Robot(listOf(geo1.toInt(),0, geo2.toInt(), 0), listOf(0,0,0,1))
             )
         )
     } }
@@ -36,13 +35,11 @@ class Day19: Day<List<Blueprint>>() {
     private val geode = 3
 
     private fun Blueprint.findMax(state: State = State()) : Int {
-
         val availableRobots = robots.filter {r ->
             r.cost.withIndex().filter { it.value !=0 }.all { (resource, _) -> state.production[resource] != 0 }
         }.filter { r ->
            r.production.filterIndexed { i, v -> v!=0 && (i == geode || state.production[i] < max[i]) }.isNotEmpty()
         }
-
         return availableRobots.maxOf { robot ->
             var time =state.time
             val resources = state.resources.toMutableList()
