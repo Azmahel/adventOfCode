@@ -6,6 +6,7 @@ import de.twittgen.aoc.Day.TestType.NORMAL
 import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.util.getIdentifier
+import de.twittgen.aoc.y2022.Day21
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -94,6 +95,7 @@ abstract class  Day<R> {
     }
 
     private fun skip() = assumeTrue(false)
+
     data class Part<R>(val function: (R) -> Any?, val exampleExpected: Any?, val expected: Any? = null, val title: String)
 }
 
