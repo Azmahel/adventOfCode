@@ -1,7 +1,6 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestState.EXAMPLE
 import de.twittgen.aoc.util.isNumber
 import de.twittgen.aoc.y2022.Day21.Monkey
 import java.lang.IllegalStateException
@@ -25,78 +24,59 @@ class Day21 : Day<Map<String, Monkey>>() {
     } }
 
     init {
-        part1(152, 170237589447588) { it["root"]!!.scream(it)() }
+        part1(152, 170237589447588) { it["root"]!!.scream(it)(0) }
         part2(301, 3712643961892) {
-            val newRoot = it["root"]!!.run { EqlMonkey(a,b) }
-            val you = Human()
-            val func =  newRoot.scream(it + ("humn" to you))
-            // this is a bit hacky to prevent sign detection and long overflow prevention
-            val sign = if(EXAMPLE == testState) 1 else -1
-            var min = 0L
-            var max = Int.MAX_VALUE*2000L
-            var pivot = Int.MAX_VALUE*1000L
+            val newRoot = it["root"]!!.run { EqlMonkey(a, b) }
+            val func = newRoot.scream(it + ("humn" to Human()))
+            val sign = (func(1) - func(10)).sign
+            var (min, max, pivot) = listOf(0L, Int.MAX_VALUE * 2000L, Int.MAX_VALUE * 1000L)
             while (true) {
-                you.i = pivot
-                func().let { result ->
-                    if(result == 0L) return@part2 pivot
-                    if(result.sign == sign) {
-                        min = pivot
-                        pivot += abs(max-pivot) /2
-                    } else {
-                        max = pivot
-                        pivot -= abs(pivot - min) / 2
-                    }
+                val result = func(pivot)
+                if (result == 0L) return@part2 pivot
+                if (pivot == max) max += Int.MAX_VALUE * 2000L
+                if (pivot == min) min -= Int.MAX_VALUE * 2000L
+
+                if (result.sign == sign) {
+                    min = pivot.also { pivot += abs(max - pivot) / 2 }
+                } else {
+                    max = pivot.also { pivot -= abs(pivot - min) / 2 }
                 }
             }
         }
     }
 
     sealed class Monkey(val a: String, val b: String) {
-        abstract fun scream(m: Map<String,Monkey>) : () -> Long
-    }
-    class AddMonkey(a: String, b: String) : Monkey(a, b) {
-       override fun scream(m : Map<String, Monkey>) : () -> Long {
-           val a = m[a]!!.scream(m)
-           val b = m[b]!!.scream(m)
-           return { a() + b() }
-       }
-    }
-    class SubMonkey(a: String, b: String) : Monkey(a, b) {
-        override fun scream(m : Map<String, Monkey>): () -> Long {
-            val a = m[a]!!.scream(m)
-            val b = m[b]!!.scream(m)
-            return { a() - b() }
-        }
-    }
-    class MulMonkey(a: String, b: String) : Monkey(a, b) {
-        override fun scream(m : Map<String, Monkey>): () -> Long {
-            val a = m[a]!!.scream(m)
-            val b = m[b]!!.scream(m)
-            return { a() * b() }
-        }
-    }
-    class DivMonkey(a: String, b: String) : Monkey(a, b) {
-        override fun scream(m : Map<String, Monkey>) : () -> Long {
-            val a = m[a]!!.scream(m)
-            val b = m[b]!!.scream(m)
-            return { a() / b() }
-        }
-    }
-    class NumMonkey(a : String) : Monkey(a, "") {
-        override fun scream(m: Map<String, Monkey>) :() -> Long = { a.toLong() }
+        abstract fun scream(m: Map<String,Monkey>) : Computation
     }
 
-    class Human(var i : Long = 0L) : Monkey("", "") {
-        override fun scream(m: Map<String, Monkey>) :() -> Long = { i }
+    abstract class OpMonkey(a: String, b:String) : Monkey(a,b){
+        override fun scream(m: Map<String,Monkey>) = invoke((m[a]!!.scream(m) to m[b]!!.scream(m)))
+        protected abstract val  invoke : (Pair<Computation,Computation>) -> Computation
     }
-    class EqlMonkey(a: String, b: String) : Monkey(a, b) {
-        override fun scream(m : Map<String, Monkey>) : () -> Long {
-            val a = m[a]!!.scream(m)
-            val b = m[b]!!.scream(m)
-            return {
-                (b().compareTo(a()).toLong())
-            }
-        }
+
+    class AddMonkey(a: String, b: String) : OpMonkey(a, b) {
+        override val  invoke: (Pair<Computation,Computation>) -> Computation = { (a,b) -> { a(it) + b(it) } }
+    }
+
+    class SubMonkey(a: String, b: String) : OpMonkey(a, b) {
+        override val  invoke: (Pair<Computation,Computation>) -> Computation = { (a,b) -> { a(it) - b(it) } }
+    }
+
+    class MulMonkey(a: String, b: String) : OpMonkey(a, b) {
+        override val  invoke: (Pair<Computation,Computation>) -> Computation = { (a,b) -> { a(it) * b(it) } }
+    }
+
+    class DivMonkey(a: String, b: String) : OpMonkey(a, b) {
+        override val  invoke: (Pair<Computation,Computation>) -> Computation = { (a,b) -> { a(it) / b(it) } }
+    }
+
+    class NumMonkey(a : String) : Monkey(a, "") {
+        override fun scream(m: Map<String, Monkey>): Computation = { a.toLong() }
+    }
+
+    class Human : Monkey("", "") { override fun scream(m: Map<String, Monkey>): Computation = { it } }
+    class EqlMonkey(a: String, b: String) : OpMonkey(a, b) {
+        override val  invoke: (Pair<Computation,Computation>) -> Computation = { (a,b) -> { b(it)- a(it) } }
     }
 
     override val example = """
@@ -117,3 +97,4 @@ class Day21 : Day<Map<String, Monkey>>() {
         hmdt: 32
     """.trimIndent()
 }
+private typealias Computation = (Long) -> Long
