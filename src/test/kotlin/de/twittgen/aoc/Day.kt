@@ -1,12 +1,11 @@
 package de.twittgen.aoc
 
+import de.twittgen.aoc.Day.TestMarker.HACKY
+import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.Day.TestState.EXAMPLE
 import de.twittgen.aoc.Day.TestState.REAL
-import de.twittgen.aoc.Day.TestType.NORMAL
-import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.util.FileUtil
 import de.twittgen.aoc.util.getIdentifier
-import de.twittgen.aoc.y2022.Day21
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -18,21 +17,26 @@ abstract class  Day<R> {
     private var part1 : Part<R>? = null
     private var part2 : Part<R>? = null
 
-    protected var mutableModel: Boolean = false
-    protected var runSlowTests: Boolean = false
-    enum class TestType { SLOW, NORMAL}
-    private var slowTests = emptyList<Part<R>>()
+    var mutableModel: Boolean = false
+    var markersToSkip: Set<TestMarker> = setOf(SLOW)
+    var markersToNote: Set<TestMarker> = setOf(HACKY)
+
+    enum class TestMarker {
+        SLOW , HACKY;
+        open fun apply(d: Day<*>) {
+            if(this in d.markersToSkip) d.skip("SKIPPED - marked as $this")
+            if(this in d.markersToNote) println("solution marked as $this")
+        }
+    }
 
     abstract fun String.parse() : R
 
-    fun part1(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any?) {
-        part1 = Part(function, expectedExample, expected, "PART1")
-        if(type == SLOW) slowTests = slowTests + part1!!
+    fun part1(expectedExample: Any?, expected: Any? = null, vararg types: TestMarker, function: (R) -> Any?) {
+        part1 = Part(function, expectedExample, expected, "PART1", types.toSet())
     }
 
-    fun part2(expectedExample: Any?, expected: Any? = null, type: TestType = NORMAL, function: (R) -> Any?) {
-        part2 = Part(function, expectedExample, expected, "PART2")
-        if(type == SLOW) slowTests = slowTests + part2!!
+    fun part2(expectedExample: Any?, expected: Any? = null, vararg types: TestMarker, function: (R) -> Any?) {
+        part2 = Part(function, expectedExample, expected, "PART2", types.toSet())
     }
 
     open val example : String? = null
@@ -47,10 +51,8 @@ abstract class  Day<R> {
     private val input by lazy { rawInput.parse() }
 
     @BeforeAll
-    fun init() {
-        println("Running $identifier")
+    fun init() { println("Running $identifier") }
 
-    }
     @Nested
     inner class Part1: RunPart(part1)
 
@@ -61,7 +63,7 @@ abstract class  Day<R> {
     open inner class RunPart(val part: Part<R>?) {
         @BeforeAll
         fun start() {
-            if(part == null) println("SKIPPED - does not exist").also { skip() }
+            if(part == null) skip("SKIPPED - does not exist")
             println("===${part!!.title}===")
         }
 
@@ -75,13 +77,13 @@ abstract class  Day<R> {
 
         private fun Part<R>.run() {
             assumeTrue(rawInput.isNotEmpty())
-            if(!runSlowTests && this in slowTests) println("SKIPPED - marked as slow").also { skip() }
+            markers.forEach { it.apply(this@Day) }
             testState = REAL
             run(if (mutableModel) rawInput.parse() else input, "real")
         }
 
         private fun Part<R>.runExample() {
-            if(exampleExpected == null) println("SKIPPED - marked as not applicable").also { skip() }
+            if(exampleExpected == null)  skip("SKIPPED - marked as not applicable")
             testState =EXAMPLE
             run(if(mutableModel) example!!.parse() else exampleParsed, "example")
         }
@@ -94,9 +96,9 @@ abstract class  Day<R> {
         }
     }
 
-    private fun skip() = assumeTrue(false)
+    private fun skip(s: String? = null) =  s?.let { println(s) }.also { assumeTrue(false) }
 
-    data class Part<R>(val function: (R) -> Any?, val exampleExpected: Any?, val expected: Any? = null, val title: String)
+    data class Part<R>(val function: (R) -> Any?, val exampleExpected: Any?, val expected: Any? = null, val title: String, val markers: Set<TestMarker> = emptySet())
 }
 
 

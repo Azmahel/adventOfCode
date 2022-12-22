@@ -1,7 +1,6 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.util.Point2D
 
 

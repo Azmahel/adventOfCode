@@ -1,7 +1,6 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestType.SLOW
 import de.twittgen.aoc.util.digitsToInt
 import java.lang.Integer.min
 

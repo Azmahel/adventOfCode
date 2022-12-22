@@ -1,7 +1,7 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestType.SLOW
+import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.y2022.Day19.Blueprint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
