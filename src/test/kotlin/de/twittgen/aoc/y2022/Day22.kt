@@ -9,8 +9,6 @@ import de.twittgen.aoc.y2022.Day22.Facing.*
 import de.twittgen.aoc.y2022.Day22.Tile.*
 import java.lang.IllegalStateException
 
-
-
 class Day22: Day<Pair<Board,List<Instruction>>>() {
 
     override fun String.parse() = split("\n\n").let { (map, instructions) ->
