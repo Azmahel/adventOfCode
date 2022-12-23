@@ -24,6 +24,7 @@ fun <T>MutableList<T>.replaceAt(i: Int, v :T): MutableList<T> {
 infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = this.intersect(other.toSet()) == this.toSet()
 fun <T,R> List<Pair<T,R>>.toPairOfLists() = this.map { it.first } to this.map { it.second }
 fun <T> List<T>.cycle() = drop(1) + first()
+fun <T> MutableList<T>.cycle() { add(removeAt(0)) }
 fun <T> Iterable<T>.boundaries() = listOf(first(), last())
 fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
     val added = mutableSetOf<Pair<T,T>>()
