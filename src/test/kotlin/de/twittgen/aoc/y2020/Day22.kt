@@ -28,6 +28,7 @@ class Day22 : Day<Pair<Deck, Deck>>(){
         previous += (p1.toList() to p2.toList())
         val (c1, c2) = p1.removeAt(0) to p2.removeAt(0)
         val p1Wins = if(recursive && p1.size >= c1  && p2.size >= c2)  {
+            @Suppress("NON_TAIL_RECURSIVE_CALL")
             playCombat(p1.take(c1).toMutableList(), p2.take(c2).toMutableList(), recursive).first.isNotEmpty()
         } else  {
             c1 > c2

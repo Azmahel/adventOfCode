@@ -9,6 +9,7 @@ repositories {
     mavenCentral()
 }
 test {
+    onlyIf { project.hasProperty("test")}
     useJUnitPlatform()
 }
 dependencies {

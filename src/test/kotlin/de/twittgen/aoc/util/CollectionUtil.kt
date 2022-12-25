@@ -16,11 +16,7 @@ fun <T> List<T>.mapIf(predicate: (T) -> Boolean, transform: (T) -> T): List<T> =
 fun <T> ofLength(i: Int, supplier: (Int)->T) = (0 until i).map { supplier(it) }
 
 fun<T,R> Triple<T, T, T>.forEach(m:(T)-> (R)) = Triple(m(first), m(second), m(third))
-fun <T>MutableList<T>.replaceAt(i: Int, v :T): MutableList<T> {
-    removeAt(i)
-    add(i, v)
-    return this
-}
+fun <T>MutableList<T>.replaceAt(i: Int, v :T)= apply { removeAt(i).also { add(i, v) } }
 infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = this.intersect(other.toSet()) == this.toSet()
 fun <T,R> List<Pair<T,R>>.toPairOfLists() = this.map { it.first } to this.map { it.second }
 fun <T> List<T>.cycle() = drop(1) + first()
@@ -29,5 +25,4 @@ fun <T> Iterable<T>.boundaries() = listOf(first(), last())
 fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
     val added = mutableSetOf<Pair<T,T>>()
     return asSequence().filterNot { (a,b) -> a to b in added || b to a in added }.map { it.also { added += it } }.toList()
-
 }
