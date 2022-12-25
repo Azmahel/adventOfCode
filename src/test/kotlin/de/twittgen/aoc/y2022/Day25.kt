@@ -16,7 +16,7 @@ class Day25: Day<List<Snafu>>() {
         var (current, carry, remaining)  = Triple("",0,this)
         while (remaining != 0L) {
             var mod = (remaining % 5).toInt() + carry
-            if(mod >= 3) mod = -5+mod.also { carry = 1 } else carry = 0
+            carry = if(mod >= 3) (1).also { mod += -5 } else 0
             current += reverseMapping[mod]!!
             remaining /= 5
         }
@@ -25,6 +25,7 @@ class Day25: Day<List<Snafu>>() {
 
     private val mapping = mapOf('=' to -2 , '-' to -1 , '0' to 0, '1' to 1, '2' to 2)
     private val reverseMapping = mapping.toList().associateBy({ it.second }, { it.first})
+
     override val example = """
         1=-0-2
         12111
