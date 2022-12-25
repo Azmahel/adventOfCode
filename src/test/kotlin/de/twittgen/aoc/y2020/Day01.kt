@@ -1,13 +1,12 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.second
 
 class Day01 : Day<List<Int>>() {
    override fun String.parse() = lines().map(String::toInt)
 
     init {
-        part1(514579, 100419) {list ->  list.findSumTo(2020).run {  first() * second() } }
+        part1(514579, 100419) {list ->  list.findSumTo(2020).let { (a, b) -> a * b } }
         part2(241861950, 265253940) {list ->  list.findThreeSum(2020).fold(1) { x, y -> x * y} }
     }
 

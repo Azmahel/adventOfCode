@@ -2,7 +2,6 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.mapIf
-import de.twittgen.aoc.util.second
 import kotlin.math.roundToLong
 
 
@@ -10,7 +9,7 @@ class Day14 : Day<Pair<Polymer, Rules>>() {
     override fun String.parse(): Pair<Polymer, Rules> = lines().first().toList() to lines().drop(2).toRules()
 
     private fun List<String>.toRules() =
-        associate { it.split(" -> ").run { first().run { get(0) to get(1) } to second().single() } }
+        associate { it.split(" -> ").let { (a,b) ->  a.run { get(0) to get(1) } to b.single() } }
 
     init {
         part1(1588, 2068) { (poly, rules) -> poly.transform(rules,10).score()  }

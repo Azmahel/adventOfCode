@@ -3,11 +3,10 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.hasDuplicate
 import de.twittgen.aoc.util.isLowerCase
-import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day12.Cave
 
 class Day12: Day<CaveMap>() {
-    override fun String.parse() = lines().map { it.split("-").run { first().toCave() to second().toCave() } }.toSet()
+    override fun String.parse() = lines().map { it.split("-").let { (a, b) -> a.toCave() to b.toCave() } }.toSet()
 
     init {
         part1(226, 4167) { it.findPaths { singleUseSmallCaves() }.size }

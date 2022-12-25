@@ -1,12 +1,11 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.second
 import java.util.*
 
 class Day05 : Day<Pair<Ship, List<Day05.Instruction>>>() {
     override fun String.parse(): Pair<Ship, List<Instruction>> = split("\n\n")
-        .run { first().parseShip() to second().parseInstructions() }
+        .let {(ship, ins) ->  ship.parseShip() to ins.parseInstructions() }
 
     private fun String.parseShip(): Ship {
         val boxes = lines().dropLast(1).map { it.chunked(4).map(::parseBox) }

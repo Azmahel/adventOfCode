@@ -2,15 +2,14 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
-import de.twittgen.aoc.util.second
 import de.twittgen.aoc.y2021.Day05.Line
 
 class Day05 : Day<List<Line>>(){
     override fun String.parse() = lines().map { it.toLine() }
 
     private fun String.toLine() = split(" -> ")
-            .map { it.split(",").map(String::toInt).run {Point2D(first(), second()) } }
-            .run { LineDef(first(), second()) }.toLine()
+            .map { it.split(",").map(String::toInt).let {(x,y) -> Point2D(x, y) } }
+            .let { (x,y) ->  LineDef(x, y) }.toLine()
 
     init {
         part1(5, 5690) {

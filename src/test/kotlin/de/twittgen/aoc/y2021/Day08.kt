@@ -1,14 +1,13 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.second
 
 
 class Day08 : Day<List<DecodingEntry>>() {
     override fun String.parse(): List<DecodingEntry> = lines()
         .map { line ->
             line.split(" | ")
-                .map { part -> part.split(" ").map { it.toSet() } }.run { first() to second() }
+                .map { part -> part.split(" ").map { it.toSet() } }.let { (a,b) ->  a to b }
         }
 
     init {

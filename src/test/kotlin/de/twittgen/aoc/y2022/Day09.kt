@@ -3,12 +3,11 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
-import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.times
 
 class Day09 : Day<List<Instruction>>() {
     override fun String.parse() = lines()
-        .map { it.split(" ").run { listOf(first().single()).times(second().toInt()) } }
+        .map { it.split(" ").let {(a,b) -> listOf(a.single()).times(b.toInt()) } }
         .flatten()
 
     init {

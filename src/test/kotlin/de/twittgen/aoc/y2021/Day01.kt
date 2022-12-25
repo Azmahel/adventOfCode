@@ -1,18 +1,17 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.second
 
 class Day01 : Day<List<Int>>() {
     override fun String.parse() = lines().map { it.toInt() }
 
     init {
-        part1(7, 1195) { it.getDepthIncreased().count { it } }
-        part2(5, 1235) { it.to3PMeasurement().getDepthIncreased().count { it } }
+        part1(7, 1195) { d ->  d.getDepthIncreased() }
+        part2(5, 1235) { d -> d.to3PMeasurement().getDepthIncreased() }
     }
 
-    private fun List<Int>.getDepthIncreased() = windowed(2).map{ it.first() < it.second() }
-    private fun List<Int>.to3PMeasurement() = windowed(3,).map { it.sum() }
+    private fun List<Int>.getDepthIncreased() = windowed(2).count{(a,b) ->  a < b}
+    private fun List<Int>.to3PMeasurement() = windowed(3).map { it.sum() }
 
     override val example = """
         199

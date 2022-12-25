@@ -2,7 +2,6 @@ package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2022.Day07.Directory
-import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.secondOrNull
 import java.lang.IllegalStateException
 
@@ -32,7 +31,7 @@ class Day07 : Day<Directory>(){
             }}
             "ls" -> {
                 remainder.takeWhile { !it.startsWith('$') }.forEach {
-                    val (obj, name) = it.split(" ").run { first() to second() }
+                    val (obj, name) = it.split(" ")
                     children += when(obj) {
                         "dir" -> name to Directory(this)
                         else -> name to File(obj.toLong())

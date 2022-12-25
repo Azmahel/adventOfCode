@@ -6,6 +6,4 @@ object FileUtil {
             ?.readText()
             ?.replace("\r\n", "\n")
             ?: "".also { println("no File for main task found")  }
-        
-
 }
