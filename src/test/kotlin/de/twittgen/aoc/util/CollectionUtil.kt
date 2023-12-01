@@ -14,7 +14,8 @@ fun <T> List<T>.takeUntil(predicate: (T)-> Boolean): List<T> =
     firstOrNull(predicate)?.let { takeWhile{ x -> !predicate(x) } + it } ?: takeWhile{ !predicate(it) }
 fun <T> List<T>.mapIf(predicate: (T) -> Boolean, transform: (T) -> T): List<T> = map { if(predicate(it)) transform(it) else it }
 fun <T> ofLength(i: Int, supplier: (Int)->T) = (0 until i).map { supplier(it) }
-
+fun List<Int>.digitsToInt() : Int = joinToString("").toInt()
+fun List<Int>.digitsToLong() : Long = joinToString("").toLong()
 fun<T,R> Triple<T, T, T>.forEach(m:(T)-> (R)) = Triple(m(first), m(second), m(third))
 fun <T>MutableList<T>.replaceAt(i: Int, v :T)= apply { set(i,v) }
 infix fun <T> Iterable<T>.containsAll(other: Iterable<T>) = intersect(other.toSet()) == toSet()

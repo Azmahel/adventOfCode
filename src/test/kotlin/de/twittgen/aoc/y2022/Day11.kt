@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.y2022.Day11.Monkey
 import java.lang.IllegalStateException
 
 class Day11: Day<Map<Int, Monkey>>() {
-    override fun String.parse() = split("\n\n").mapIndexed { i, s -> i to s.toMonkey() }.toMap()
+    override fun String.parse() = split(emptyLine).mapIndexed { i, s -> i to s.toMonkey() }.toMap()
 
     init {
         mutableModel = true

@@ -4,13 +4,14 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2022.Day14.Cave
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.rangeOf
+import de.twittgen.aoc.util.toPoint2d
 
 class Day14 : Day<Cave>()  {
 
     override fun String.parse() = Cave(lines().flatMap { it.toRock() }.toSet())
 
     private fun String.toRock() =  split(" -> ")
-        .map { it.split(",").let { (x,y) ->  Point2D(x.toInt(), y.toInt()) } }
+        .map { it.toPoint2d() }
         .windowed(2)
         .flatMap { (a,b) -> lineToPoints(a,b)}
 

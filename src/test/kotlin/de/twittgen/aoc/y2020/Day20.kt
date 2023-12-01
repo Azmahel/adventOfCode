@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.y2020.Day20.Tile
 import de.twittgen.aoc.y2020.Day20.Tile.Direction.*
 import kotlin.math.roundToInt
@@ -8,7 +9,7 @@ import kotlin.math.sqrt
 
 class Day20 : Day<List<Tile>>() {
 
-    override fun String.parse() = split("\n\n").map { it.parseTile() }
+    override fun String.parse() = split(emptyLine).map { it.parseTile() }
 
     private val tileNumber = Regex("Tile (\\d+):")
     private fun String.parseTile(): Tile {

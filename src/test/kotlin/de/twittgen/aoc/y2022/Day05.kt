@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 import java.util.*
 
 class Day05 : Day<Pair<Ship, List<Day05.Instruction>>>() {
-    override fun String.parse(): Pair<Ship, List<Instruction>> = split("\n\n")
+    override fun String.parse(): Pair<Ship, List<Instruction>> = split(emptyLine)
         .let {(ship, ins) ->  ship.parseShip() to ins.parseInstructions() }
 
     private fun String.parseShip(): Ship {

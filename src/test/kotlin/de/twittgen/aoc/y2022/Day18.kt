@@ -3,10 +3,10 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point3D
 import de.twittgen.aoc.util.boundaries
+import de.twittgen.aoc.util.toPoint3d
 
 class Day18: Day<List<Point3D>>() {
-    override fun String.parse() = lines().map { l -> l.split(",").map { it.toInt() }
-        .let { (x,y,z) -> Point3D(x,y,z) } }
+    override fun String.parse() = lines().map { l -> l.toPoint3d() }
 
     init {
         part1(64, 3500) { it.surface() }

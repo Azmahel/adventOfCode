@@ -4,6 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.Day.TestMarker.HACKY
 import de.twittgen.aoc.Day.TestState.EXAMPLE
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.y2022.Day22.*
 import de.twittgen.aoc.y2022.Day22.Facing.*
 import de.twittgen.aoc.y2022.Day22.Tile.*
@@ -11,7 +12,7 @@ import java.lang.IllegalStateException
 
 class Day22: Day<Pair<Board,List<Instruction>>>() {
 
-    override fun String.parse() = split("\n\n").let { (map, instructions) ->
+    override fun String.parse() = split(emptyLine).let { (map, instructions) ->
         parseMap(map) to parseInstructions(instructions)
     }
 

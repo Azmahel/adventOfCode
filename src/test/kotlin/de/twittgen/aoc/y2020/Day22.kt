@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 
 class Day22 : Day<Pair<Deck, Deck>>(){
-    override fun String.parse() = split("\n\n")
+    override fun String.parse() = split(emptyLine)
         .map { it.lines().drop(1).map {c ->  c.toInt() } }.let { (p1, p2) -> p1 to p2 }
 
     init {

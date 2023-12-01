@@ -1,12 +1,13 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.util.second
 import de.twittgen.aoc.util.toIntRange
 
 class Day16: Day<Triple<List<FieldConstraint>, Ticket, List<Ticket>>>(){
     private val fieldExp = Regex("([a-z ]+): (\\d+-\\d+) or (\\d+-\\d+)")
-    override fun String.parse() = split("\n\n").let { (con, ticket, o) ->
+    override fun String.parse() = split(emptyLine).let { (con, ticket, o) ->
         val req = con.lines().map { fieldExp.matchEntire(it)!!.destructured.let { (title, a, b) ->
             title to listOf(a.toIntRange("-"),b.toIntRange("-"))
         }}

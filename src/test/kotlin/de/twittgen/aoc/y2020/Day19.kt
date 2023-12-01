@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.util.isNumber
 
 
 class Day19 : Day<Pair<Grammar, List<String>>>() {
-    override fun String.parse() = split("\n\n").let { (rawRules, inputs) ->
+    override fun String.parse() = split(emptyLine).let { (rawRules, inputs) ->
         val rules = rawRules.lines().associate { it.replace("\"", "").parseRule() }
         rules to inputs.lines()
     }

@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.emptyLine
 
 class Day06 : Day<List<List<String>>>(){
-    override fun String.parse() = split("\n\n").map { it.lines() }
+    override fun String.parse() = split(emptyLine).map { it.lines() }
 
     init {
         part1(11, 6297) { it.sumOf { group -> questions.filter { q -> group.any { p -> p.contains(q) } }.size } }
