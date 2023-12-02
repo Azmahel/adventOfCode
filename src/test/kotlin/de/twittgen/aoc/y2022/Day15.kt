@@ -3,13 +3,14 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.Day.TestState.EXAMPLE
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.groups
 import java.lang.IllegalStateException
 import kotlin.math.abs
 
 class Day15: Day<List<Pair<Point2D, Point2D>>>() {
     private val sensorBeaconExpr = Regex("Sensor at x=(.+), y=(.+): closest beacon is at x=(.+), y=(.+)")
     override fun String.parse() = lines().map { l ->
-        sensorBeaconExpr.matchEntire(l)!!.destructured
+        sensorBeaconExpr.groups(l)!!
             .let { (xS,yS,xB,yB) -> Point2D(xS.toInt(), yS.toInt()) to  Point2D(xB.toInt(), yB.toInt()) }
     }
 

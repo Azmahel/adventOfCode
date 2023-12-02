@@ -1,12 +1,13 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.util.times
 
 class Day07 : Day<RuleSet>() {
     private val bagMatcher = Regex("(.*) bags contain (.*)")
     override fun String.parse() = lines().associate {
-        bagMatcher.matchEntire(it)!!.destructured.let {(a,b) ->  a.trim() to b.parseContent() }
+        bagMatcher.groups(it)!!.let {(a,b) ->  a.trim() to b.parseContent() }
     }
 
     private val contentMatcher = Regex("([0-9]*) (.*)bag(s*)\\.*")

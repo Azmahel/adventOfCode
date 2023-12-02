@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.firstMatch
 import de.twittgen.aoc.y2020.Day20.Tile
 import de.twittgen.aoc.y2020.Day20.Tile.Direction.*
 import kotlin.math.roundToInt
@@ -13,7 +14,7 @@ class Day20 : Day<List<Tile>>() {
 
     private val tileNumber = Regex("Tile (\\d+):")
     private fun String.parseTile(): Tile {
-        val (id) = tileNumber.matchEntire(lines().first())!!.destructured
+        val id = tileNumber.firstMatch(lines().first())!!
         val body = lines().drop(1)
        return Tile(
            id.toInt(),

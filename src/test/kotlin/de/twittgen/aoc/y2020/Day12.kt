@@ -2,13 +2,14 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.y2020.Day12.Facing.*
 import java.lang.IllegalArgumentException
 import kotlin.math.*
 
 class Day12 : Day<List<Instruction>>() {
     override fun String.parse() = lines().map {
-        Regex("([A-Z])(\\d+)").matchEntire(it)!!.destructured.let { (operation, amount) ->
+        Regex("([A-Z])(\\d+)").groups(it)!!.let { (operation, amount) ->
             operation to amount.toInt()
         }
     }

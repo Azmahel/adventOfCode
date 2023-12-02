@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.util.times
 
 class Day01 : Day<List<String>>() {
@@ -12,8 +13,8 @@ class Day01 : Day<List<String>>() {
     }
 
     private fun String.findFirstAndLastDigitOrNumberWords() = (
-            firstAndLastNumber.matchEntire(this)?.destructured?.toList()
-                ?: singleNumber.matchEntire(this)!!.destructured.toList().times(2)
+            firstAndLastNumber.groups(this)?.toList()
+                ?: singleNumber.groups(this)!!.toList().times(2)
             ).let { (a, b) -> "${numberWords[a] ?: a}${numberWords[b] ?: b}".toInt() }
 
     private fun String.findFirstAndLasDigit() = filter { c -> c.isDigit() }.let { digits -> "${digits.first()}${digits.last()}".toInt() }

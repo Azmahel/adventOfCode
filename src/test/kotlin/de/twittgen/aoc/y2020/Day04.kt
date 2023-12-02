@@ -2,12 +2,13 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.groups
 
 class Day04 : Day<List<Passport>>() {
 
     override fun String.parse() = split(emptyLine).map { passport ->
         passport.lines().flatMap { it.split(" ") }.associate {
-            Regex("(.*):(.*)").matchEntire(it)!!.destructured.let { (k,v) -> k to v }
+            Regex("(.*):(.*)").groups(it)!!.let { (k,v) -> k to v }
         }
     }
 

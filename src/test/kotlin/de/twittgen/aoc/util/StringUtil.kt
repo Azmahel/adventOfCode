@@ -20,7 +20,8 @@ fun String.takePartitioning(vararg m : (Char) -> Boolean): List<String> {
     }
     return result + remainder
 }
-fun Regex.firstMatch(s: String) = matchEntire(s)?.destructured?.component1()
+fun Regex.firstMatch(s: String) = groups(s)?.component1()
+fun Regex.groups(s:String) = matchEntire(s)?.destructured
 
 fun String.takeLastPartitioning(vararg m : (Char) -> Boolean): List<String> {
     var remainder = this

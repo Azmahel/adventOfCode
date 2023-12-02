@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.util.isNumber
 import de.twittgen.aoc.y2022.Day21.Monkey
 import java.lang.IllegalStateException
@@ -15,7 +16,7 @@ class Day21 : Day<Map<String, Monkey>>() {
 
     private val opEx = Regex("([a-z]+) ([+\\-*/]) ([a-z]+)")
     private fun parseInst(s: String) = if(s.isNumber()) NumMonkey(s) else parseOp(s)
-    private fun parseOp(s:String) = opEx.matchEntire(s)!!.destructured.let { (a,op,b) -> when(op) {
+    private fun parseOp(s:String) = opEx.groups(s)!!.let { (a,op,b) -> when(op) {
         "+" -> AddMonkey(a,b)
         "*" -> MulMonkey(a,b)
         "-" -> SubMonkey(a,b)

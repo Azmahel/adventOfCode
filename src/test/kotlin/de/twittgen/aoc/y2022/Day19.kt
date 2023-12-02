@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.Day.TestMarker.SLOW
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.y2022.Day19.Blueprint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -10,7 +11,7 @@ import kotlin.math.ceil
 
 class Day19: Day<List<Blueprint>>() {
     private val bpPattern = Regex("\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*(\\d+)\\D*")
-    override fun String.parse() = lines().map { bpPattern.matchEntire(it)!!.destructured.let { (id,ore,clay,obs1,obs2,geo1,geo2) ->
+    override fun String.parse() = lines().map { bpPattern.groups(it)!!.let { (id,ore,clay,obs1,obs2,geo1,geo2) ->
         Blueprint(
             id.toInt(),
             listOf(

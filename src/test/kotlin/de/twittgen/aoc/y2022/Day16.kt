@@ -3,6 +3,7 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2022.Day16.Valve
 import de.twittgen.aoc.util.filterMirrors
+import de.twittgen.aoc.util.groups
 import de.twittgen.aoc.util.toPairOfLists
 import kotlinx.coroutines.*
 
@@ -10,7 +11,7 @@ import kotlinx.coroutines.*
 class Day16 : Day<CaveMap>() {
     private val pattern = Regex("Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel[s]? lead[s]? to valve[s]? (.+)")
 
-    override fun String.parse() = lines().map{l -> pattern.matchEntire(l)!!.destructured.let { (valve,flow,other)->
+    override fun String.parse() = lines().map{l -> pattern.groups(l)!!.let { (valve,flow,other)->
         Valve(valve, flow.toInt()) to other.split(", ").map { valve to it }
     } }.toPairOfLists().let { p ->
         val valveMap = p.first.associateBy { it.name }
