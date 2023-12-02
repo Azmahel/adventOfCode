@@ -22,13 +22,16 @@ class Day02 : Day<List<Day02.Game>>() {
         part1(8,2377) { games ->
             games.filter { it.reveals.maxValues().hasMax(12, 13, 14) }.sumOf { it.id }
         }
-        part2(2286, 71220) { game -> game.sumOf { it.reveals.maxValues().power } }
+        part2(2286, 71220) { game ->
+            game.sumOf { it.reveals.maxValues().power }
+        }
     }
 
     private fun Collection<Reveal>.maxValues() =
         Reveal(this.maxOf { it.red }, this.maxOf { it.green }, this.maxOf { it.blue })
 
-    private fun Reveal.hasMax(red: Int, green: Int, blue: Int) : Boolean  = this.red <= red && this.green <= green && this.blue <= blue
+    private fun Reveal.hasMax(red: Int, green: Int, blue: Int)  =
+        this.red <= red && this.green <= green && this.blue <= blue
 
     private val redExp = Regex(".* (\\d+) red.*")
     private val blueExp = Regex(".* (\\d+) blue.*")
