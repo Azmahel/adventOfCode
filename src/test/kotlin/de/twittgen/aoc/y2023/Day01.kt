@@ -8,15 +8,13 @@ class Day01 : Day<List<String>>() {
 
     init {
         part1(null, 55816) { it.sumOf { value -> value.findFirstAndLasDigit() } }
-        part2(281, 54980) {
-            it.sumOf { value -> value.findFirstAndLastDigitOrNumberWords() }
-        }
+        part2(281, 54980) { it.sumOf { value -> value.findFirstAndLastDigitOrNumberWords() } }
     }
 
     private fun String.findFirstAndLastDigitOrNumberWords() = (
             firstAndLastNumber.matchEntire(this)?.destructured?.toList()
                 ?: singleNumber.matchEntire(this)!!.destructured.toList().times(2)
-            ).let { (a, b) -> "${numberWords.getOrDefault(a,a)}${numberWords.getOrDefault(b,b)}".toInt() }
+            ).let { (a, b) -> "${numberWords[a] ?: a}${numberWords[b] ?: b}".toInt() }
 
     private fun String.findFirstAndLasDigit() = filter { c -> c.isDigit() }.let { digits -> "${digits.first()}${digits.last()}".toInt() }
     private val numberWords = mapOf("one" to "1", "two" to "2", "three" to "3", "four" to "4", "five" to "5", "six" to "6", "seven" to "7", "eight" to "8", "nine" to "9",)
