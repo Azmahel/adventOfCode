@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.firstMatch
 
 class Day02 : Day<List<Day02.Game>>() {
     override fun String.parse() = lines().mapIndexed {i , game ->
@@ -9,9 +10,9 @@ class Day02 : Day<List<Day02.Game>>() {
                 .split(";")
                 .map { set ->
                     Reveal(
-                        redExp.matchEntire(set)?.destructured?.component1()?.toInt() ?: 0,
-                        greenExp.matchEntire(set)?.destructured?.component1()?.toInt() ?: 0,
-                        blueExp.matchEntire(set)?.destructured?.component1()?.toInt() ?: 0,
+                        redExp.firstMatch(set)?.toInt() ?: 0,
+                        greenExp.firstMatch(set)?.toInt() ?: 0,
+                        blueExp.firstMatch(set)?.toInt() ?: 0,
                     )
                 }.toSet()
         )
@@ -24,11 +25,8 @@ class Day02 : Day<List<Day02.Game>>() {
         part2(2286, 71220) { game -> game.sumOf { it.reveals.maxValues().power } }
     }
 
-    private fun Collection<Reveal>.maxValues() = Reveal(
-        this.maxOf { it.red },
-        this.maxOf { it.green },
-        this.maxOf { it.blue }
-    )
+    private fun Collection<Reveal>.maxValues() =
+        Reveal(this.maxOf { it.red }, this.maxOf { it.green }, this.maxOf { it.blue })
 
     private fun Reveal.hasMax(red: Int, green: Int, blue: Int) : Boolean  = this.red <= red && this.green <= green && this.blue <= blue
 
@@ -36,11 +34,7 @@ class Day02 : Day<List<Day02.Game>>() {
     private val blueExp = Regex(".* (\\d+) blue.*")
     private val greenExp = Regex(".* (\\d+) green.*")
 
-    data class Reveal(
-        val red: Int,
-        val green: Int,
-        val blue: Int
-    ) {
+    data class Reveal(val red: Int, val green: Int, val blue: Int) {
         val power = red * green * blue
     }
 
@@ -53,9 +47,5 @@ class Day02 : Day<List<Day02.Game>>() {
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
     """.trimIndent()
-
-
-
-
 }
 
