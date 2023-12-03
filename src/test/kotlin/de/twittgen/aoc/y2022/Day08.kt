@@ -8,9 +8,9 @@ class Day08 : Day<List<List<Int>>>() {
 
     init {
         part1(21, 1719) { it.findVisibleTrees().size }
-        part2(8, 590824) { it.flatMapIndexed { x , row -> row.mapIndexed { y, tree ->
+        part2(8, 590824) { it.mapCoordinates { x, y, tree ->
                 it.getSightLinesAt(x,y).map { line -> line.takeUntil { other -> other >= tree }.size }.product()
-        } }.maxOrNull()!! }
+        }.maxOrNull()!! }
     }
 
     private fun List<List<Int>>.findVisibleTrees() = visible() + columns().visible().map(Point2D::transpose)

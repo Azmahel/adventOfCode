@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapCoordinates
 
 class Day17 : Day<Set<SpaceTimeCoordinate>>() {
-    override fun String.parse() = lines().mapIndexed { x, line -> line.mapIndexedNotNull { y, c ->
+    override fun String.parse() = mapCoordinates { x, y, c ->
         if (c=='#') listOf(x,y) else null
-    } }.flatten().toSet()
+    }.toSet()
 
     init {
         part1(112, 286) { it.run().size }

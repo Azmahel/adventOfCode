@@ -3,6 +3,7 @@ package de.twittgen.aoc.y2020
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.util.firstMatch
+import de.twittgen.aoc.util.mapCoordinates
 import de.twittgen.aoc.y2020.Day20.Tile
 import de.twittgen.aoc.y2020.Day20.Tile.Direction.*
 import kotlin.math.roundToInt
@@ -98,8 +99,7 @@ class Day20 : Day<List<Tile>>() {
                           # 
         #    ##    ##    ###
          #  #  #  #  #  #   
-    """.trimIndent().lines()
-        .mapIndexed { x, s -> s.mapIndexedNotNull { y, it -> if(it == '#') x to y else null } }.flatten()
+    """.trimIndent().mapCoordinates { x, y, c -> if(c == '#') x to y else null }
 
     private fun Image.countMonsters(): Int {
         val max = maxOf { it.first }

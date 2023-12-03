@@ -2,12 +2,12 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.mapCoordinates
 import de.twittgen.aoc.util.product
 
 class Day03 : Day<Treemap>() {
 
-    override fun String.parse() = lines()
-        .flatMapIndexed { x, line -> line.mapIndexed { y, value -> Point2D(x, y) to (value == '#') } }
+    override fun String.parse() = mapCoordinates { x, y, value -> Point2D(x, y) to (value == '#') }
         .associate { it }
 
     private val slopesToCheck = listOf(1 to 1, 1 to 3, 1 to 5, 1 to 7, 2 to 1)

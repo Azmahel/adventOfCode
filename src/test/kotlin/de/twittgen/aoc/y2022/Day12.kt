@@ -3,17 +3,18 @@ package de.twittgen.aoc.y2022
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.alphabet
+import de.twittgen.aoc.util.mapCoordinates
 
 class Day12: Day<Pair<Point2D, PathMap>>() {
     override fun String.parse(): Pair<Point2D, PathMap> {
         var target : Point2D = Point2D.ORIGIN
-        val map = lines().flatMapIndexed { x, l -> l.mapIndexed { y, c ->
+        val map = mapCoordinates{ x, y, c ->
             Point2D(x,y)  to when(c) {
                 'S' -> alphabet.indexOf('a') to 0
                 'E' -> (alphabet.indexOf('z') to Int.MAX_VALUE).also { target = Point2D(x,y) }
                 else -> alphabet.indexOf(c) to Int.MAX_VALUE
             }
-        } }.toMap()
+        }.toMap()
         return target to map
     }
 

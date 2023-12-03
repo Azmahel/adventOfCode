@@ -3,11 +3,13 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2021.Day25.Colonies
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.mapCoordinates
+import de.twittgen.aoc.util.toCharList
 
 class Day25: Day<Colonies>() {
-    override fun String.parse() = lines().reversed().flatMapIndexed { y, l ->  l.mapIndexed { x, c ->
+    override fun String.parse() = lines().reversed().map(String::toCharList).mapCoordinates { y, x, c ->
         c to Cucumber(x,y)
-    } }.groupBy(Pair<Char, Cucumber>::first, Pair<Char, Cucumber>::second)
+    }.groupBy(Pair<Char, Cucumber>::first, Pair<Char, Cucumber>::second)
         .let { Colonies(it['>']!!.toSet(), it['v']!!.toSet() , lines().first().length to lines().size) }
 
     init {
@@ -26,10 +28,6 @@ class Day25: Day<Colonies>() {
             val newDowns = downs.map { c -> c.down().wrap(dim).let { n -> if (n in all)  c else n} }.toSet()
             return Colonies(rights, newDowns, dim)
         }
-
-        fun print() = (dim.second-1 downTo 0).joinToString("\n") { y -> (0 until dim.first).map { x ->
-                if (rights.contains(Cucumber(x, y))) '>' else if (downs.contains(Cucumber(x, y))) 'v' else '.'
-        }.joinToString("") }
     }
 
     private fun Colonies.runTillStable(): Int {

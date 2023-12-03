@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapCoordinates
 
 class Day09 : Day<Heightmap>() {
     override fun String.parse() = lines().map {line -> line.map { it.digitToInt() } }.toMap()
-    private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> (x to y) to v } }.toMap()
+    private fun List<List<Int>>.toMap() = mapCoordinates { x, y, v -> (x to y) to v }.toMap()
 
     init {
         part1(15, 535) { it.findLowPoints().values.sumOf { it+1 } }

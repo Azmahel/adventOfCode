@@ -2,19 +2,17 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.mapCoordinates
 
 
 class Day11 : Day<EnergyLevels>() {
     override fun String.parse() = lines().map { line-> line.map { it.digitToInt() } }.toMap()
-    private fun List<List<Int>>.toMap() = flatMapIndexed { x, it -> it.mapIndexed { y, v -> Point2D(x, y) to v } }.toMap()
+    private fun List<List<Int>>.toMap() = mapCoordinates { x, y, v -> Point2D(x, y) to v }.toMap()
 
     init {
         part1(1656, 1667){ it.runSteps(100) }
         part2(195, 488) { it.findSynchronisation() }
     }
-
-    private fun Pair<Int,Int>.getAdjacency() =
-        (-1..1).flatMap { a -> (-1..1).map { b -> (first + a) to (second + b) } }.minus(this)
 
     private fun EnergyLevels.doStep(): EnergyLevels = mapValues { (_, v) -> v+1 }.subStep()
 

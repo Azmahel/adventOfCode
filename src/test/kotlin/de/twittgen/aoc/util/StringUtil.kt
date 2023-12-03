@@ -1,4 +1,5 @@
 package de.twittgen.aoc.util
+
 const val emptyLine = "\n\n"
 fun String.toIntcodeProgram() =  split(",").map { it.toInt(10) }
 fun String.toIntRange(delimiter: String = "-") = split(delimiter).map { it.toInt(10) }.let { rangeOf(it[0], it[1]) }
@@ -9,6 +10,10 @@ fun String.second(): Char = toList().second()
 fun String.digitsToInt() = map { it.digitToInt() }
 fun String.toPoint3d(): Point3D = split(',').map(String::toInt).let { (x,y,z) ->Point3D(x,y,z) }
 fun String.toPoint2d(): Point2D = split(',').map(String::toInt).let { (x,y) ->Point2D(x,y) }
+fun <T>String.mapCoordinates(function: (x: Int, y: Int, c: Char) -> T?) = lines().map(String::toCharList).mapCoordinates(function)
+fun String.toCharList() = toCharArray().toList()
+
+fun Char?.isADigit() = this?.isDigit() ?: false
 
 fun String.takePartitioning(vararg m : (Char) -> Boolean): List<String> {
     var remainder = this

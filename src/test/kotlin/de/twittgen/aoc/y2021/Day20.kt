@@ -2,14 +2,16 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.mapCoordinates
+import de.twittgen.aoc.util.toCharList
 
 
 class Day20 : Day<Pair<Algorithm, Image>>() {
     override fun String.parse(): Pair<Algorithm, Image> {
         val algorithm = lines().first().map { if(it == '#') 1 else 0 }.convert()
-        val image = lines().drop(2).flatMapIndexed { x, line -> line.mapIndexedNotNull { y, c ->
+        val image = lines().drop(2).map(String::toCharList).mapCoordinates { x, y, c ->
             if (c == '#') Point2D(x, y) else null
-        } }.toSet()
+        }.toSet()
         return algorithm to image
     }
 
@@ -27,9 +29,9 @@ class Day20 : Day<Pair<Algorithm, Image>>() {
     }
 
     private fun List<Int>.convert() = withIndex().filterNot{ it.value ==0 }.map { (i, _) ->
-        i.toString(2).padStart(9, '0') .chunked(3).flatMapIndexed { x, l -> l.mapIndexedNotNull { y, i ->
-            if (i == '1') Point2D(x-1, y-1) else null
-        } }.toSet()
+        i.toString(2).padStart(9, '0') .chunked(3).map(String::toCharList).mapCoordinates { x, y, c ->
+            if (c == '1') Point2D(x-1, y-1) else null
+        }.toSet()
     }.toSet()
 
     override val example = """
