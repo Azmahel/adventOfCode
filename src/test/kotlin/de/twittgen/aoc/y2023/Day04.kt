@@ -13,7 +13,7 @@ class Day04: Day<List<Int>>() {
         part1(13, 24848) { cards ->
             cards.sumOf { s -> if(s ==0 ) 0 else 2.0.pow(s-1).toInt() }
         }
-        part2(30, 7258152 ) { it.copyScoring() }
+        part2(30, 7258152) { it.copyScoring() }
     }
 
     private fun List<Int>.copyScoring() : Int {
