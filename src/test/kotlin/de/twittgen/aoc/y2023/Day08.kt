@@ -41,4 +41,4 @@ class Day08: Day<Pair<String, Network>>() {
         XXX = (XXX, XXX)
     """.trimIndent()
 }
-typealias Network = Map<String, Pair<String,String>>
+private typealias Network = Map<String, Pair<String,String>>

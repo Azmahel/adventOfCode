@@ -32,5 +32,4 @@ class Day06 : Day<List<Pair<String, String>>>() {
         Time:      7  15   30
         Distance:  9  40  200
     """.trimIndent()
-
 }

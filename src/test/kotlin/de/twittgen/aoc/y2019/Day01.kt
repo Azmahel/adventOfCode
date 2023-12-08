@@ -10,9 +10,8 @@ internal class Day01 : Day<Rocket>(){
         part2(null,4994898) { modules -> modules.sumOf { it.getTotalFuel() } }
     }
 
-    private fun Int.getFuelNeeded() = this / 3 -2
+    private fun Int.getFuelNeeded() =  this / 3 -2
+    private fun Int.getTotalFuel(): Int = getFuelNeeded().let {  if(it <=0)  0 else it + it.getTotalFuel() }
 
-    private tailrec fun Int.getTotalFuel(sum: Int = 0): Int =
-        if(this <=0) sum else getFuelNeeded().getTotalFuel(sum + this)
 }
 private typealias Rocket = List<Int>

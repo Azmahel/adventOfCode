@@ -60,4 +60,4 @@ class Day03 : Day<Schematic>() {
         .664.598..
     """.trimIndent()
 }
-typealias Schematic = Map<Point2D, Char>
+private typealias Schematic = Map<Point2D, Char>

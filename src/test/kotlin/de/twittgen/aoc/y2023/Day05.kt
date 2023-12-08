@@ -81,6 +81,6 @@ class Day05 : Day<Pair<Seeds, List<Mapping>>>() {
 
 }
 
-typealias Seeds = List<Long>
-typealias Mapping = List<OffsetRange>
-typealias OffsetRange = Pair<LongRange, Long>
+private typealias Seeds = List<Long>
+private typealias Mapping = List<OffsetRange>
+private typealias OffsetRange = Pair<LongRange, Long>

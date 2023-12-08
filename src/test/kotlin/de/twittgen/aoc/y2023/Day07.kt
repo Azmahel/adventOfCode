@@ -62,5 +62,5 @@ class Day07: Day<CamelPoker>() {
     """.trimIndent()
 
 }
-typealias Hand = List<Int>
-typealias CamelPoker = List<Pair<Hand, Int>>
+private typealias Hand = List<Int>
+private typealias CamelPoker = List<Pair<Hand, Int>>
