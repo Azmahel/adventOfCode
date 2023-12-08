@@ -22,7 +22,8 @@ class Day06 : Day<List<Pair<String, String>>>() {
     private fun List<Pair<String, String>>.toPart1() = map {it.first.toLong() to it.second.toLong()}
 
     // this brute force approach takes ~100ms for part2, and we cant have that
-    private fun Pair<Long,Long>.getBeating() = (1 until first).fold(0L) { p, it ->  if(((first - it) * it) > second) p+1 else p }
+    private fun Pair<Long,Long>.getBeating() =
+        (1 until first).fold(0L) { p, it ->  if(((first - it) * it) > second) p+1 else p }
 
     private fun Pair<Long, Long>.getPqBeating()= pq(this.first.toDouble(), this.second.toDouble()).let { (x1,x2) ->
         x2.toLong() - 1 - (x1.toLong() - 1) - if (x1.roundToLong() - x1 == 0.0) 1 else 0
