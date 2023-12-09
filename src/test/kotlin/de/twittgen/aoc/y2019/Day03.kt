@@ -9,9 +9,7 @@ class Day03 : Day<List<Day03.Wire>>() {
         lines().map { Wire(it.split(",").map { it[0] to it.drop(1).toInt() }) }
 
     init {
-        part1(159, 217) { (w1, w2) ->
-            w1.getClosestIntersection(w2).manhattanDistance()
-        }
+        part1(159, 217) { (w1, w2) -> w1.getClosestIntersection(w2).manhattanDistance() }
         part2(610, 3454) { (w1, w2) -> w1.getClosestIntersectionByLength(w2).let {
             w1.getDistanceTo(it) + w2.getDistanceTo(it)
         } }
