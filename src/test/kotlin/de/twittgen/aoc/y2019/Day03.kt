@@ -6,7 +6,7 @@ import java.lang.IllegalArgumentException
 
 class Day03 : Day<List<Day03.Wire>>() {
     override fun String.parse() =
-        lines().map { Wire(it.split(",").map { it[0] to it.drop(1).toInt() }) }
+        lines().map { Wire(it.split(",").map { it.first() to it.drop(1).toInt() }) }
 
     init {
         part1(159, 217) { (w1, w2) -> w1.getClosestIntersection(w2).manhattanDistance() }
