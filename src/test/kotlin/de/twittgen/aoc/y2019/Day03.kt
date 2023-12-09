@@ -20,15 +20,16 @@ class Day03 : Day<List<Day03.Wire>>() {
     class Wire(instructions: List<Instruction>) {
         private val path: List<Point2D> = instructions.generatePath()
 
-        fun getDistanceTo(point: Point2D): Int = this.path.indexOf(point)
+        fun getDistanceTo(point: Point2D) = path.indexOf(point)
+
         fun getClosestIntersectionByLength(other: Wire) =
-            getIntersections(other).minByOrNull { this.getDistanceTo(it) + other.getDistanceTo(it) }!!
+            getIntersections(other).minByOrNull { getDistanceTo(it) + other.getDistanceTo(it) }!!
 
         fun getClosestIntersection(other: Wire, to: Point2D = Point2D.ORIGIN) =
             getIntersections(other).minByOrNull { it.manhattanDistance(to) }!!
 
         private fun getIntersections(other: Wire): List<Point2D> =
-            this.path.intersect(other.path.toSet()).filterNot { it == Point2D.ORIGIN }
+            path.intersect(other.path.toSet()).filterNot { it == Point2D.ORIGIN }
 
         private fun List<Instruction>.generatePath() = fold(listOf(Point2D.ORIGIN)) { current, (operation, count) ->
             current + current.last().let { last -> (1..count).map {when (operation) {
