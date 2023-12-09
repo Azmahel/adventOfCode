@@ -27,7 +27,7 @@ class Day09 : Day<List<Instruction>>() {
         if (head in adjacent() + this) { this } else { this + (head - this).norm() }
 
     private val moveMap : Map<Char, Point2D.()-> Point2D> =
-        mapOf('R' to Point2D::right, 'L' to Point2D::left, 'U' to Point2D::up, 'D' to Point2D::down)
+        mapOf('R' to { right() }, 'L' to { left() }, 'U' to { up() }, 'D' to { down() })
 
     private fun Point2D.move(direction: Char) = moveMap[direction]!!()
 

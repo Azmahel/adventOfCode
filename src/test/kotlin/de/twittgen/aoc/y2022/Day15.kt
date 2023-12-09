@@ -48,7 +48,7 @@ class Day15: Day<List<Pair<Point2D, Point2D>>>() {
     private fun IntRange.cut(other: IntRange) = maxOf(first, other.first)..minOf(last,other.last)
     private fun IntRange.size() = abs(last - first)
 
-    private fun getBlockedRangeAt(s: Point2D, b: Point2D, y: Int) = (s.manhattanDistanceTo(b) - abs(s.y - y)).let {
+    private fun getBlockedRangeAt(s: Point2D, b: Point2D, y: Int) = (s.manhattanDistance(b) - abs(s.y - y)).let {
         s.x - it..s.x + it
     }.let { if(it.isEmpty()) null else it }
 
