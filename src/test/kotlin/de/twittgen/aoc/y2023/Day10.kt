@@ -31,11 +31,13 @@ class Day10: Day<Pair<Point2D, Map<Point2D, PipeSegment>>>() {
             start.findLoop(map)
                 .toDiagram(start)
                 .map {  it.replace(pipeExp, "|") }
-                .sumOf { l ->
-                    l.mapIndexed { i, c -> if (c == '.' && l.take(i).count { it == '|' } % 2 == 1) 1 else 0 }.sum()
-                }
+                .sumOf { l -> l.findEnclosedByParity() }
         }
     }
+
+    private fun String.findEnclosedByParity() =
+        mapIndexed { i, c -> if (c == '.' && take(i).count { it == '|' } % 2 == 1) 1 else 0 }.sum()
+
     private fun List<Point2D>.toDiagram(start: Point2D)= raw!!
         .replace('S', start.mapStartToPipe(this))
         .lines().reversed().mapIndexed { y, l ->

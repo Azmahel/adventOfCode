@@ -62,7 +62,7 @@ abstract class  Day<R> {
     inner class Part2: RunPart(part2)
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    open inner class RunPart(val part: Part<R>?) {
+    open inner class RunPart(private val part: Part<R>?) {
         @BeforeAll
         fun start() {
             if(part == null) skip("SKIPPED - does not exist")
