@@ -9,10 +9,10 @@ class Day04 : Day<IntRange>() {
 
     init {
         part1(null, 1729) {
-            it.getPasswordsInRange( isSixDigitNumber, numbersAreRising, hasIdenticalAdjacentNumbers).size
+            it.getPasswordsInRange(numbersAreRising, hasIdenticalAdjacentNumbers).size
         }
         part2(null, 1172) {
-            it.getPasswordsInRange(isSixDigitNumber, numbersAreRising, hasTwoNumberRun).size
+            it.getPasswordsInRange(numbersAreRising, hasTwoNumberRun).size
         }
     }
 
@@ -20,8 +20,7 @@ class Day04 : Day<IntRange>() {
         filter {int -> constraints.all{ constraint -> int.toString().constraint() } }
 
 
-    private val sixDigitNumber = Regex("[0-9]{6}")
-    private val isSixDigitNumber : Constraint =  { sixDigitNumber.matches(this) }
+
     private val doubleNumber = Regex(".*(00|11|22|33|44|55|66|77|88|99).*")
     private val hasIdenticalAdjacentNumbers: Constraint = { doubleNumber.matches(this) }
     private val numbersAreRising: Constraint = { toInt().let { it.digits == it.digits.sorted() }}

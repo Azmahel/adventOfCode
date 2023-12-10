@@ -49,6 +49,8 @@ abstract class  Day<R> {
 
     private val rawInput by lazy {FileUtil.readInput(identifier)}
     private val input by lazy { rawInput.parse() }
+    protected var raw : String? = null
+        private set
 
     @BeforeAll
     fun init() { println("Running $identifier") }
@@ -79,12 +81,14 @@ abstract class  Day<R> {
             assumeTrue(rawInput.isNotEmpty())
             markers.forEach { it.apply(this@Day) }
             testState = REAL
+            raw = rawInput
             run(if (mutableModel) rawInput.parse() else input, "real")
         }
 
         private fun Part<R>.runExample() {
             if(exampleExpected == null)  skip("SKIPPED - marked as not applicable")
             testState =EXAMPLE
+            raw = example
             run(if(mutableModel) example!!.parse() else exampleParsed, "example")
         }
 
