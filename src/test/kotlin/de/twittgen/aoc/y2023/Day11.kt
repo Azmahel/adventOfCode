@@ -8,7 +8,7 @@ class Day11 : Day<List<List<Char>>>() {
 
     init {
         part1(374, 9556712) { it.expand().apSp().sum() }
-        part2(9556712, 678626199476) { it.expand(1_000_000).apSp().sum() }
+        part2(82000210, 678626199476) { it.expand(1_000_000).apSp().sum() }
     }
 
     private fun List<List<Char>>.expand(times: Int = 2) : List<Point2D> {
