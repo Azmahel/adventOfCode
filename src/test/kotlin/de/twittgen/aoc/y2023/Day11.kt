@@ -26,7 +26,7 @@ class Day11 : Day<List<List<Char>>>() {
     private fun List<List<Char>>.emptyIndices() =
         mapIndexed { i, l -> i to l }.filter { (_, it) -> it.all { it == '.' } }.map { it.first }.toSet()
 
-    private fun List<Point2D>.apSp() = flatMapIndexed { i, p -> drop(i+1).map { p.manhattanDistance(it).toLong() }  }
+    private fun List<Point2D>.apSp() = flatMapIndexed { i, p -> drop(i + 1).map { p.manhattanDistance(it).toLong() } }
 
     override val example = """
         ...#......

@@ -37,3 +37,5 @@ fun String.takeLastPartitioning(vararg m : (Char) -> Boolean): List<String> {
     }
     return (result + remainder)
 }
+
+fun String.expand(times: Int, separator: String ="") =listOf(this).times(times).joinToString(separator)
