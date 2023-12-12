@@ -13,7 +13,7 @@ class Day12: Day<List<Pair<String, List<Int>>>>() {
         part1(21, 7843) {
             it.sumOf { (lines, groups) -> lines.fit(groups) }
         }
-        part2(525152, 7843) { it
+        part2(525152, 10153896718999) { it
             .map { (l, g) -> l.expand(5, "?") to g.times(5)}
             .sumOf { (lines, groups) -> lines.fit(groups) }
         }
