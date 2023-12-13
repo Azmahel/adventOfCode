@@ -7,8 +7,7 @@ import de.twittgen.aoc.util.splitAt
 import de.twittgen.aoc.util.toCharList
 
 class Day13 : Day<List<Pattern>>() {
-    override fun String.parse() =
-        split(emptyLine).map { it.lines().map { it.toCharList() } }
+    override fun String.parse() = split(emptyLine).map { it.lines().map { it.toCharList() } }
 
     init {
         part1(405, 35232) {
@@ -20,16 +19,11 @@ class Day13 : Day<List<Pattern>>() {
     }
 
     private fun Pattern.findSmudgeReflectIndex() = (1..lastIndex).firstOrNull { n ->
-         mirrorAt(n).let { (a,b) ->
-             a.flatMapIndexed { i , l  ->  l.mapIndexed  { j, c -> c != b[i][j] } }.count { it } == 1
-         }
+         mirrorAt(n).let { (a,b) -> a.flatMapIndexed { i, l -> l.mapIndexed { j, c -> c != b[i][j] } }.count {it} == 1 }
     } ?: 0
 
-
-
-
     private fun Pattern.findReflectIndex() = (1..lastIndex).firstOrNull { n ->
-        mirrorAt(n).let { (a,b) ->  a == b }
+        mirrorAt(n).let { (a,b) -> a == b }
     } ?: 0
 
     private fun Pattern.mirrorAt(n: Int) =
@@ -53,6 +47,4 @@ class Day13 : Day<List<Pattern>>() {
         #....#..#
     """.trimIndent()
 }
-
-
 typealias Pattern = List<List<Char>>
