@@ -31,3 +31,5 @@ fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
 }
 fun <T, R>Collection<Collection<R>>.mapCoordinates(function : (x: Int, y: Int, it: R) -> T?) =
     flatMapIndexed { x, l -> l.mapIndexedNotNull { y, it -> function(x, y, it) }  }
+
+fun <T> List<T>.splitAt(i: Int) = take(i) to drop(i)

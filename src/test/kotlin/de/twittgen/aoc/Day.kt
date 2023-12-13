@@ -47,7 +47,7 @@ abstract class  Day<R> {
         private set
     enum class TestState { EXAMPLE, REAL}
 
-    private val rawInput by lazy {FileUtil.readInput(identifier)}
+    private val rawInput by lazy { FileUtil.readInput(identifier) ?: FileUtil.fetchInput(identifier) }
     private val input by lazy { rawInput.parse() }
     protected var raw : String? = null
         private set
