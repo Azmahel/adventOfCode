@@ -30,11 +30,9 @@ class Day14: Day<Platform>() {
 
     private fun Platform.rotate() = columns().map { it.reversed() }
 
-    private val slideCache = hashMapOf<List<Char>, List<Char>>(emptyList<Char>() to emptyList())
-
     private fun Platform.slide() = map { it.slideToEnd() }
 
-    private fun List<Char>.slideToEnd() : List<Char> = slideCache.getOrPut(this) {
+    private fun List<Char>.slideToEnd() : List<Char> {
         val freeEnd = takeLastWhile { it == '.' }
         if (freeEnd == this) return this
         if (freeEnd.isEmpty()) return dropLastWhile { it != '.' }.slideToEnd() + takeLastWhile { it != '.' }
