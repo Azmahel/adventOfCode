@@ -41,7 +41,6 @@ class Day14: Day<Platform>() {
         else (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
     }
 
-
     override val example = """
         O....#....
         O.OO#....#
