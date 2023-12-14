@@ -25,25 +25,24 @@ class Day14: Day<Platform>() {
         val stateMap = mutableListOf(this)
         var next =doCycle()
         while (next !in stateMap) { stateMap.add(next).also { next = next.doCycle()  } }
-        return stateMap.dropWhile { it != next } to stateMap.indexOf(next)
+        return stateMap.indexOf(next).let { stateMap.drop(it) to it }
     }
+
     private fun Platform.rotate() = columns().map { it.reversed() }
 
-    private val slideCache = hashMapOf<List<Char>, List<Char>>()
+    private val slideCache = hashMapOf<List<Char>, List<Char>>(emptyList<Char>() to emptyList())
 
     private fun Platform.slide() = map { it.slideToEnd() }
 
-    private fun List<Char>.slideToEnd(): List<Char> {
-        if(isEmpty()) return this
-        return slideCache.getOrPut(this) {
-            val freeEnd = takeLastWhile { it == '.' }
-            if (freeEnd.isEmpty()) return dropLastWhile { it != '.' }.slideToEnd() + takeLastWhile { it != '.' }
-            if (freeEnd == this) return this
-            val pivot = get(lastIndex - freeEnd.size)
-            return if (pivot == '#') dropLast(freeEnd.size + 1).slideToEnd() + pivot + freeEnd
-            else (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
-        }
+    private fun List<Char>.slideToEnd() : List<Char> = slideCache.getOrPut(this) {
+        val freeEnd = takeLastWhile { it == '.' }
+        if (freeEnd == this) return this
+        if (freeEnd.isEmpty()) return dropLastWhile { it != '.' }.slideToEnd() + takeLastWhile { it != '.' }
+        val pivot = get(lastIndex - freeEnd.size)
+        return if (pivot == '#') dropLast(freeEnd.size + 1).slideToEnd() + pivot + freeEnd
+        else (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
     }
+
 
     override val example = """
         O....#....
