@@ -1,0 +1,61 @@
+package de.twittgen.aoc.y2023
+
+import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.columns
+import de.twittgen.aoc.util.toCharList
+
+class Day14: Day<Platform>() {
+    override fun String.parse() = lines().map { it.toCharList() }.rotate()
+
+    init {
+        part1(136, 103333) { it.slide().score() }
+        part2(64, 97241) {
+            it.findLoop().let { (loop, offset) -> loop[((1_000_000_000-offset) % loop.size)] }.score()
+        }
+    }
+
+    private fun Platform.score() = sumOf { it.mapIndexed { i, c -> if ( c== 'O') i+1 else 0 }.sum() }
+    private fun Platform.doCycle() = this
+        .slide().rotate() // North
+        .slide().rotate() // West
+        .slide().rotate() // South
+        .slide().rotate() // East
+
+    private fun Platform.findLoop(): Pair<List<Platform>, Int> {
+        val stateMap = mutableListOf(this)
+        var next =doCycle()
+        while (next !in stateMap) { stateMap.add(next).also { next = next.doCycle()  } }
+        return stateMap.dropWhile { it != next } to stateMap.indexOf(next)
+    }
+    private fun Platform.rotate() = columns().map { it.reversed() }
+
+    private val slideCache = hashMapOf<List<Char>, List<Char>>()
+
+    private fun Platform.slide() = map { it.slideToEnd() }
+
+    private fun List<Char>.slideToEnd(): List<Char> {
+        if(isEmpty()) return this
+        return slideCache.getOrPut(this) {
+            val freeEnd = takeLastWhile { it == '.' }
+            if (freeEnd.isEmpty()) return dropLast(1).slideToEnd() + last()
+            if (freeEnd == this) return this
+            val pivot = get(lastIndex - freeEnd.size)
+            if (pivot == '#') return dropLast(freeEnd.size + 1).slideToEnd() + pivot + freeEnd
+            return (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
+        }
+    }
+
+    override val example = """
+        O....#....
+        O.OO#....#
+        .....##...
+        OO.#O....O
+        .O.....O#.
+        O.#..O.#.#
+        ..O..#O..O
+        .......O..
+        #....###..
+        #OO..#....
+    """.trimIndent()
+}
+private typealias  Platform = List<List<Char>>
