@@ -37,11 +37,11 @@ class Day14: Day<Platform>() {
         if(isEmpty()) return this
         return slideCache.getOrPut(this) {
             val freeEnd = takeLastWhile { it == '.' }
-            if (freeEnd.isEmpty()) return dropLast(1).slideToEnd() + last()
+            if (freeEnd.isEmpty()) return dropLastWhile { it != '.' }.slideToEnd() + takeLastWhile { it != '.' }
             if (freeEnd == this) return this
             val pivot = get(lastIndex - freeEnd.size)
-            if (pivot == '#') return dropLast(freeEnd.size + 1).slideToEnd() + pivot + freeEnd
-            return (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
+            return if (pivot == '#') dropLast(freeEnd.size + 1).slideToEnd() + pivot + freeEnd
+            else (dropLast(freeEnd.size + 1) + freeEnd).slideToEnd() + pivot
         }
     }
 
