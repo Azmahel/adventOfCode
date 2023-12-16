@@ -6,14 +6,16 @@ import de.twittgen.aoc.util.Point2D.Direction
 import de.twittgen.aoc.util.Point2D.Direction.*
 import de.twittgen.aoc.util.mapCoordinates
 
-class Day16 : Day<Map<Point2D, Day16.Mirror>>() {
+class Day16 : Day<Map<Point2D, (Direction) -> Set<Direction>>>() {
     override fun String.parse() = mapCoordinates { y, x, c ->
+        val rMirrorMap = mapOf(LEFT to UP, RIGHT to DOWN, DOWN to RIGHT, UP to LEFT)
+        val lMirrorMap = mapOf(LEFT to DOWN, RIGHT to UP, DOWN to LEFT, UP to RIGHT)
         Point2D(x,y) to when(c) {
-            '/' -> RMirror
-            '\\' -> LMirror
-            '|' -> VSplitter
-            '-' -> HSplitter
-            '.' -> Empty
+            '/' -> { d: Direction -> setOf(rMirrorMap[d]!!) }
+            '\\' -> { d: Direction -> setOf(lMirrorMap[d]!!) }
+            '|' -> { d: Direction -> if (d == UP || d == DOWN) setOf(d) else setOf(UP, DOWN) }
+            '-' -> { d: Direction ->  if (d == LEFT || d == RIGHT) setOf(d) else setOf(LEFT, RIGHT) }
+            '.' -> { d: Direction -> setOf(d) }
             else -> throw IllegalArgumentException()
         }
     }.toMap()
@@ -28,13 +30,13 @@ class Day16 : Day<Map<Point2D, Day16.Mirror>>() {
                 rY.flatMap { y -> listOf(Point2D(rX.first, y) to RIGHT, Point2D(rX.last, y) to LEFT,)}).toSet()
     }
 
-    private fun Map<Point2D,Mirror>.energize( start : Pair<Point2D, Direction> = Point2D.ORIGIN to RIGHT): Int {
+    private fun Map<Point2D,(Direction)-> Set<Direction>>.energize( start : Pair<Point2D, Direction> = Point2D.ORIGIN to RIGHT): Int {
         val energized = mutableSetOf(start)
         var current = setOf(start)
         val (rX, rY) = getBoundaries()
         while (current.isNotEmpty()) {
             current = current
-                .flatMap { (p,d)  -> get(p)!!.moveThrough(d).map { nd -> nd.next(p) to nd } }
+                .flatMap { (p,d)  -> get(p)!!(d).map { nd -> nd.next(p) to nd } }
                 .filter { it !in energized }
                 .filter {(p,_) -> p.x in rX && p.y in rY }
                 .toSet()
@@ -45,24 +47,6 @@ class Day16 : Day<Map<Point2D, Day16.Mirror>>() {
 
     private fun Map<Point2D, *>.getBoundaries() =
         minOf { it.key.x }..maxOf { it.key.x } to minOf { it.key.y }.. maxOf { it.key.y }
-
-     sealed class Mirror { abstract fun moveThrough(d : Direction) : Set<Direction> }
-    private object LMirror: Mirror() {
-        private val map = mapOf(LEFT to DOWN, RIGHT to UP, DOWN to LEFT, UP to RIGHT)
-        override fun moveThrough(d: Direction) = setOf(map[d]!!)
-    }
-    private object RMirror: Mirror() {
-        private val map = mapOf(LEFT to UP, RIGHT to DOWN, DOWN to RIGHT, UP to LEFT)
-        override fun moveThrough(d: Direction) = setOf(map[d]!!)
-    }
-
-    private object HSplitter : Mirror() {
-        override fun moveThrough(d: Direction) = if (d == LEFT || d == RIGHT) setOf(d) else setOf(LEFT, RIGHT)
-    }
-    private object VSplitter : Mirror() {
-        override fun moveThrough(d: Direction) = if (d == UP || d == DOWN) setOf(d) else setOf(UP, DOWN)
-    }
-    private object Empty: Mirror() { override fun moveThrough(d: Direction) = setOf(d) }
 
     override val example = """
         .|...\....
