@@ -60,7 +60,7 @@ class Day24 : Day<List<List<Direction>>>() {
         E(0,2), SE(1,1), NE(-1,1), W(0,-2), SW(1,-1), NW(-1,-1)
     }
 
-    private fun Pair<Int, Int>.getAdjacent(): List<Pair<Int,Int>> = Direction.values().map { first + it.dx to second + it.dy }
+    private fun Pair<Int, Int>.getAdjacent(): List<Pair<Int,Int>> = entries.map { first + it.dx to second + it.dy }
 
     override val example = """
         sesenwnenenewseeswwswswwnenewsewsw

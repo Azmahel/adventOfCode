@@ -17,7 +17,7 @@ class Day11 : Day<List<List<Char>>>() {
         val emptyColumnIndices = columns().emptyIndices()
         return this.flatMapIndexed { i, l ->
             var y = 0
-            l.mapIndexedNotNull() { j, c ->
+            l.mapIndexedNotNull { j, c ->
                 (if(c == '#') Point2D(x,y) else null).also { y +=  if(j in emptyColumnIndices) times else 1  }
             }.also {  x +=  if(i in emptyLineIndices) times else 1 }
         }

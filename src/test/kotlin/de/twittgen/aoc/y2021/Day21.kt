@@ -75,7 +75,7 @@ class Day21: Day<Pair<Player, Player>>() {
     }
 
 
-    private  object DiracAdv : Advancer() {
+    private data object DiracAdv : Advancer() {
         private val dist = (1..3).flatMap { a -> (1..3).flatMap { b -> (1..3).map { c ->
             a+b+c to "$a$b$c"
         } } }.groupBy { it.first }.mapValues { (_,v) -> v.size }

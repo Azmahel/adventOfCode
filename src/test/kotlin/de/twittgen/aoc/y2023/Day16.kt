@@ -26,8 +26,8 @@ class Day16 : Day<Map<Point2D, (Direction) -> Set<Direction>>>() {
     }
 
     private fun Map<Point2D, *>.getEdgePoints() = getBoundaries().let { (rX, rY) ->
-        (rX.flatMap { x -> listOf(Point2D(x, rY.first) to UP, Point2D(x, rY.last) to DOWN,)} +
-                rY.flatMap { y -> listOf(Point2D(rX.first, y) to RIGHT, Point2D(rX.last, y) to LEFT,)}).toSet()
+        (rX.flatMap { x -> listOf(Point2D(x, rY.first) to UP, Point2D(x, rY.last) to DOWN)} +
+                rY.flatMap { y -> listOf(Point2D(rX.first, y) to RIGHT, Point2D(rX.last, y) to LEFT)}).toSet()
     }
 
     private fun Map<Point2D,(Direction)-> Set<Direction>>.energize( start : Pair<Point2D, Direction> = Point2D.ORIGIN to RIGHT): Int {

@@ -58,7 +58,7 @@ class Day17: Day<List<Char>>() {
 
     private data class Report(val cShift: Int, val blockShift: Int, val heightProfile: List<Int>)
 
-    private inner class State(var currents: List<Char>, var s: List<(Point2D)-> Rock> = shapes, ) {
+    private inner class State(var currents: List<Char>, var s: List<(Point2D)-> Rock> = shapes) {
         var maxY = 0
         var cShift = 0
         var blockCount =0
@@ -71,7 +71,7 @@ class Day17: Day<List<Char>>() {
                 cShift = (cShift +1) % currents.size
                 next = next.drop(rocks) ?: return next.also { r ->
                     rocks += r.positions
-                    if(rocks.size > 1000) { rocks.removeAll(rocks.take(r.positions.size)) }
+                    if(rocks.size > 1000) { rocks.removeAll(rocks.take(r.positions.size).toSet()) }
                     blockCount ++
                     maxY = maxOf(maxY, r.positions.maxOf { it.y })
                 }
@@ -85,7 +85,7 @@ class Day17: Day<List<Char>>() {
     private fun cross(p: Point2D) =
         Rock(setOf(p.right(), p.up(), p.up().right(), p.up().right().right(), p.up().up().right()))
     private fun corner(p: Point2D) =
-        Rock(setOf(p, p.right(), p.right().right(),p.right().right().up(), p.right().right().up().up(),))
+        Rock(setOf(p, p.right(), p.right().right(),p.right().right().up(), p.right().right().up().up()))
     private fun stick(p: Point2D) =
         Rock(setOf(p, p.up(), p.up().up(), p.up().up().up()))
     private fun block(p: Point2D) =

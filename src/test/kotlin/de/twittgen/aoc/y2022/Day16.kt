@@ -20,7 +20,7 @@ class Day16 : Day<CaveMap>() {
 
     init {
         part1(1651,1947) { it.toShortestPaths().findMax(it.start(), 30) }
-        part2(1707,2556,) { runBlocking(Dispatchers.Default) {
+        part2(1707,2556) { runBlocking(Dispatchers.Default) {
             it.toShortestPaths().shareWorkOptions().map { (p, e) ->
                 async { p.findMax(it.start(), 26)  }  to async{ e.findMax(it.start(), 26)}
             }.maxOf { (a,b) -> a.await() + b.await() }

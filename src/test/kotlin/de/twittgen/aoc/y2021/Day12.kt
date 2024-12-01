@@ -41,8 +41,8 @@ class Day12: Day<CaveMap>() {
     }
 
     sealed class Cave
-    object Start : Cave()
-    object End : Cave()
+    data object Start : Cave()
+    data object End : Cave()
     data class Small(val name: String) : Cave()
     data class Large(val name: String) : Cave()
 

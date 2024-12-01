@@ -70,7 +70,7 @@ class Day23 : Day<List<Day23.Space>>() {
             .sortedBy { it.value.first }
 
         if(explorableStates.isEmpty()) return state[sorted]!!.first
-        val nextStates = explorableStates.flatMap { current ->
+        val nextStates = explorableStates.asSequence().flatMap { current ->
             current.key
                 .toList()
                 .filter { space -> space.canLeave().first }
@@ -161,7 +161,7 @@ class Day23 : Day<List<Day23.Space>>() {
     }
 
     //TODO model using stack
-    data class Hallway(val id : Int, override val occupant: Amphipod? = null,) : Space {
+    data class Hallway(val id : Int, override val occupant: Amphipod? = null) : Space {
 
         override fun canMoveToHere(other: Space) = other !is Hallway && occupant == null
         override fun canPassThrough() = occupant == null

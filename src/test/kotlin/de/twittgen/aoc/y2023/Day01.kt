@@ -18,7 +18,7 @@ class Day01 : Day<List<String>>() {
             ).let { (a, b) -> "${numberWords[a] ?: a}${numberWords[b] ?: b}".toInt() }
 
     private fun String.findFirstAndLasDigit() = filter { c -> c.isDigit() }.let { digits -> "${digits.first()}${digits.last()}".toInt() }
-    private val numberWords = mapOf("one" to "1", "two" to "2", "three" to "3", "four" to "4", "five" to "5", "six" to "6", "seven" to "7", "eight" to "8", "nine" to "9",)
+    private val numberWords = mapOf("one" to "1", "two" to "2", "three" to "3", "four" to "4", "five" to "5", "six" to "6", "seven" to "7", "eight" to "8", "nine" to "9")
     private val numberOrWord = "0|${numberWords.values.joinToString("|")}|${numberWords.keys.joinToString("|")}"
     private val firstAndLastNumber = Regex(".*?($numberOrWord).*($numberOrWord).*")
     private val singleNumber = Regex(".*?($numberOrWord).*")

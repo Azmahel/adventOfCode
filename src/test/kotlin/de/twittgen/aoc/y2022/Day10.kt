@@ -28,7 +28,7 @@ class Day10: Day<List<Instruction>>() {
     sealed class Instruction {
         abstract operator fun invoke(signal: Signal): Signal
     }
-    object NOOP : Instruction() {
+    data object NOOP : Instruction() {
         override operator fun invoke(signal: Signal) = signal.next()
     }
     class ADD(private val amount: Int): Instruction() {

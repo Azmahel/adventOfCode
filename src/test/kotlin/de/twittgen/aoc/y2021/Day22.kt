@@ -60,7 +60,7 @@ class Day22 : Day<List<Day22.Instruction>>() {
                 maxOf(yR.first, other. yR.first)..minOf(yR.last, other.yR.last),
                 maxOf(zR.first, other.zR.first)..minOf(zR.last, other.zR.last),
             )
-            return intersect.run {if(xR.count() >0 && yR.count() >0 && zR.count() >0 ) this else null }
+            return intersect.run {if(!xR.isEmpty() && !yR.isEmpty() && !zR.isEmpty()) this else null }
         }
         val volume = ((xR.last - xR.first + 1L ) * (yR.last -yR.first + 1L) * (zR.last - zR.first + 1L))
     }

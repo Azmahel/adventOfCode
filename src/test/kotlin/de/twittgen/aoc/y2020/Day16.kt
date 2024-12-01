@@ -47,7 +47,7 @@ class Day16: Day<Triple<List<FieldConstraint>, Ticket, List<Ticket>>>(){
         }
         val translated = possibleTranslations.filter { it.second.size ==1 }.map{ (x,y) -> x to y.first() }.toMutableList()
         while(possibleTranslations.isNotEmpty()) {
-            possibleTranslations = possibleTranslations.map { (x,y) -> x to y.minus(translated.map { it.second }) }
+            possibleTranslations = possibleTranslations.map { (x,y) -> x to y.minus(translated.map { it.second }.toSet()) }
                 .filterNot { it.second.isEmpty() }
             translated += possibleTranslations.filter { it.second.size ==1 }.map{ (x,y) -> x to y.first() }
         }

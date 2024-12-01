@@ -110,13 +110,13 @@ class Day22: Day<Pair<Board,List<Instruction>>>() {
     sealed class Instruction
     sealed class Direction : Instruction()
     class Distance(val length : Int): Instruction()
-    object Right: Direction()
-    object Left:  Direction()
-    enum class Facing(val next: (Point2D) -> Point2D,) {
+    data object Right: Direction()
+    data object Left:  Direction()
+    enum class Facing(val next: (Point2D) -> Point2D) {
         RIGHT(Point2D::right), DOWN(Point2D::up),LEFT(Point2D::left), UP(Point2D::down); // positive y is down
         fun turn(d: Direction) = when(d) {
-            Left  -> values().first{ it.ordinal == (ordinal - 1).mod(values().size) }
-            Right -> values().first{ it.ordinal == (ordinal + 1).mod(values().size) }
+            Left  -> entries.first{ it.ordinal == (ordinal - 1).mod(entries.size) }
+            Right -> entries.first{ it.ordinal == (ordinal + 1).mod(entries.size) }
         }
     }
     enum class Tile { VOID, OPEN, WALL }

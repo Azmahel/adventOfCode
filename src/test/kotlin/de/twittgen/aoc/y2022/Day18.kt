@@ -17,7 +17,7 @@ class Day18: Day<List<Point3D>>() {
 
     private fun List<Point3D>.getAirPockets() : List<List<Point3D>> {
         val (xR, yR, zR) = listOf(minOf{it.x}..maxOf{it.x}, minOf{it.y}..maxOf{it.y}, minOf {it.z}..maxOf {it.z})
-        val allAir = xR.flatMap { x -> yR.flatMap { y -> zR.map { z -> Point3D(x,y,z) } } } - this
+        val allAir = xR.flatMap { x -> yR.flatMap { y -> zR.map { z -> Point3D(x,y,z) } } } - this.toSet()
         return allAir.findGroups().filterNot {p ->
             p.any { (x,y,z) -> x in xR.boundaries() || y in yR.boundaries() ||z in zR.boundaries()}
         }

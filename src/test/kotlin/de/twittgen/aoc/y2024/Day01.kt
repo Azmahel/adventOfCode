@@ -7,14 +7,14 @@ import kotlin.math.min
 
 class Day01 : Day<Pair<List<Int>,List<Int>>>() {
     override fun String.parse() = lines()
-        .map { it.split("   ")
-            .let { it.first().toInt() to it.second().toInt()} }.toPairOfLists()
+        .map { it.split("   ").let { it.first().toInt() to it.second().toInt()} }
+        .toPairOfLists()
 
     init {
-        part1(11, 1506483) { (a,b) ->
+        part1(11, 2000468) { (a,b) ->
             (a.sorted() to b.sorted()).toListOfPairs().sumOf { (a, b) -> abs(a - b) }
         }
-        part2(31,23126924) { (a,b) ->
+        part2(31,18567089) { (a,b) ->
           b.entryCount().let {counts  ->  a.sumOf { it * counts.getOrDefault(it, 0) } }
         }
     }
@@ -26,7 +26,7 @@ class Day01 : Day<Pair<List<Int>,List<Int>>>() {
     }
 
     private  fun <A, B> Pair<List<A>,List<B>>.toListOfPairs() :  List<Pair<A,B>> =
-        (0..min(first.size-1,second.size-1)).map { first[it] to second[it] }
+        (0..min(first.lastIndex,second.lastIndex)).map { first[it] to second[it] }
 
     private fun List<Int>.entryCount() = groupBy { it }.mapValues { (_, l) -> l.size }
 
