@@ -18,7 +18,7 @@ object FileUtil {
     fun fetchInput(dir: String) : String {
         println("fetching input for $dir")
         val result = String(httpGet {
-            url( "https://adventofcode.com/${dir.replace("day", "day/")}/input")
+            url( "https://adventofcode.com/${dir.replace(Regex("day0*"), "day/")}/input")
             header { cookie { "session" to System.getenv("AOC_COOKIE") } }
         }.body()!!.bytes()).trim()
         val target = File("./src/test/resources/$dir")
