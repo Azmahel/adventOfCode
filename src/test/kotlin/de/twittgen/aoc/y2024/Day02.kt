@@ -14,7 +14,7 @@ class Day02 : Day<List<Report>>() {
         part2(4, 710) { it.count {  it.isSafeDampened() } }
     }
 
-    private fun Report.isSafeDampened() = toSubReports().count { it.isSafe() } > 0
+    private fun Report.isSafeDampened() = toSubReports().any { it.isSafe() }
 
     private fun Report.toSubReports() = List(size) { i -> toMutableList().apply { removeAt(i) } }
 
