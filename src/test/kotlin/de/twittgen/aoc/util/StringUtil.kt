@@ -9,10 +9,11 @@ fun String.second(): Char = toList().second()
 fun String.digitsToInt() = map { it.digitToInt() }
 fun String.toPoint3d(): Point3D = split(',').map(String::toInt).let { (x,y,z) ->Point3D(x,y,z) }
 fun String.toPoint2d(): Point2D = split(',').map(String::toInt).let { (x,y) ->Point2D(x,y) }
-fun <T>String.mapCoordinates(function: (x: Int, y: Int, c: Char) -> T?) = lines().map(String::toCharList).mapCoordinates(function)
+fun <T>String.mapCoordinates(function: (x: Int, y: Int, c: Char) -> T?) = mapLines(String::toCharList).mapCoordinates(function)
 fun String.toCharList() = toCharArray().toList()
 fun String.cycle() = drop(1) + first()
 fun Char?.isADigit() = this?.isDigit() ?: false
+fun <T>String.mapLines(block: (String) -> T)= lines().map(block)
 
 fun String.takePartitioning(vararg m : (Char) -> Boolean): List<String> {
     var remainder = this
