@@ -23,7 +23,7 @@ class Day02 : Day<List<Report>>() {
             if(it != this && it.reversed() != this ) return false
         }
         return windowed(2,1)
-            .all { abs(it.first() - it.second()) <= maxDeviation && it.first() != it.second() }
+            .all { abs(it.first() - it.second()) in (1.. maxDeviation) }
     }
 
     override val example = """
