@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import kotlin.math.pow
 
 class Day25: Day<List<Snafu>>() {
-    override fun String.parse() = lines().map {l ->  l.map { mapping[it]!! } }
+    override fun String.parse() = mapLines { l ->  l.map { mapping[it]!! } }
 
     init {
         part1("2=-1=0", "2-0-020-1==1021=--01") { it.sumOf {snafu ->  snafu.toDecimal() }.toSnafu() }

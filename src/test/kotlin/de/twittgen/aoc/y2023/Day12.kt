@@ -2,10 +2,11 @@ package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.expand
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.times
 
 class Day12: Day<List<Pair<String, List<Int>>>>() {
-    override fun String.parse() = lines().map {
+    override fun String.parse() = mapLines {
         it.split(" ").let { (a,b) -> a to b.split(",").map(String::toInt) }
     }
 

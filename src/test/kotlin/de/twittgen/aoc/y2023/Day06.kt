@@ -1,13 +1,14 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.pq
 import de.twittgen.aoc.util.product
 import de.twittgen.aoc.util.second
 import kotlin.math.*
 
 class Day06 : Day<List<Pair<String, String>>>() {
-    override fun String.parse() = lines().map {
+    override fun String.parse() = mapLines {
         numbers.findAll(it).flatMap { it.destructured.toList() }.toList()
     }.let { it.first().zip(it.second()) }
 

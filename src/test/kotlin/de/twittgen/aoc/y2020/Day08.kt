@@ -2,12 +2,13 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.groups
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.replaceAt
 
 private typealias Program = List<Pair<String, Int>>
 class Day08: Day<Program>() {
 
-    override fun String.parse() = lines().map {
+    override fun String.parse() = mapLines {
         Regex("([a-z]+) ([+\\-][0-9]+)").groups(it)!!.let { (op, v) -> op to v.toInt()}
     }
 

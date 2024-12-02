@@ -1,14 +1,15 @@
 package de.twittgen.aoc.y2024
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.second
 import kotlin.math.abs
 import kotlin.math.min
 
 class Day01 : Day<Pair<List<Int>,List<Int>>>() {
-    override fun String.parse() = lines()
-        .map { it.split("   ").let { it.first().toInt() to it.second().toInt()} }
-        .toPairOfLists()
+    override fun String.parse() = mapLines {
+        it.split("   ").let { it.first().toInt() to it.second().toInt()}
+    }.toPairOfLists()
 
     init {
         part1(11, 2000468) { (a,b) ->

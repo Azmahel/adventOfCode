@@ -4,11 +4,12 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.y2021.Day22.Command.OFF
 import de.twittgen.aoc.y2021.Day22.Command.ON
 import de.twittgen.aoc.util.Point3D
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.toIntRange
 
 class Day22 : Day<List<Day22.Instruction>>() {
 
-    override fun String.parse() = lines().map { line ->
+    override fun String.parse() = mapLines { line ->
         val (a,b) = line.split(" ")
         val command = if(a =="on") ON else OFF
         val (x,y,z) = b.split(",").map { it.drop(2).toIntRange("..") }

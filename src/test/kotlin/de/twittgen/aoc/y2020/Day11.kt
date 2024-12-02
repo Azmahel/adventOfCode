@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2020.Day11.TileState
 import de.twittgen.aoc.y2020.Day11.TileState.*
 
 class Day11 : Day<FloorPlan>() {
-    override fun String.parse() = lines().map { it.map { s -> when(s) {
+    override fun String.parse() = mapLines { it.map { s -> when(s) {
         'L' -> EMPTY
         '#' -> OCCUPIED
         else -> FLOOR

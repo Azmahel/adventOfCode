@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.firstMatch
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2020.Day14.Instruction
 import de.twittgen.aoc.y2020.Day14.Instruction.Mask
 import de.twittgen.aoc.y2020.Day14.Instruction.Mem
@@ -9,7 +10,7 @@ import java.lang.IllegalArgumentException
 
 class Day14 : Day<List<Instruction>>() {
     private val memOp = Regex("mem\\[(\\d+)]")
-    override fun String.parse() = lines().map { l ->  l.split(" = ").let { (op, v) -> when (op) {
+    override fun String.parse() = mapLines { l ->  l.split(" = ").let { (op, v) -> when (op) {
         "mask" -> Mask(v.reversed().map { if (it == 'X') null else it })
         else -> Mem(memOp.firstMatch(op)!!.toLong(), v.toBitNumber())
     } } }

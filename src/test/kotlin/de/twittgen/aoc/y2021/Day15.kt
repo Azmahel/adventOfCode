@@ -3,13 +3,13 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.mapCoordinates
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.ofLength
 
 
 class Day15 : Day<Map<Point2D, Int>>() {
 
-    override fun String.parse() = lines()
-        .map { line -> line.toList().map { it.digitToInt() }}
+    override fun String.parse() = mapLines { line -> line.toList().map { it.digitToInt() }}
         .mapCoordinates { y, x, i -> Point2D(x , y ) to i }
         .toMap()
 

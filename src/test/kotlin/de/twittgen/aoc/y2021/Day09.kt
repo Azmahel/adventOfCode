@@ -2,9 +2,10 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.mapCoordinates
+import de.twittgen.aoc.util.mapLines
 
 class Day09 : Day<Heightmap>() {
-    override fun String.parse() = lines().map {line -> line.map { it.digitToInt() } }.toMap()
+    override fun String.parse() = mapLines { line -> line.map { it.digitToInt() } }.toMap()
     private fun List<List<Int>>.toMap() = mapCoordinates { x, y, v -> (x to y) to v }.toMap()
 
     init {

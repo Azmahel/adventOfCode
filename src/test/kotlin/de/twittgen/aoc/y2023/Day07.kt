@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 
 
 class Day07: Day<CamelPoker>() {
-    override fun String.parse() = lines().map { l ->
+    override fun String.parse() = mapLines { l ->
         l.split(" ").let { (a, b) -> a.map { it.toValue() }  to b.toInt() }
     }
 

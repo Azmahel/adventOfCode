@@ -1,13 +1,10 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.columns
-import de.twittgen.aoc.util.emptyLine
-import de.twittgen.aoc.util.splitAt
-import de.twittgen.aoc.util.toCharList
+import de.twittgen.aoc.util.*
 
 class Day13 : Day<List<Pattern>>() {
-    override fun String.parse() = split(emptyLine).map { it.lines().map { it.toCharList() } }
+    override fun String.parse() = split(emptyLine).map { it.mapLines { it.toCharList() } }
 
     init {
         part1(405, 35232) {

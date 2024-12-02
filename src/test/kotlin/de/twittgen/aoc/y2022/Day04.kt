@@ -2,11 +2,12 @@ package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.containsAll
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.toIntRange
 
 
 class Day04 : Day<List<Assignment>>() {
-    override fun String.parse() = lines().map { it.mapLine() }
+    override fun String.parse() = mapLines { it.mapLine() }
     private fun String.mapLine() = split(',').map { it.toIntRange("-") }.let { (a, b) ->  a to b }
 
     init {

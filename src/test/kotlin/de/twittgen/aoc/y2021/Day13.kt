@@ -3,6 +3,7 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.columns
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2021.Day13.Fold
 import de.twittgen.aoc.y2021.Day13.FoldDirection.X
 import de.twittgen.aoc.y2021.Day13.FoldDirection.Y
@@ -12,11 +13,10 @@ class Day13 : Day<Pair<Paper, List<Fold>>>() {
     override fun String.parse() = split(emptyLine)
         .let { (rawMarks, rawFolds) -> rawMarks.parseMarks() to rawFolds.parseFolds() }
 
-    private fun String.parseFolds() = lines().map { line ->
+    private fun String.parseFolds() = mapLines { line ->
         line.takeLastWhile { it != ' ' }.split("=").let {(a,b) ->  Fold(FoldDirection.from(a), b.toInt()) }
     }
-    private fun String.parseMarks() = lines()
-        .map { line -> line.split(",").let { (a,b) ->  a.toInt() to b.toInt() } }.toSet()
+    private fun String.parseMarks() = mapLines { line -> line.split(",").let { (a,b) ->  a.toInt() to b.toInt() } }.toSet()
 
     init {
         part1(17, 661) { (paper, folds) -> paper.foldAt(folds.first()).size }

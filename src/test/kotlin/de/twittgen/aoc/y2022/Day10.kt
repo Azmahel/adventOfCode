@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2022.Day10.Instruction
 import de.twittgen.aoc.util.second
 
 class Day10: Day<List<Instruction>>() {
-    override fun String.parse() = lines().map { when(it) {
+    override fun String.parse() = mapLines { when(it) {
         "noop" -> NOOP
         else -> ADD(it.split(" ").second().toInt())
     } }

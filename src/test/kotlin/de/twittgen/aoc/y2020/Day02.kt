@@ -2,13 +2,13 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.groups
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2020.Day02.PwRestriction
 
 private val pwDelimiter = Regex("(.*): ([a-z]*)")
 private val restrictionPattern = Regex("(\\d+)-(\\d+) ([a-z])")
 class Day02: Day<List<Pair<PwRestriction, String>>>() {
-    override fun String.parse() = lines()
-        .map {  l -> pwDelimiter.groups(l)!!.let { (r, pw) -> r.toPwRestriction() to pw } }
+    override fun String.parse() = mapLines { l -> pwDelimiter.groups(l)!!.let { (r, pw) -> r.toPwRestriction() to pw } }
 
     init {
         part1(2, 564) { it.filter { (r, pw) -> r.check(pw) }.size }

@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 
 class Day20 : Day<List<Long>>() {
-    override fun String.parse() = lines().map(String::toLong)
+    override fun String.parse() = mapLines(String::toLong)
 
     private val key = 811589153
     init {

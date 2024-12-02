@@ -2,9 +2,10 @@ package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.groups
+import de.twittgen.aoc.util.mapLines
 
 class Day15 : Day<List<String>>(){
-    override fun String.parse() = lines().map { it.split(",") }.flatten()
+    override fun String.parse() = mapLines { it.split(",") }.flatten()
 
     init {
         part1(1320, 517015) { it.sumOf { s ->  s.hash() } }

@@ -7,8 +7,9 @@ private const val EXPLODER_MARKER = "Ø"
 private val splitOnExploder = Regex("(.*)$EXPLODER_MARKER(.*)")
 
 class Day18: Day<List<SnailNumber>>(){
-    override fun String.parse() =
-        replace('[', '<').replace(']', '>').lines().map { it.toSnailNumber() }
+    override fun String.parse() = replace('[', '<')
+            .replace(']', '>')
+            .mapLines { it.toSnailNumber() }
 
     init {
         part1(4140, 4137) { it.reduce(SnailNumber::plus).getMagnitude() }

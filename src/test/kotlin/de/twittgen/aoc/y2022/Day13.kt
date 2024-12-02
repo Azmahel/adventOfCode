@@ -5,11 +5,12 @@ import de.twittgen.aoc.util.NestedList
 import de.twittgen.aoc.util.NestedList.Nested
 import de.twittgen.aoc.util.NestedList.Terminal
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.toNestedList
 
 class Day13 : Day<List<Pair<NestedList, NestedList>>>() {
     override fun String.parse() = replace('[', '<').replace(']', '>')
-        .split(emptyLine).map { pair -> pair.lines().map { it.toNestedList() }.let { (a, b) -> a to b } }
+        .split(emptyLine).map { pair -> pair.mapLines { it.toNestedList() }.let { (a, b) -> a to b } }
 
     init {
         part1(13, 4643) { it

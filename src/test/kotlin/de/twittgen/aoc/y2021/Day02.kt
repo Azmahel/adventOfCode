@@ -3,10 +3,11 @@ package de.twittgen.aoc.y2021
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
+import de.twittgen.aoc.util.mapLines
 
 class Day02 : Day<List<Pair<String, Int>>>() {
 
-    override fun String.parse() = lines().map { it.split(" ").let { (a,b) ->  a to b.toInt() } }
+    override fun String.parse() = mapLines { it.split(" ").let { (a,b) ->  a to b.toInt() } }
 
     init {
         part1(150, 2102357) { it.move().run { x * y } }

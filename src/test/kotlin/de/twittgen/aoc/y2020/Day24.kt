@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.FileUtil
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2020.Day24.Direction
 import de.twittgen.aoc.y2020.Day24.Direction.*
 import java.lang.IllegalArgumentException
@@ -9,7 +10,7 @@ import java.lang.IllegalArgumentException
 class Day24 : Day<List<List<Direction>>>() {
     val input = FileUtil.readInput("2020/day24")
 
-    override fun String.parse() =lines().map {
+    override fun String.parse() = mapLines {
         val remainder = it.toMutableList()
         val result = mutableListOf<Direction>()
         while(remainder.isNotEmpty()){

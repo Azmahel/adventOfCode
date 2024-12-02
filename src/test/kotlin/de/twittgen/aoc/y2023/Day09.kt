@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 
 class Day09 : Day<List<List<Int>>>() {
-    override fun String.parse() = lines().map { it.trim().split(" ").map(String::toInt) }
+    override fun String.parse() = mapLines { it.trim().split(" ").map(String::toInt) }
 
     init {
         part1(114, 1992273652) { readings -> readings.sumOf { it.predictNext() } }

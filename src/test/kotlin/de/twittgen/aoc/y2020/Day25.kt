@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import java.lang.IllegalStateException
 
 class Day25: Day<Pair<Long, Long>>() {
-    override fun String.parse() = lines().map { it.toLong() }.let { (a,b) -> a to b }
+    override fun String.parse() = mapLines { it.toLong() }.let { (a,b) -> a to b }
 
     init {
         part1(14897079L, 7936032) {(p1, p2) ->

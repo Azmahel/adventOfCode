@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.firstMatch
 
 class Day02 : Day<List<Day02.Game>>() {
-    override fun String.parse() = lines().mapIndexed {i , game ->
+    override fun String.parse() = lines().mapIndexed { i , game ->
         Game(i +1 ,
             game.split(":")[1]
                 .split(";")

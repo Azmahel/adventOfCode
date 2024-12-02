@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 
 class Day10 : Day<List<Int>>() {
-    override fun String.parse() = lines().map(String::toInt)
+    override fun String.parse() = mapLines(String::toInt)
 
     init {
         part1(7*5, 1980) { adapters ->

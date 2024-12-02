@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.second
 import kotlin.math.pow
 
 class Day04: Day<List<Int>>() {
-    override fun String.parse() = lines().map { l ->
+    override fun String.parse() = mapLines { l ->
         l.split(": ").second().split(" | ").let { (a,b) -> a.toScratchCard() to b.toScratchCard() }
     }.map { (a,b) -> a.intersect(b).size }
 

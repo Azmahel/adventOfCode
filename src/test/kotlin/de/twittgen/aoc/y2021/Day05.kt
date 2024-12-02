@@ -2,10 +2,11 @@ package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2021.Day05.Line
 
 class Day05 : Day<List<Line>>(){
-    override fun String.parse() = lines().map { it.toLine() }
+    override fun String.parse() = mapLines { it.toLine() }
 
     private fun String.toLine() = split(" -> ")
             .map { it.split(",").map(String::toInt).let {(x,y) -> Point2D(x, y) } }

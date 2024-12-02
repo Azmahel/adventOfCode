@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.*
 
 class Day11 : Day<List<List<Char>>>() {
-    override fun String.parse() = lines().map { it.toCharList() }
+    override fun String.parse() = mapLines { it.toCharList() }
 
     init {
         part1(374, 9556712) { it.expand().apSp().sum() }

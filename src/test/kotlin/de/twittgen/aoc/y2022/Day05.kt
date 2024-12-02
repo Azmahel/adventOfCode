@@ -2,6 +2,7 @@ package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.mapLines
 import java.util.*
 
 class Day05 : Day<Pair<Ship, List<Day05.Instruction>>>() {
@@ -17,7 +18,7 @@ class Day05 : Day<Pair<Ship, List<Day05.Instruction>>>() {
 
     private fun parseBox(s: String): Char? = Regex("\\[(.)]").find(s)?.groupValues?.get(1)?.single()
 
-    private fun String.parseInstructions(): List<Instruction> = lines().map {
+    private fun String.parseInstructions(): List<Instruction> = mapLines {
         val (amount, from, to) = Regex("move (\\d+) from (\\d+) to (\\d+)").find(it)!!.destructured
         Instruction(amount.toInt(), from.toInt()-1, to.toInt()-1)
     }

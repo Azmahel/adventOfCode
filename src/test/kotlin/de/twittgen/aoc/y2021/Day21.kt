@@ -1,10 +1,11 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.y2021.Day21.Player
 
 class Day21: Day<Pair<Player, Player>>() {
-    override fun String.parse() = lines().map { it.last().digitToInt() }.map { Player(it-1) }.let { (a,b) ->  a to b }
+    override fun String.parse() = mapLines { it.last().digitToInt() }.map { Player(it-1) }.let { (a,b) ->  a to b }
 
     init {
         mutableModel = true

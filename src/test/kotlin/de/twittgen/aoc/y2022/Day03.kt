@@ -2,10 +2,11 @@ package de.twittgen.aoc.y2022
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.alphabet
+import de.twittgen.aoc.util.mapLines
 
 
 class Day03: Day<List<Rucksack>>() {
-    override fun String.parse() = lines().map { it.toRucksack() }
+    override fun String.parse() = mapLines { it.toRucksack() }
 
     init {
         part1(157, 8085) {

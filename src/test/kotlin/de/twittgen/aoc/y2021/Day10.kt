@@ -1,11 +1,12 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.middle
 import java.util.*
 
 class Day10: Day<List<Line>>() {
-    override fun String.parse() = lines().map { it.toList() }
+    override fun String.parse() = mapLines { it.toList() }
 
     init {
         part1(26397, 296535) { lines ->

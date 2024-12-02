@@ -2,11 +2,12 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.groups
+import de.twittgen.aoc.util.mapLines
 
 
 class Day21 : Day<List<Dish>>() {
     private val dishRegex = "(.+?)(?:\\(contains (.+)\\))?".toRegex()
-    override fun String.parse() = lines().map { food ->
+    override fun String.parse() = mapLines { food ->
         dishRegex.groups(food)!!.let { (rawI, rawA) ->
             val ingredients = rawI.split(" ").filter { it.isNotEmpty() }
             val allergens = rawA.replace(" ","").split(",").filter { it.isNotEmpty() }

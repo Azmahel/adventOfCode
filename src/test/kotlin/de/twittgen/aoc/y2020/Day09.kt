@@ -2,10 +2,11 @@ package de.twittgen.aoc.y2020
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.Day.TestState.EXAMPLE
+import de.twittgen.aoc.util.mapLines
 import java.lang.IllegalStateException
 
 class Day09: Day<Cypher>() {
-    override fun  String.parse() = lines().map(String::toLong)
+    override fun  String.parse() = mapLines(String::toLong)
 
     init {
         part1(127, 756008079) { it.findFirstInvalid(preamble()) }

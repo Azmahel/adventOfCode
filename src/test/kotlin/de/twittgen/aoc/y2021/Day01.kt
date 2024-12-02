@@ -1,9 +1,10 @@
 package de.twittgen.aoc.y2021
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.util.mapLines
 
 class Day01 : Day<List<Int>>() {
-    override fun String.parse() = lines().map { it.toInt() }
+    override fun String.parse() = mapLines { it.toInt() }
 
     init {
         part1(7, 1195) { d ->  d.getDepthIncreased() }

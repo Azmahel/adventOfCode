@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.*
 
 class Day08 : Day<List<List<Int>>>() {
-    override fun String.parse() = lines().map { it.map { c ->  c.digitToInt() } }
+    override fun String.parse() = mapLines { it.map { c ->  c.digitToInt() } }
 
     init {
         part1(21, 1719) { it.findVisibleTrees().size }

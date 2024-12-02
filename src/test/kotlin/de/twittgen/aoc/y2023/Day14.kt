@@ -2,10 +2,11 @@ package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.columns
+import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.toCharList
 
 class Day14: Day<Platform>() {
-    override fun String.parse() = lines().map { it.toCharList() }.rotate()
+    override fun String.parse() = mapLines { it.toCharList() }.rotate()
 
     init {
         part1(136, 103333) { it.slide().score() }
