@@ -15,14 +15,14 @@ class Day03 : Day<String>() {
         .map { r -> r.groupValues.let { Mul(it[1].toInt(), it[2].toInt()) } }
         .toList()
     private val instructionExpr = "(do)\\(\\)|(don't)\\(\\)|(mul)\\((\\d+),(\\d+)\\)".toRegex()
-    private fun String.toInstructions() = instructionExpr.findAll(this).map { r-> r.groupValues.let {
-        when {
+    private fun String.toInstructions() = instructionExpr.findAll(this)
+        .map { r-> r.groupValues.let { when {
             it[1]!="" -> Do
             it[2]!="" -> Dont
             it[3]!="" -> Mul(it[4].toInt(), it[5].toInt())
             else -> throw IllegalArgumentException()
-        }
-    } }.toList()
+        } } }.toList()
+
     private fun List<Instruction>.run() = fold(State(true,0)) {s, i -> i.run(s)}.sum
 
     override val example = """
