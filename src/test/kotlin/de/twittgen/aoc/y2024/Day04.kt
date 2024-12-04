@@ -1,9 +1,8 @@
 package de.twittgen.aoc.y2024
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.mapCoordinates
-import de.twittgen.aoc.util.mapLines
-import de.twittgen.aoc.util.toCharList
+import de.twittgen.aoc.util.*
+import de.twittgen.aoc.util.Point2D.Companion.directions
 
 class Day04 : Day<Puzzle>() {
     override fun String.parse() = mapLines(String::toCharList)
@@ -15,9 +14,10 @@ class Day04 : Day<Puzzle>() {
 
     private fun Puzzle.findXmasAt(x: Int, y: Int) : Int {
         if (this[x][y] != 'X') return 0
-        return (-1..1).flatMap { dx -> (-1..1).map { dy ->
-            { (1..3).map { getOrNullAt(x + (dx * it), y + (dy * it)) } == listOf('M', 'A', 'S') }
-        } }.count { it() }
+        val hasMASInDirection = { (dx,dy) : Point2D ->
+            (1..3).map { getOrNullAt(x + (dx * it), y + (dy * it)) } == listOf('M', 'A', 'S')
+        }
+        return directions.map { hasMASInDirection(it) }.count { it }
     }
 
     private fun Puzzle.findCrossMasAt(x:Int, y:Int): Int {
@@ -40,6 +40,4 @@ class Day04 : Day<Puzzle>() {
         MXMXAXMASX
     """.trimIndent()
 }
-
 private typealias Puzzle = List<List<Char>>
-private fun Puzzle.getOrNullAt(x:Int, y: Int) = getOrNull(x)?.getOrNull(y)

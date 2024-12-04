@@ -10,6 +10,7 @@ fun List<Long>.product() = foldRight(1L) { a,b -> a * b }
 
 fun <T> List<List<T>>.column(i: Int) = map { it[i] }
 fun <T> List<List<T>>.columns() = (0..get(0).lastIndex).map { column(it) }
+fun <T> List<List<T>>.getOrNullAt(x:Int, y: Int) = getOrNull(x)?.getOrNull(y)
 fun <T> List<T>.takeUntil(predicate: (T)-> Boolean): List<T> =
     firstOrNull(predicate)?.let { takeWhile{ x -> !predicate(x) } + it } ?: takeWhile{ !predicate(it) }
 fun <T> List<T>.mapIf(predicate: (T) -> Boolean, transform: (T) -> T): List<T> =

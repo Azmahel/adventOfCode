@@ -6,6 +6,7 @@ import kotlin.math.sign
 data class Point2D (val x : Int, val y: Int) {
     companion object{
         val ORIGIN = Point2D(0,0)
+        val directions = ORIGIN.adjacent()
         fun of(p: Pair<Int, Int>) = Point2D(p.first , p.second)
     }
     fun manhattanDistance(other: Point2D = ORIGIN) = (x-other.x).absoluteValue + (y-other.y).absoluteValue
