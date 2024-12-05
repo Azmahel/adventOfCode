@@ -14,9 +14,9 @@ class Day04 : Day<Puzzle>() {
 
     private val xmas =  listOf('X', 'M', 'A', 'S')
     private fun Puzzle.findXmasAt(x: Int, y: Int) : Int {
-        val hasXMASInDirection = { (dx,dy) : Point2D -> (0..3).asSequence().mapIndexed { i, it ->
-            getOrNullAt(x + (dx * it), y + (dy * it)) == xmas[i]
-        }.all { it } }
+        fun hasXMASInDirection(p : Point2D) = (0..3).asSequence().mapIndexed { i, it ->
+            getOrNullAt(x + (p.x * it), y + (p.y * it)) == xmas[i]
+        }.all { it }
         return directions.map { hasXMASInDirection(it) }.count { it }
     }
 
