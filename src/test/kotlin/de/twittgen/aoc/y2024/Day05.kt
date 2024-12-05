@@ -4,7 +4,7 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.*
 
 class Day05 : Day<Update>() {
-    override fun String.parse() = split(emptyLine).let { (rules, pages) -> Update(rules.parseRules(), pages.parsePages()) }
+    override fun String.parse() = split(emptyLine).let { (rules, pages) -> rules.parseRules() to pages.parsePages() }
     private fun String.parseRules() = mapLines { it.split("|").let { (a,b) -> a.toInt() to b.toInt() } }.toSet()
     private fun String.parsePages() = mapLines { it.split(",").map(String::toInt) }
     init {
@@ -16,7 +16,7 @@ class Day05 : Day<Update>() {
         }
     }
 
-    private fun Pages.toIndexMap() = mapIndexed {i, it -> it to i}.toMap()
+    private fun Pages.toIndexMap() = mapIndexed { i, it -> it to i }.toMap()
     private fun Set<Rule>.fit(map : Map<Int, Int>) = all { (a,b) -> a !in map || b!in map || map[a]!! < map[b]!! }
     private fun List<Int>.sortByRules(rules: Set<Rule>) = sortedWith { a,b -> when {
         a to b in rules -> -1
