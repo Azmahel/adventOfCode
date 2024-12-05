@@ -11,11 +11,10 @@ class Day05 : Day<Update>() {
         part1(143, 6260) { (rules, lines) ->
             lines.filter { rules.fit(it.toIndexMap()) }.sumOf { l -> l[l.lastIndex/2] }
         }
-        part2(123, null) { (rules, lines) ->
+        part2(123, 5346) { (rules, lines) ->
             lines.filter { !rules.fit(it.toIndexMap()) }.map { it.sortByRules(rules) }.sumOf { l -> l[l.lastIndex/2] }
         }
     }
-
 
     private fun Pages.toIndexMap() = mapIndexed {i, it -> it to i}.toMap()
     private fun Set<Rule>.fit(map : Map<Int, Int>) = all { (a,b) -> a !in map || b!in map || map[a]!! < map[b]!! }
@@ -58,4 +57,4 @@ class Day05 : Day<Update>() {
 }
 private typealias Rule = Pair<Int,Int>
 private typealias Pages = List<Int>
-data class Update(val rules: Set<Rule>, val pages: List<Pages>)
+private  typealias Update = Pair< Set<Rule>, List<Pages>>
