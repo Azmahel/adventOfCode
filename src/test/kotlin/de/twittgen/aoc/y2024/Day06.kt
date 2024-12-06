@@ -22,22 +22,20 @@ class Day06 : Day<Pair<Guard, Room>>() {
     }
 
     private fun Room.traverse(guard: Guard) : List<Point2D> {
-        var current = guard
-        val positions = emptyList<Guard>().toMutableSet()
-        while (current.position inRange boundaries && current !in positions) {
+        var (current, positions) = guard to emptyList<Guard>().toMutableSet()
+        while (current.position inSide boundaries && current !in positions) {
             positions.add(current)
-            val next = current.move()
-            current = if (next.position in walls) current.turnRight() else next
+            current = current.move().let { if (it.position in walls) current.turnRight() else it }
         }
         return positions.map(Guard::position) + current.position
     }
 
     private fun Room.walkObstructions(guard: Guard) =
         traverse(guard).distinct().asSequence().mapNotNull { p ->
-            if (p != guard.position && p inRange boundaries ) copy(walls = walls + p).traverse(guard) else null
-        }.count { it.last() inRange boundaries }
+            if (p != guard.position && p inSide boundaries) copy(walls = walls + p).traverse(guard) else null
+        }.count { it.last() inSide boundaries }
 
-    private infix fun Point2D.inRange(range: Pair<IntRange, IntRange>) = x in range.first && y in range.second
+    private infix fun Point2D.inSide(range: Pair<IntRange, IntRange>) = x in range.first && y in range.second
     override val example = """
         ....#.....
         .........#
