@@ -10,7 +10,7 @@ class Day06 : Day<Pair<Guard, Room>>() {
         var guard = Guard(Point2D(0,0), UP)
         val walls = toCharGrid().mapNotNull {(p, c) -> when(c) {
                 '#' -> p
-                '^' -> also { guard = Guard(p, UP) }.let { null }
+                '^' -> run { guard = Guard(p, UP) }.let { null }
                 else -> null
             }}.toSet()
         return guard to Room(walls, 0..lines().lastIndex to 0..lines().maxOf(String::lastIndex))
