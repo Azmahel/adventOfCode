@@ -3,18 +3,17 @@ package de.twittgen.aoc.y2024
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Direction.UP
-import de.twittgen.aoc.util.mapCoordinates
+import de.twittgen.aoc.util.toCharGrid
 
 class Day06 : Day<Pair<Guard, Room>>() {
     override fun String.parse(): Pair<Guard, Room>  {
         var guard = Guard(Point2D(0,0), UP)
-        val (maxX, maxY) = lines().lastIndex to lines()[0].lastIndex
-        val walls = mapCoordinates {x,y, c -> when(c) {
-                '#' -> Point2D( y, maxX - x)
-                '^' -> also { guard = Guard(Point2D(y, maxX - x), UP) }.let { null }
+        val walls = toCharGrid().mapNotNull {(p, c) -> when(c) {
+                '#' -> p
+                '^' -> also { guard = Guard(p, UP) }.let { null }
                 else -> null
             }}.toSet()
-        return guard to Room(walls, 0..maxX to 0..maxY)
+        return guard to Room(walls, 0..lines().lastIndex to 0..lines()[0].lastIndex)
     }
 
     init {
