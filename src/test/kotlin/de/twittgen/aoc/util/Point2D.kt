@@ -27,6 +27,7 @@ data class Point2D (val x : Int, val y: Int) {
     fun norm() = Point2D(x.sign, y.sign)
     fun transpose() = Point2D(y,x)
     enum class Direction(val next: (Point2D)-> Point2D) {
-        UP(Point2D::up), DOWN(Point2D::down), LEFT(Point2D::left), RIGHT(Point2D::right)
+        UP(Point2D::up), DOWN(Point2D::down), LEFT(Point2D::left), RIGHT(Point2D::right);
+        fun turnRight() = when(this) { UP -> RIGHT; RIGHT -> DOWN; DOWN -> LEFT; LEFT -> UP }
     }
 }
