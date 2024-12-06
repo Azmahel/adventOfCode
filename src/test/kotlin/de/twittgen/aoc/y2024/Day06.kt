@@ -3,12 +3,12 @@ package de.twittgen.aoc.y2024
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Direction.UP
-import de.twittgen.aoc.util.toCharGrid
+import de.twittgen.aoc.util.toGrid
 
 class Day06 : Day<Pair<Guard, Room>>() {
     override fun String.parse(): Pair<Guard, Room>  {
         var guard = Guard(Point2D(0,0), UP)
-        val walls = toCharGrid().mapNotNull {(p, c) -> when(c) {
+        val walls = toGrid { p, c-> when(c) {
                 '#' -> p
                 '^' -> null.also { guard = Guard(p, UP) }
                 else -> null
