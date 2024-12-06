@@ -13,13 +13,11 @@ class Day06 : Day<Pair<Guard, Room>>() {
                 '^' -> also { guard = Guard(p, UP) }.let { null }
                 else -> null
             }}.toSet()
-        return guard to Room(walls, 0..lines().lastIndex to 0..lines()[0].lastIndex)
+        return guard to Room(walls, 0..lines().lastIndex to 0..lines().maxOf(String::lastIndex))
     }
 
     init {
-        part1(41, 5404) { (guard, room) ->
-            room.traverse(guard).dropLast(1).toSet().size
-        }
+        part1(41, 5404) { (guard, room) -> room.traverse(guard).dropLast(1).toSet().size }
         part2(6, 1984) { (guard, room) -> room.walkObstructions(guard) }
     }
 
@@ -31,12 +29,12 @@ class Day06 : Day<Pair<Guard, Room>>() {
             val next = current.move()
             current = if (next.position in walls) current.turnRight() else next
         }
-        return positions.map { it.position } + current.position
+        return positions.map(Guard::position) + current.position
     }
 
     private fun Room.walkObstructions(guard: Guard) =
         traverse(guard).distinct().asSequence().mapNotNull { p ->
-            if(p != guard.position && p inRange boundaries )  copy(walls = walls + p).traverse(guard) else null
+            if (p != guard.position && p inRange boundaries ) copy(walls = walls + p).traverse(guard) else null
         }.count { it.last() inRange boundaries }
 
     private infix fun Point2D.inRange(range: Pair<IntRange, IntRange>) = x in range.first && y in range.second
