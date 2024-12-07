@@ -2,7 +2,7 @@ package de.twittgen.aoc.util
 
 fun <T> List<T>.second() = get(1)
 fun <T> List<T>.secondOrNull() = getOrNull(1)
-fun <T> List<T>.middle() = get((size-1) /2)
+fun <T> List<T>.middle() = get(lastIndex /2)
 fun <T> List<T>.hasDuplicate() = toSet().size != size
 operator fun <T> List<T>.times(times: Int): List<T> = (1..times).flatMap { this }
 fun List<Int>.product() = foldRight(1) { a,b -> a * b }
@@ -30,6 +30,9 @@ fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
     return asSequence().filterNot { (a,b) -> a to b in added || b to a in added }.map { it.also { added += it } }
         .toList()
 }
+fun <T> List<T>.permutationsOf(length: Int): List<List<T>> =
+    if (length <= 1)  map(::listOf) else permutationsOf(length - 1).flatMap { l -> (map { l + it } ) }
+
 fun <T, R>Collection<Collection<R>>.mapCoordinates(function : (x: Int, y: Int, it: R) -> T?) =
     flatMapIndexed { x, l -> l.mapIndexedNotNull { y, it -> function(x, y, it) }  }
 
