@@ -1,9 +1,7 @@
 package de.twittgen.aoc.y2024
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.util.mapLines
-import de.twittgen.aoc.util.permutationsOf
 import de.twittgen.aoc.util.second
 
 class Day07 : Day<List<Operation>>() {
@@ -13,22 +11,23 @@ class Day07 : Day<List<Operation>>() {
 
     init {
         part1(3749,663613490587) {
-            it.filter { (t, o) -> o.testForallPossibleOperators(t) }.sumOf(Operation::first)
+            it.filter { op -> operators.testOperators(op) }.sumOf(Operation::first)
         }
-        part2(11387,110365987435001, SLOW) { //tired improving runtime with memoization, but made it slower
-            it.filter { (t, o) -> o.testForallPossibleOperators(t, allOperators) }.sumOf(Operation::first)
+        part2(11387,110365987435001) {
+            it.filter { op -> allOperators.testOperators(op) }.sumOf(Operation::first)
         }
     }
 
     private val operators = listOf(MULT, ADD)
     private val allOperators = listOf(MULT, ADD, CONCAT)
-    private fun List<Long>.testForallPossibleOperators(expected: Long, op: List<Operator> = operators) =
-        op.permutationsOf(lastIndex).any{ p -> p.apply(this, expected) == expected  }
-
-
-    private fun List<Operator>.apply(numbers: List<Long>, expected: Long) =
-        numbers.reduceIndexed { i , x, y -> if(x > expected) { return@apply -1L }else { get(i-1)(x,y) }}
-
+    private fun List<Operator>.testOperators(op: Operation) = testOperators(op.first, op.second.drop(1), op.second.first())
+    private fun List<Operator>.testOperators(expected: Long, numbers: List<Long>, current: Long): Boolean {
+        if (current > expected) return false
+        if (numbers.isEmpty()) return expected == current
+        return map { it(current, numbers.first()) }
+            .map { testOperators(expected, numbers.drop(1), it) }
+            .any { it }
+    }
 
     override val example = """
         190: 10 19
