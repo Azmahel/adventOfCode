@@ -19,11 +19,8 @@ class Day02 : Day<List<Report>>() {
     private fun Report.toSubReports() = List(size) { i -> toMutableList().apply { removeAt(i) } }
 
     private fun Report.isSafe(maxDeviation: Int = 3): Boolean {
-        sorted().let {
-            if(it != this && it.reversed() != this ) return false
-        }
-        return windowed(2,1)
-            .all { abs(it.first() - it.second()) in (1.. maxDeviation) }
+        sorted().let { if(it != this && it.reversed() != this ) return false }
+        return windowed(2,1).all { abs(it.first() - it.second()) in (1.. maxDeviation) }
     }
 
     override val example = """

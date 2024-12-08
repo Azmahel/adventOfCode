@@ -24,9 +24,7 @@ class Day07 : Day<List<Operation>>() {
     private fun List<Operator>.testOperators(expected: Long, numbers: List<Long>, current: Long): Boolean {
         if (current > expected) return false
         if (numbers.isEmpty()) return expected == current
-        return map { it(current, numbers.first()) }
-            .map { testOperators(expected, numbers.drop(1), it) }
-            .any { it }
+        return map { it(current, numbers.first()) }.map { testOperators(expected, numbers.drop(1), it) }.any { it }
     }
 
     override val example = """

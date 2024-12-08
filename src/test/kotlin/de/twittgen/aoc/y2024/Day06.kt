@@ -48,7 +48,6 @@ class Day06 : Day<Pair<Guard, Room>>() {
         #.........
         ......#...
     """.trimIndent()
-
 }
 data class Guard(val position: Point2D, val facing: Point2D.Direction) {
     fun move() = copy(position = facing.next(position))
