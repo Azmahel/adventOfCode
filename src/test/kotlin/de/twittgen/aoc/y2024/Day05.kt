@@ -19,9 +19,7 @@ class Day05 : Day<Update>() {
     private fun Pages.toIndexMap() = mapIndexed { i, it -> it to i }.toMap()
     private fun Set<Rule>.fit(map : Map<Int, Int>) = all { (a,b) -> a !in map || b!in map || map[a]!! < map[b]!! }
     private fun List<Int>.sortByRules(rules: Set<Rule>) = sortedWith { a,b -> when {
-        a to b in rules -> -1
-        b to a in rules -> 1
-        else -> 0
+        a to b in rules -> -1; b to a in rules -> 1; else -> 0
     }}
 
     override val example = """
