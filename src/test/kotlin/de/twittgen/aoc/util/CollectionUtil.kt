@@ -32,6 +32,7 @@ fun <T>List<Pair<T,T>>.filterMirrors(): List<Pair<T, T>> {
 }
 fun <T> List<T>.permutationsOf(length: Int): List<List<T>> =
     if (length <= 1)  map(::listOf) else permutationsOf(length - 1).flatMap { l -> (map { l + it } ) }
+fun <T> List<T>.toPossiblePairs(): List<Pair<T,T>> = flatMapIndexed {i, a  -> drop(i+1).map { b -> Pair(a,b) } }
 
 fun <T, R>Collection<Collection<R>>.mapCoordinates(function : (x: Int, y: Int, it: R) -> T?) =
     flatMapIndexed { x, l -> l.mapIndexedNotNull { y, it -> function(x, y, it) }  }
