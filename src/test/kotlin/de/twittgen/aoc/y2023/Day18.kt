@@ -7,8 +7,9 @@ import de.twittgen.aoc.util.Point2D.Direction.entries
 import de.twittgen.aoc.util.mapLines
 
 class Day18: Day<List<Instruction>>() {
-    override fun String.parse() =
-        mapLines { it.split(" ").let { (a,b,c) -> Instruction(a.toDirection(), b.toLong(), c) } }
+    override fun String.parse() = mapLines {
+        it.split(" ").let { (a,b,c) -> Instruction(a.toDirection(), b.toLong(), c) }
+    }
     private fun String.toDirection() = entries.first { it.s == this }
 
     init {
@@ -47,7 +48,6 @@ class Day18: Day<List<Instruction>>() {
         L 2 (#015232)
         U 2 (#7a21e3)
     """.trimIndent()
-
 }
 
 data class Instruction(val dir: Point2D.Direction, val dist: Long, val color: String)
