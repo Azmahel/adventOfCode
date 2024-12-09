@@ -6,7 +6,7 @@ import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
 import de.twittgen.aoc.util.Point2D.Direction.entries
 import de.twittgen.aoc.util.mapLines
 
-class Day18: Day<List<Instruction>>() {
+class Day18: Day<Polygon>() {
     override fun String.parse() = mapLines {
         it.split(" ").let { (a,b,c) -> Instruction(a.toDirection(), b.toLong(), c) }
     }
@@ -17,20 +17,20 @@ class Day18: Day<List<Instruction>>() {
         part2(952408144115, 83605563360288) { it.map { it.fix() }.let { picksTheorem(it) } }
     }
 
-    private fun picksTheorem(it: List<Instruction>) = it.area() + (it.perimeter() / 2) + 1L
-    private fun List<Instruction>.area() = toVertices().shoelace()
+    private fun picksTheorem(it: Polygon) = it.area() + (it.perimeter() / 2) + 1L
+    private fun Polygon.area() = toVertices().shoelace()
 
     private val colorRegex = Regex("\\(#(.{5})(.)\\)")
     private fun Instruction.fix() = colorRegex.matchEntire(color)!!.groupValues.let { (_,a,b) ->
         Instruction(when (b) {"0" -> "R" "1" -> "D" "2" -> "L" else -> "U" }.toDirection(), a.toLong(16), "")
     }
 
-    private fun List<Instruction>.toVertices() = runningFold(0L to 0L) { acc, (dir, dist) ->
+    private fun Polygon.toVertices() = runningFold(0L to 0L) { acc, (dir, dist) ->
         (dir.next(ORIGIN) * dist.toInt()).let { (x, y) -> acc.first + x.toLong() to acc.second - y.toLong() }
     }
 
-    private fun List<Pair<Long, Long>>.shoelace() = zipWithNext().sumOf { (a, b) -> (a.first * b.second) - (a.second * b.first) } / 2
-    private fun List<Instruction>.perimeter() = sumOf { it.dist }
+    private fun Vertices.shoelace() = zipWithNext().sumOf { (a, b) -> (a.first * b.second) - (a.second * b.first) } / 2
+    private fun Polygon.perimeter() = sumOf { it.dist }
 
     override val example = """
         R 6 (#70c710)
@@ -51,3 +51,5 @@ class Day18: Day<List<Instruction>>() {
 }
 
 data class Instruction(val dir: Point2D.Direction, val dist: Long, val color: String)
+private typealias Polygon = List<Instruction>
+private typealias Vertices = List<Pair<Long,Long>>
