@@ -4,6 +4,8 @@ import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Direction.UP
 import de.twittgen.aoc.util.toGrid
+import de.twittgen.aoc.y2024.Day06.Guard
+import de.twittgen.aoc.y2024.Day06.Room
 
 class Day06 : Day<Pair<Guard, Room>>() {
     override fun String.parse(): Pair<Guard, Room>  {
@@ -48,9 +50,10 @@ class Day06 : Day<Pair<Guard, Room>>() {
         #.........
         ......#...
     """.trimIndent()
+
+    data class Guard(val position: Point2D, val facing: Point2D.Direction) {
+        fun move() = copy(position = facing.next(position))
+        fun turnRight() = copy(facing = facing.turnRight())
+    }
+    data class Room(val walls: Set<Point2D>, val boundaries: Pair<IntRange, IntRange>)
 }
-data class Guard(val position: Point2D, val facing: Point2D.Direction) {
-    fun move() = copy(position = facing.next(position))
-    fun turnRight() = copy(facing = facing.turnRight())
-}
-data class Room(val walls: Set<Point2D>, val boundaries: Pair<IntRange, IntRange>)

@@ -5,6 +5,7 @@ import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.Point2D.Companion.ORIGIN
 import de.twittgen.aoc.util.Point2D.Direction.entries
 import de.twittgen.aoc.util.mapLines
+import de.twittgen.aoc.y2023.Day18.Instruction
 
 class Day18: Day<Polygon>() {
     override fun String.parse() = mapLines {
@@ -48,8 +49,8 @@ class Day18: Day<Polygon>() {
         L 2 (#015232)
         U 2 (#7a21e3)
     """.trimIndent()
-}
+    data class Instruction(val dir: Point2D.Direction, val dist: Long, val color: String)
 
-data class Instruction(val dir: Point2D.Direction, val dist: Long, val color: String)
+}
 private typealias Polygon = List<Instruction>
 private typealias Vertices = List<Pair<Long,Long>>
