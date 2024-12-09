@@ -3,8 +3,8 @@ package de.twittgen.aoc.y2024
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.mapLines
 import de.twittgen.aoc.util.second
+import de.twittgen.aoc.util.toPairOfLists
 import kotlin.math.abs
-import kotlin.math.min
 
 class Day01 : Day<Pair<List<Int>,List<Int>>>() {
     override fun String.parse() =
@@ -19,10 +19,7 @@ class Day01 : Day<Pair<List<Int>,List<Int>>>() {
         }
     }
 
-    private  fun <A, B> List<Pair<A,B>>.toPairOfLists() =
-        (mutableListOf<A>() to mutableListOf<B>()).also { (lA, lB) ->  forEach { (a,b) -> lA.add(a); lB.add(b) }}
-    private  fun <A, B> Pair<List<A>,List<B>>.toListOfPairs() :  List<Pair<A,B>> =
-        (0..min(first.lastIndex,second.lastIndex)).map { first[it] to second[it] }
+    private  fun <A, B> Pair<List<A>,List<B>>.toListOfPairs() :  List<Pair<A,B>> = first zip second
     private fun List<Int>.entryCount() = groupBy { it }.mapValues { (_, l) -> l.size }
 
     override val example = """
