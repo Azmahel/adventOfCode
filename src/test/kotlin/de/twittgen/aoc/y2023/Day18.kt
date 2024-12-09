@@ -21,7 +21,7 @@ class Day18: Day<List<Instruction>>() {
 
     private val colorRegex = Regex("\\(#(.{5})(.)\\)")
     private fun Instruction.fix() = colorRegex.matchEntire(color)!!.groupValues.let { (_,a,b) ->
-        Instruction(when (b) {"0" -> "R""1" -> "D""2" -> "L"else -> "U" }.toDirection(), a.toLong(16), "")
+        Instruction(when (b) {"0" -> "R" "1" -> "D" "2" -> "L" else -> "U" }.toDirection(), a.toLong(16), "")
     }
 
     private fun List<Instruction>.toVertices() = runningFold(0L to 0L) { acc, (dir, dist) ->
