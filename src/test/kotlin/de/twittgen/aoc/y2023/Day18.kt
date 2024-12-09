@@ -14,7 +14,7 @@ class Day18: Day<Polygon>() {
 
     init {
         part1(62, 42317) { picksTheorem(it) }
-        part2(952408144115, 83605563360288) { it.map { it.fix() }.let { picksTheorem(it) } }
+        part2(952408144115, 83605563360288) { picksTheorem(it.map { i -> i.fix() }) }
     }
 
     private fun picksTheorem(it: Polygon) = it.area() + (it.perimeter() / 2) + 1L
