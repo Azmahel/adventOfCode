@@ -15,7 +15,7 @@ class Day01 : Day<Pair<List<Int>,List<Int>>>() {
             (a.sorted() zip b.sorted()).sumOf { (a, b) -> abs(a - b) }
         }
         part2(31,18567089) { (a,b) ->
-            b.entryCount().let {counts  ->  a.sumOf { it * counts.getOrDefault(it, 0) } }
+            b.entryCount().let { counts  ->  a.sumOf { it * counts.getOrDefault(it, 0) } }
         }
     }
 
