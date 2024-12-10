@@ -3,6 +3,7 @@ package de.twittgen.aoc.y2023
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.util.second
+import de.twittgen.aoc.y2023.Day19.Rule
 
 class Day19: Day<System>()
 {
@@ -16,13 +17,13 @@ class Day19: Day<System>()
 
     private fun Thing.process(w: Workflows): String {
         var current = "in"
-        while (current in w) { current = w[current]!!.map { it.toRule() }.first {  it.requirement(this)}.target }
+        while (current in w) { current = w[current]!!.map { it }.first {  it.requirement(this)}.target }
         return current
     }
 
     private val workflowRegex = Regex("(.+)\\{(.+)}")
     private fun String.toWorkflows() = lines().associate {
-        workflowRegex.matchEntire(it)!!.groupValues.drop(1).let {(a,b) -> a to  b.split(",") }
+        workflowRegex.matchEntire(it)!!.groupValues.drop(1).let {(a,b) -> a to  b.split(",").map { it.toRule() } }
     }
     private fun String.toParts() = lines().map {
         it.drop(1).dropLast(1).split(",").associate { it.split("=").let { (a, b) -> a to b.toInt() } }
@@ -33,13 +34,17 @@ class Day19: Day<System>()
         }
         return let
     }
-    val guardRegex = Regex("(.*)([<>])(.*)")
+    private val guardRegex = Regex("(.*)([<>])(.*)")
     private fun String.toRequirement() = guardRegex.matchEntire(this)!!.groupValues.let { (_,a,o,b) -> when(o) {
         ">" -> Gt(a, b.toInt())
         "<" -> Lt(a, b.toInt())
         else -> throw IllegalStateException()
     } }
 
+    private fun ClauseGuard.invert() = when(this) {
+        is Gt -> Lt(a, b + 1)
+        is Lt -> Gt(a, b - 1)
+    }
 
     override val example = """
         px{a<2006:qkq,m>2090:A,rfg}
@@ -61,8 +66,8 @@ class Day19: Day<System>()
         {x=2127,m=1623,a=2188,s=1013}
     """.trimIndent()
 
-    private data class Rule(val target: String, val requirement: Guard)
-    private sealed class Guard { abstract operator fun invoke(t: Thing): Boolean }
+    data class Rule(val target: String, val requirement: Guard)
+    sealed class Guard { abstract operator fun invoke(t: Thing): Boolean }
     private data object NoReq: Guard() { override fun invoke(t: Thing) = true }
     private sealed class ClauseGuard(val a: String, val b: Int): Guard()
     private class Gt(a:String,  b:Int): ClauseGuard(a, b) { override fun invoke(t: Thing) = t[a]!! > b }
@@ -71,5 +76,5 @@ class Day19: Day<System>()
 
 private typealias System = Pair<Workflows, List<Thing>>
 private typealias Thing = Map<String, Int>
-private typealias Workflow = List<String>
+private typealias Workflow = List<Rule>
 private typealias Workflows = Map<String, Workflow>
