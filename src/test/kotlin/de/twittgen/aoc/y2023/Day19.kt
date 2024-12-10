@@ -19,37 +19,11 @@ class Day19: Day<System>()
         }
     }
 
-    private fun Map<String, List<IntRange>>.possibleMatches() =
-        listOf("x", "m", "a", "s").map { s -> rangeOf(s) }.fold(1L) { a, c -> a * c }
-
-    private fun Map<String, List<IntRange>>.rangeOf(s: String) =
-        getOrDefault(s, listOf(1..4000)).fold(1L) { i, v -> i * (v.last - v.first + 1) }
-
     private fun Thing.process(w: Workflows): String {
         var current = "in"
         while (current in w) { current = w[current]!!.map { it }.first {  it.match(this) }.target }
         return current
     }
-
-    private val workflowRegex = Regex("(.+)\\{(.+)}")
-    private fun String.toWorkflows() = lines().associate {
-        workflowRegex.matchEntire(it)!!.groupValues.drop(1).let { (a,b) ->
-            a to b.split(",").map { it.toRule()  }
-        }
-    }
-    private fun String.toParts() = lines().map {
-        it.drop(1).dropLast(1).split(",").associate { it.split("=").let { (a, b) -> a to b.toInt() } }
-    }
-    private fun String.toRule() = split(":").let {
-        if (it.size == 1) Rule(it.first(), NoReq) else Rule(it.second(), it.first().toGuard())
-    }
-
-    private val guardRegex = Regex("(.*)([<>])(.*)")
-    private fun String.toGuard() = guardRegex.matchEntire(this)!!.groupValues.let { (_,a,o,b) -> when(o) {
-        ">" -> Gt(a, b.toInt()); "<" -> Lt(a, b.toInt()); else -> throw IllegalStateException()
-    }}
-
-    private fun ClauseGuard.invert() = when(this) {is Gt -> Lt(a, b + 1); is Lt -> Gt(a, b - 1) }
 
     private fun Workflow.collapse(map :Workflows) : List<List<ClauseGuard>> = takeUntil{ it.match is NoReq }
         .fold(emptyList<ClauseGuard>() to emptyMap<Rule, List<ClauseGuard>>()) { (guards, sequences), rule ->
@@ -61,13 +35,38 @@ class Day19: Day<System>()
         }.second.flatMap { (rule, guards) -> when(rule.target) {
             "A" -> listOf(guards); "R" -> emptyList(); else -> map[rule.target]!!.collapse(map).map { guards + it }
         }}
-
+    private fun ClauseGuard.invert() = when(this) {is Gt -> Lt(a, b + 1); is Lt -> Gt(a, b - 1) }
     private fun List<ClauseGuard>.toRanges()= groupBy { it.a }
-        .mapValues { (_, guards) -> (guards + Gt("", 0) + Lt("", 4001))
-            .sortedBy { it.b }
-            .windowed(2) { (g1, g2) -> if(g1 is Gt && g2 is Lt) (g1.b +1)..<g2.b else null }
-            .filterNotNull()
+        .mapValues { (_, guards) ->
+            (guards + Gt("", 0) + Lt("", 4001)).sortedBy { it.b }
+                .windowed(2) { (g1, g2) -> if(g1 is Gt && g2 is Lt) (g1.b +1)..<g2.b else null }
+                    .filterNotNull()
         }
+
+    private fun Map<String, List<IntRange>>.possibleMatches() =
+        listOf("x", "m", "a", "s").map { s -> rangeOf(s) }.fold(1L) { a, c -> a * c }
+
+    private fun Map<String, List<IntRange>>.rangeOf(s: String) =
+        getOrDefault(s, listOf(1..4000)).fold(1L) { i, v -> i * (v.last - v.first + 1) }
+
+    private val workflowRegex = Regex("(.+)\\{(.+)}")
+    private fun String.toWorkflows() = lines().associate {
+        workflowRegex.matchEntire(it)!!.groupValues.drop(1).let { (a,b) ->
+            a to b.split(",").map { it.toRule()  }
+        }
+    }
+    private fun String.toParts() = lines().map {
+        it.drop(1).dropLast(1).split(",")
+            .associate { it.split("=").let { (a, b) -> a to b.toInt() } }
+    }
+    private fun String.toRule() = split(":").let {
+        if (it.size == 1) Rule(it.first(), NoReq) else Rule(it.second(), it.first().toGuard())
+    }
+
+    private val guardRegex = Regex("(.*)([<>])(.*)")
+    private fun String.toGuard() = guardRegex.matchEntire(this)!!.groupValues.let { (_,a,o,b) -> when(o) {
+        ">" -> Gt(a, b.toInt()); "<" -> Lt(a, b.toInt()); else -> throw IllegalStateException()
+    }}
 
     override val example = """
         px{a<2006:qkq,m>2090:A,rfg}
