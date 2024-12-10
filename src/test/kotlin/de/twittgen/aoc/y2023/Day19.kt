@@ -27,15 +27,19 @@ class Day19: Day<System>()
     private fun String.toParts() = lines().map {
         it.drop(1).dropLast(1).split(",").associate { it.split("=").let { (a, b) -> a to b.toInt() } }
     }
-    private fun String.toRule() =
-        split(":").let {
-            if (it.size==1) Rule(it.first(), noRequirement) else Rule(it.second(), it.first().toRequirement())
+    private fun String.toRule(): Rule {
+        val let = split(":").let {
+            if (it.size == 1) Rule(it.first(), NoReq) else Rule(it.second(), it.first().toRequirement())
         }
-    private fun String.toRequirement(): (Thing) -> Boolean = if (contains(">"))  {
-        split(">").let { (a,b)  ->  { it[a]!! > b.toInt() } }
-    } else {
-        split("<").let { (a,b)  -> { it[a]!! < b.toInt() } }
+        return let
     }
+    val guardRegex = Regex("(.*)([<>])(.*)")
+    private fun String.toRequirement() = guardRegex.matchEntire(this)!!.groupValues.let { (_,a,o,b) -> when(o) {
+        ">" -> Gt(a, b.toInt())
+        "<" -> Lt(a, b.toInt())
+        else -> throw IllegalStateException()
+    } }
+
 
     override val example = """
         px{a<2006:qkq,m>2090:A,rfg}
@@ -57,8 +61,17 @@ class Day19: Day<System>()
         {x=2127,m=1623,a=2188,s=1013}
     """.trimIndent()
 
-    private val noRequirement: (Thing)-> Boolean = { true }
-    private data class Rule(val target: String, val requirement: (Thing)-> Boolean)
+    private data class Rule(val target: String, val requirement: Guard)
+    private sealed class Guard {
+        abstract operator fun invoke(t: Thing): Boolean
+    }
+    private data object NoReq: Guard() { override fun invoke(t: Thing) = true }
+    private data class Gt(val a:String, val b:Int): Guard() {
+        override fun invoke(t: Thing) = t[a]!! > b
+    }
+    private data class Lt(val a:String, val b:Int): Guard() {
+        override fun invoke(t: Thing) = t[a]!! < b
+    }
 }
 
 private typealias System = Pair<Workflows, List<Thing>>
