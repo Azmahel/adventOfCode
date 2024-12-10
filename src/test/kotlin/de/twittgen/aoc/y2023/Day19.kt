@@ -62,16 +62,11 @@ class Day19: Day<System>()
     """.trimIndent()
 
     private data class Rule(val target: String, val requirement: Guard)
-    private sealed class Guard {
-        abstract operator fun invoke(t: Thing): Boolean
-    }
+    private sealed class Guard { abstract operator fun invoke(t: Thing): Boolean }
     private data object NoReq: Guard() { override fun invoke(t: Thing) = true }
-    private data class Gt(val a:String, val b:Int): Guard() {
-        override fun invoke(t: Thing) = t[a]!! > b
-    }
-    private data class Lt(val a:String, val b:Int): Guard() {
-        override fun invoke(t: Thing) = t[a]!! < b
-    }
+    private sealed class ClauseGuard(val a: String, val b: Int): Guard()
+    private class Gt(a:String,  b:Int): ClauseGuard(a, b) { override fun invoke(t: Thing) = t[a]!! > b }
+    private class Lt(a:String, b:Int): ClauseGuard(a, b) { override fun invoke(t: Thing) = t[a]!! < b }
 }
 
 private typealias System = Pair<Workflows, List<Thing>>
