@@ -1,14 +1,10 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.toGrid
 import de.twittgen.aoc.y2023.Day23.Spot
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import java.util.Stack
+import java.util.*
 import kotlin.math.max
 
 class Day23: Day<Trails>() {
@@ -25,12 +21,12 @@ class Day23: Day<Trails>() {
     }
 
     private fun ForkMap.follow(): Int {
-        var current = Stack<Pair<List<Point2D>,Int>>()
+        val current = Stack<Pair<List<Point2D>, Int>>()
         current.push(listOf(keys.maxBy { it.y }) to 0)
         val end = keys.minBy { it.y }
         var longest = 0
         while (current.isNotEmpty()) {
-            val next = current.pop().let { (v, d) ->
+            current.pop().let { (v, d) ->
                 get(v.last())!!.filter{ it.first !in v }.mapNotNull { (n, d2) ->
                     if (n == end) {
                         longest = max(d + d2, longest)
