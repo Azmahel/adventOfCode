@@ -37,7 +37,6 @@ class Day23: Day<Trails>() {
                     }
                 }
             }.forEach { current.push(it) }
-
         }
         return longest + 1
     }
@@ -60,11 +59,17 @@ class Day23: Day<Trails>() {
 
     private fun Trails.next(p: Point2D) = get(p)!!.next(p).filter { contains(it) }
 
-    private fun Trails.findNextFork(p: Point2D, end :Point2D, visited: Set<Point2D> = setOf(p), d: Int = 0) : Pair<Point2D, Int>? {
-        return next(p).filter { it !in visited }. let { when {
+    private fun Trails.findNextFork(
+        p: Point2D,
+        end: Point2D,
+        v: Set<Point2D> = setOf(p),
+        d: Int = 0
+    ): Pair<Point2D, Int>? {
+        return next(p).filter { it !in v }.let {
+            when {
             it.size > 1 -> p to d +1
-            it.size == 1 -> if(it.first() == end) end to d +1  else  findNextFork(it.first(), end,visited + p, d + 1)
-            else -> null
+                it.isEmpty() -> null
+                else -> if (it.first() == end) end to d + 1 else findNextFork(it.first(), end, v + p, d + 1)
         } }
     }
 
