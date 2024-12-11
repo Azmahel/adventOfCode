@@ -5,6 +5,10 @@ import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.toGrid
 import de.twittgen.aoc.y2023.Day23.Spot
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import java.util.Stack
 import kotlin.math.max
 
 class Day23: Day<Trails>() {
@@ -15,33 +19,28 @@ class Day23: Day<Trails>() {
         part1(94, 2230) { trails ->
             trails.toForkMap().follow()
         }
-        part2(154, 2230) { trails ->
+        part2(154, 6542) { trails ->
             trails.mapValues { _ -> Path }.toForkMap().follow()
         }
     }
 
-    private fun ForkMap.follow(
-        current: Point2D = keys.maxBy { it.y } ,
-        end: Point2D = keys.minBy { it.y },
-        visited: Set<Point2D> = emptySet(),
-        distance: Int = 0
-    ): Int  {
-        if (current == end) return distance + 1
-        return get(current)!!.maxOf { (p, d) -> follow(p, end, visited + p, distance + d) }
-    }
-
     private fun ForkMap.follow(): Int {
-        var current = setOf(Triple(keys.maxBy { it.y } ,0,emptySet<Point2D>()))
+        var current = Stack<Pair<List<Point2D>,Int>>()
+        current.push(listOf(keys.maxBy { it.y }) to 0)
         val end = keys.minBy { it.y }
         var longest = 0
         while (current.isNotEmpty()) {
-            current = current.flatMap { (p, d, v) ->
-                get(p)!!
-                    .filter { it.first !in v }
-                    .map { (n, d2) ->
-                        Triple(n, d + d2, v + p ).also { (p,d) -> if (p == end) longest = max(longest,d) }
+            val next = current.pop().let { (v, d) ->
+                get(v.last())!!.filter{ it.first !in v }.mapNotNull { (n, d2) ->
+                    if (n == end) {
+                        longest = max(d + d2, longest)
+                        null
+                    } else {
+                        v + n to d + d2
                     }
-            }.toSet()
+                }
+            }.forEach { current.push(it) }
+
         }
         return longest + 1
     }
