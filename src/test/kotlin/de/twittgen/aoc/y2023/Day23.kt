@@ -1,6 +1,7 @@
 package de.twittgen.aoc.y2023
 
 import de.twittgen.aoc.Day
+import de.twittgen.aoc.Day.TestMarker.SLOW
 import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.toGrid
 import de.twittgen.aoc.y2023.Day23.Spot
@@ -15,7 +16,7 @@ class Day23: Day<Trails>() {
         part1(94, 2230) { trails ->
             trails.toForkMap().follow()
         }
-        part2(154, 6542) { trails ->
+        part2(154, 6542, SLOW) { trails ->
             trails.mapValues { _ -> Path }.toForkMap().follow()
         }
     }
