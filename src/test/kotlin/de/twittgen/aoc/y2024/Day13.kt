@@ -20,6 +20,11 @@ class Day13 : Day<List<LES>>() {
         part1(480) { it.sumOf { it.bruteForce() } }
     }
 
+    private fun LES.solve() {
+        // find if it has a solution (using determinante)
+        // calulate it using Guass
+    }
+
     private fun LES.bruteForce() = let { (m, v) -> (0..100).flatMap { pa -> (0..100).mapNotNull { pb ->
         if (m[0][0] * pa + m[0][1] * pb == v.x && m[1][0] * pa + m[1][1] * pb == v.y) {
             (3 * pa) + pb
