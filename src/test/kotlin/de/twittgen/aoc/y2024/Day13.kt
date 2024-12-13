@@ -5,12 +5,9 @@ import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.emptyLine
 
 class Day13 : Day<List<LES>>() {
-    override fun String.parse() = split(emptyLine).map { b ->
-        b.lines().let { (a, b, z) ->
-            a.toButton()
-                .let { a -> b.toButton().let { b -> listOf(listOf(a.x, b.x), listOf(a.y, b.y)) } } to z.toPrice()
-        }
-    }
+    override fun String.parse() = split(emptyLine).map { b -> b.lines().let { (a, b, z) ->
+        a.toButton().let { a -> b.toButton().let { b -> listOf(listOf(a.x, b.x), listOf(a.y, b.y)) } } to z.toPrice()
+    } }
 
     private val priceRegex = Regex("Prize: X=(\\d+), Y=(\\d+)")
     private fun String.toPrice() = priceRegex.toPoint2D(this)
@@ -23,17 +20,13 @@ class Day13 : Day<List<LES>>() {
         part1(480) { it.sumOf { it.bruteForce() } }
     }
 
-    private fun LES.bruteForce() = let { (m, v) ->
-        (0..100).flatMap { pa ->
-            (0..100).mapNotNull { pb ->
-                if (m[0][0] * pa + m[0][1] * pb == v.x && m[1][0] * pa + m[1][1] * pb == v.y) {
-                    (3 * pa) + pb
-                } else {
-                    null
-                }
-            }
-        }.minOrNull() ?: 0
-    }
+    private fun LES.bruteForce() = let { (m, v) -> (0..100).flatMap { pa -> (0..100).mapNotNull { pb ->
+        if (m[0][0] * pa + m[0][1] * pb == v.x && m[1][0] * pa + m[1][1] * pb == v.y) {
+            (3 * pa) + pb
+        } else {
+            null
+        }
+    } }.minOrNull() ?: 0 }
 
 
     override val example = """
