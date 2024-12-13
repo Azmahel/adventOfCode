@@ -1,12 +1,13 @@
 package de.twittgen.aoc.y2024
 
 import de.twittgen.aoc.Day
-import de.twittgen.aoc.util.Point2D
 import de.twittgen.aoc.util.emptyLine
+import de.twittgen.aoc.util.isWhole
+import de.twittgen.aoc.util.lcm
 
 class Day13 : Day<List<LES>>() {
     override fun String.parse() = split(emptyLine).map { b -> b.lines().let { (a, b, z) ->
-        a.toButton().let { a -> b.toButton().let { b -> listOf(listOf(a.x, b.x), listOf(a.y, b.y)) } } to z.toPrice()
+        a.toButton().let { a -> b.toButton().let { b -> listOf(listOf(a.first, b.first), listOf(a.second, b.second)) } } to z.toPrice()
     } }
 
     private val priceRegex = Regex("Prize: X=(\\d+), Y=(\\d+)")
@@ -14,25 +15,21 @@ class Day13 : Day<List<LES>>() {
     private val buttonRegex = Regex("Button [AB]: X\\+(\\d+), Y\\+(\\d+)")
     private fun String.toButton() = buttonRegex.toPoint2D(this)
     private fun Regex.toPoint2D(s: String) =
-        matchEntire(s)!!.groupValues.let { (_, x, y) -> Point2D(x.toInt(), y.toInt()) }
+        matchEntire(s)!!.groupValues.let { (_, x, y) -> x.toLong() to y.toLong() }
 
     init {
-        part1(480) { it.sumOf { it.bruteForce() } }
+        part1(480, 29877) { it.sumOf { it.solve() } }
+        part2(875318608908, 99423413811305) { it.sumOf{ it.expand().solve() }}
     }
 
-    private fun LES.solve() {
-        // find if it has a solution (using determinante)
-        // calulate it using Guass
+    private fun LES.expand() = first to second.let {(x, y) -> 10000000000000 + x to 10000000000000 + y}
+
+    private fun LES.solve() = let { (m, v) ->
+        val c = lcm(m[0][0], m[1][0])
+        val bP = (1.0*(v.first * c / m[0][0])-(v.second * c / m[1][0])) / ((m[0][1] * c / m[0][0]) - (m[1][1] * c / m[1][0]))
+        val aP = (v.first - m[0][1] * bP)/m[0][0]
+        if(aP.isWhole() && bP.isWhole()) (3 * aP + bP).toLong() else 0
     }
-
-    private fun LES.bruteForce() = let { (m, v) -> (0..100).flatMap { pa -> (0..100).mapNotNull { pb ->
-        if (m[0][0] * pa + m[0][1] * pb == v.x && m[1][0] * pa + m[1][1] * pb == v.y) {
-            (3 * pa) + pb
-        } else {
-            null
-        }
-    } }.minOrNull() ?: 0 }
-
 
     override val example = """
         Button A: X+94, Y+34
@@ -53,4 +50,4 @@ class Day13 : Day<List<LES>>() {
     """.trimIndent()
 }
 
-private typealias LES = Pair<List<List<Int>>, Point2D>
+private typealias LES = Pair<List<List<Long>>, Pair<Long, Long>>
