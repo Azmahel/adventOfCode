@@ -18,7 +18,7 @@ class Day14: Day<List<Robot>>() {
           it.simulate().quadrants().let { map -> map[1]!!.size * map[2]!!.size * map[3]!!.size * map[4]!!.size }
         }
         part2(null, 6243) {
-            (0..it.toLoop()).asSequence()
+            (0..Int.MAX_VALUE).asSequence()
                 .runningFold((0.0 to 0.0) to (0.0 to 0.0)) { (m,_), i -> it.simulate(i).meanDeviation() to m }
                 .indexOfFirst { (m1, m2) ->  m1.first < m2.first * sig && m1.second < m2.second * sig } - 1
         }
@@ -37,7 +37,6 @@ class Day14: Day<List<Robot>>() {
     private fun maximum() = when(testState) {EXAMPLE -> Point2D(11, 7); REAL -> Point2D(101, 103) }
     private fun Robot.simulate(steps: Int = 100) = ((first + (second * steps)) % maximum()).modWrap(maximum()) to second
     private fun List<Point2D>.meanDeviation() = map { it.x }.variance()  to map { it.y }.variance()
-    private fun List<Robot>.toLoop() = (0..Int.MAX_VALUE).asSequence().first { i -> map { r -> r.simulate(i) } == this }
     override val example = """
         p=0,4 v=3,-3
         p=6,3 v=-1,-3
