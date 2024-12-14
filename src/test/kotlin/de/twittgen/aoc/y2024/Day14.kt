@@ -9,9 +9,9 @@ import de.twittgen.aoc.util.variance
 
 class Day14: Day<List<Robot>>() {
     val robotRegex = Regex("p=(-?\\d+),(-?\\d+) v=(-?\\d+),(-?\\d+)")
-    override fun String.parse() = mapLines { r ->
-        robotRegex.matchEntire(r)!!.groupValues.let { (_, a, b, c, d) -> Point2D(a.toInt(),b.toInt()) to Point2D(c.toInt(),d.toInt()) }
-    }
+    override fun String.parse() = mapLines { r -> robotRegex.matchEntire(r)!!.groupValues.let { (_, a, b, c, d) ->
+        Point2D(a.toInt(),b.toInt()) to Point2D(c.toInt(),d.toInt())
+    } }
 
     init {
         part1(12, 222901875) {

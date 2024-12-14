@@ -24,6 +24,9 @@ data class Point2D (val x : Int, val y: Int) {
     operator fun plus(other: Point2D) = Point2D(x + other.x, y + other.y)
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
     operator fun times(i : Int) = Point2D(x*i, y*i)
+    operator fun rem(other: Point2D) = Point2D(x % other.x, y % other.y)
+    infix fun modWrap(other: Point2D) = (this+other) % other
+
     fun norm() = Point2D(x.sign, y.sign)
     fun transpose() = Point2D(y,x)
     enum class Direction(val next: (Point2D)-> Point2D, val s: String) {
