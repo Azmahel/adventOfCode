@@ -2,38 +2,43 @@ package de.twittgen.aoc.y2024
 
 import de.twittgen.aoc.Day
 import de.twittgen.aoc.util.Point2D
+import de.twittgen.aoc.util.Point2D.Direction
 import de.twittgen.aoc.util.Point2D.Direction.*
 import de.twittgen.aoc.util.emptyLine
 import de.twittgen.aoc.util.toGrid
 import de.twittgen.aoc.y2024.Day15.Thing
 
-class Day15: Day<Pair<List<Thing>, List<Point2D.Direction>>>() {
+class Day15: Day<Pair<List<Thing>, List<Direction>>>() {
 
     override fun String.parse() = split(emptyLine).let { (m,d) ->
         m.toGrid { p, c -> c.toThing(p)} to d.replace("\n","").map { directions[it]!!}
     }
 
     private fun Char.toThing(position: Point2D) =
-        when(this) { 'O' -> Box(position) '@' -> Robot(position) '#' -> Wall(position) else -> null }
-    private val directions = mapOf<Char, Point2D.Direction>( '^' to UP, 'v' to DOWN, '<' to LEFT, '>' to RIGHT)
+        when(this) { 'O' -> Box(listOf(position)) '@' -> Robot(listOf(position)) '#' -> Wall(listOf(position)) else -> null }
+    private val directions = mapOf<Char, Direction>( '^' to UP, 'v' to DOWN, '<' to LEFT, '>' to RIGHT)
 
     init {
         mutableModel=true
-        part1(10092) { (map, directions) ->
-            map.filterIsInstance<Robot>().let { robots -> directions.forEach { d ->
-                robots.forEach { r -> r.move(d, map) }
-            }}
-            map.toGps()
-        }
+        part1(10092, 1497888) { (map, directions) -> map.simulate(directions).toGps() }
+        part2(9021, 1522420) { (map, directions) -> map.stretch().simulate(directions).toGps() }
     }
 
-    private fun List<Thing>.toGps() = maxOf { t -> t.position.y }.let { maxY -> filterIsInstance<Box>().sumOf { box -> Point2D(box.position.x, maxY - box.position.y).toGPS()  } }
-    private fun Point2D.toGPS() = 100*y + x
-    private fun List<Thing>.printMap() = associateBy { it.position}.printMap()
-    private fun Map<Point2D,Thing>.printMap() =
-        (keys.maxOf { it.y  } downTo 0).joinToString("\n") { y -> (0..keys.maxOf {it.x}).joinToString("") { x ->
-            get(Point2D(x,y))?.let { t -> when(t) { is Wall -> "#"; is Robot -> "@"; is Box -> "O" } } ?: "."
-        } }
+    private fun List<Thing>.stretch() = map { thing -> when(thing) {
+        is Wall -> Wall(thing.positions.flatMap { (x,y) -> listOf(Point2D(x*2,y), Point2D(x*2+1, y)) })
+        is Box -> Box(thing.positions.flatMap { (x,y) -> listOf(Point2D(x*2,y), Point2D(x*2+1, y)) })
+        is Robot -> Robot(thing.positions.map { (x,y) -> Point2D(x*2,y) })
+    } }
+
+
+    private fun List<Thing>.simulate(dir : List<Direction>) =  filterIsInstance<Robot>().let { robots ->
+        this.also { dir.forEach { d -> robots.forEach { r -> r.movePushing(d, this) } } }
+    }
+
+    private fun List<Thing>.toGps() = maxOf { t -> t.positions[0].y }.let { maxY ->
+        filterIsInstance<Box>().sumOf { box -> Point2D(box.positions[0].x, maxY - box.positions[0].y).toGPS() }
+    }
+    private fun Point2D.toGPS() = 100 * y + x
 
     override val example = """
         ##########
@@ -58,15 +63,22 @@ class Day15: Day<Pair<List<Thing>, List<Point2D.Direction>>>() {
         ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
         v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^
     """.trimIndent()
-    sealed class Thing(var position: Point2D) {
-        abstract fun move(d: Point2D.Direction, places: List<Thing>) : Boolean
-    }
-    private class Wall(position: Point2D): Thing(position) { override fun move(d: Point2D.Direction, places: List<Thing>) = false }
-    private sealed class Movable(position: Point2D): Thing(position) {
-        override fun move(d: Point2D.Direction, places: List<Thing>) = d.next(position).let { next ->
-            (places.find { p -> p.position == next }?.move(d, places) != false).also{ if(it) position = next }
+
+    sealed class Thing(var positions: List<Point2D>)
+    private class Wall(positions: List<Point2D>): Thing(positions)
+    private sealed class Movable(positions: List<Point2D>): Thing(positions) {
+        fun doMove(d: Direction) { positions = positions.map { p -> d.next(p) } }
+        private fun next(d: Direction) = positions.map { p -> d.next(p)  }
+        private fun collisions(p:List<Point2D>, things: List<Thing>) =
+            things.filter { t -> t.positions.any { it in p} && t != this }.toSet()
+        fun toPush(d: Direction, things: List<Thing>): Set<Thing> = collisions(next(d), things).let { c ->
+            if(c.any { it is Wall }) c else c.flatMap { (it as Movable).toPush(d, things)}.toSet() + c
         }
     }
-    private class Robot(position: Point2D): Movable(position)
-    private class Box(position: Point2D): Movable(position)
+    private class Robot(positions: List<Point2D>): Movable(positions) {
+        fun movePushing(d: Direction, things: List<Thing>) = toPush(d, things).let { push -> if(push.none { it is Wall}) {
+            doMove(d).also { push.forEach { p -> (p as Movable).doMove(d)  }}
+        } }
+    }
+    private class Box(positions: List<Point2D>): Movable(positions)
 }
